@@ -28,6 +28,20 @@ def load(fname):
 
     return numpy.hstack(DList), numpy.array(labelsList, dtype=numpy.int32)
 
+def compute_mean (D):
+    mu = D.mean(1) #D is a matrix where each column is a vector, i need the mean for each feature
+    return mu.reshape(mu.shape[0],1)
+
+def compute_variance (D):
+    sigma = D.std(1) #D is a matrix where each column is a vector, i need the variance for each feature
+    return sigma.reshape(sigma.shape[0],1)
+
+def scale_ZNormalization(D, mu, sigma):
+    scaled_DTR = (DTR-mu) #TBR: CORRECT OR NOT???????? 
+    scaled_DTR = scaled_DTR / sigma
+    return scaled_DTR
+    
+
 def plot_histograms(D, L):
 
     D0 = D[:, L==0]
@@ -98,11 +112,19 @@ def plot_scatters(D, L):
             plt.savefig('../Images/DatasetAnalysis/scatter_%d_%d.pdf' % (dIdx1, dIdx2))
         plt.show()
         
-        
+
 #TBR: leave this following code here or move in to a new 'main.py' file ?
 DTR,LTR = load('../Data/Train.txt')
 plt.rc('font', size=16)
 plt.rc('xtick', labelsize=16)
 plt.rc('ytick', labelsize=16)
-plot_histograms(DTR, LTR)
-plot_scatters(DTR, LTR)
+
+mu=compute_mean(DTR)
+sigma=compute_variance(DTR)
+
+#compute Z-normalization on training data
+scaled_DTR=scale_ZNormalization(DTR, mu, sigma)
+#TBR: to test the Z-normalization has been perfomed correctly compute again mean and variance of scaled_DTR anc check mean= [0,0...0]; sigma 0 [1,1.....1]
+
+plot_histograms(scaled_DTR, LTR)
+plot_scatters(scaled_DTR, LTR)
