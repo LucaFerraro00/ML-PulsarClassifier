@@ -9,10 +9,18 @@ import numpy
 import matplotlib
 import matplotlib.pyplot as plt
 
+
+
 def mcol(v):
     return v.reshape((v.size, 1))
 
 def load(fname):
+    
+    #setup visualization font
+    plt.rc('font', size=16)
+    plt.rc('xtick', labelsize=16)
+    plt.rc('ytick', labelsize=16)
+    
     DList = []
     labelsList = []
     with open(fname) as f:
@@ -37,11 +45,10 @@ def compute_variance (D):
     return sigma.reshape(sigma.shape[0],1)
 
 def scale_ZNormalization(D, mu, sigma):
-    scaled_DTR = (DTR-mu) #TBR: CORRECT OR NOT???????? 
+    scaled_DTR = (D-mu) #TBR: CORRECT OR NOT???????? 
     scaled_DTR = scaled_DTR / sigma
     return scaled_DTR
     
-
 def plot_histograms(D, L):
 
     D0 = D[:, L==0]
@@ -75,7 +82,6 @@ def plot_histograms(D, L):
         plt.tight_layout() # TBR: Use with non-default font size to keep axis label inside the figure
         plt.savefig('../Images/DatasetAnalysis/histogram_%d.pdf' % dIdx)
     plt.show()
-    
     
 def plot_scatters(D, L):
     
@@ -112,19 +118,12 @@ def plot_scatters(D, L):
             plt.savefig('../Images/DatasetAnalysis/scatter_%d_%d.pdf' % (dIdx1, dIdx2))
         plt.show()
         
+#---------functions for computing Gaussiziation-------------------------
+#for each sample of the feature I have to call this function
+def compute_rank(x_one_value, x_all_samples):
+    rank=0
+    for xi in x_all_samples:
+        if xi<x_one_value:
+            rank+=1
+    return (rank +1)/ (x_all_samples.shape[1] +2)
 
-#TBR: leave this following code here or move in to a new 'main.py' file ?
-DTR,LTR = load('../Data/Train.txt')
-plt.rc('font', size=16)
-plt.rc('xtick', labelsize=16)
-plt.rc('ytick', labelsize=16)
-
-mu=compute_mean(DTR)
-sigma=compute_variance(DTR)
-
-#compute Z-normalization on training data
-scaled_DTR=scale_ZNormalization(DTR, mu, sigma)
-#TBR: to test the Z-normalization has been perfomed correctly compute again mean and variance of scaled_DTR anc check mean= [0,0...0]; sigma 0 [1,1.....1]
-
-plot_histograms(scaled_DTR, LTR)
-plot_scatters(scaled_DTR, LTR)
