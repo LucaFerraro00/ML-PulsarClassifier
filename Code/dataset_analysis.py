@@ -145,3 +145,21 @@ def gaussianize (DTR):
             rank_DTR[i][j] = compute_rank(DTR[i][j], DTR[i])
     return statist.norm.ppf(rank_DTR)
 
+def pearce_correlation_map (D, L):
+    D0 = D[:, L==0]
+    D1 = D[:, L==1]
+    plt.figure()
+    plt.imshow(numpy.corrcoef(D0), cmap='Oranges')
+    plt.savefig('../Images/DatasetAnalysis/correlation_class_zero.pdf')
+    plt.figure()
+    plt.imshow(numpy.corrcoef(D1), cmap='Greens')
+    plt.savefig('../Images/DatasetAnalysis/correlation_class_one.pdf')
+    plt.figure()
+    plt.imshow(numpy.corrcoef(D), cmap='Greys')
+    plt.savefig('../Images/DatasetAnalysis/correlation_all_training_set.pdf')
+    plt.show()
+
+def plot_heatmap(correlations):  
+    plt.figure()
+    plt.imshow(correlations)
+    plt.show()

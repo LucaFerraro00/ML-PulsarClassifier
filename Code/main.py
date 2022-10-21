@@ -21,9 +21,13 @@ scaled_DTR=analys.scale_ZNormalization(DTR, mu, sigma)
 gaussianized_DTR = analys.gaussianize(DTR)
 
 #save histograms of the distribution of all the features in '../Images' folder. E
-analys.plot_histograms(scaled_DTR, LTR)
+#analys.plot_histograms(scaled_DTR, LTR)
 
 #analys.plot_histograms(gaussianized_DTR, LTR)
+
+#compute correlation of pearce for the features
+analys.pearce_correlation_map(gaussianized_DTR, LTR)
+
 
 
 
