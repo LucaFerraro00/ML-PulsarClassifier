@@ -8,6 +8,7 @@ Created on Tue Oct 18 15:15:35 2022
 import numpy
 import matplotlib
 import matplotlib.pyplot as plt
+import scipy.stats as statist
 
 
 
@@ -71,8 +72,8 @@ def plot_histograms(D, L):
     for dIdx in range(11):
         plt.figure()
         plt.xlabel(hFea[dIdx])
-        plt.hist(D0[dIdx, :], bins = 80, density = True, alpha = 0.8, label = '0 - Low quality' , color= 'red')
-        plt.hist(D1[dIdx, :], bins = 80, density = True, alpha = 0.8, label = '1 - Good quality', color= 'green')
+        plt.hist(D0[dIdx, :], bins = 45, density = True, alpha = 0.8, label = '0 - Low quality' , color= 'red')
+        plt.hist(D1[dIdx, :], bins = 45, density = True, alpha = 0.8, label = '1 - Good quality', color= 'green')
         #TBR: bins represents the 'number of towers' showed in the histogram
         #TBR: density=true: draw and return a probability density: each bin will display the bin's raw count divided by the total number of counts and the bin width (density = counts / (sum(counts) * np.diff(bins))), so that the area under the histogram integrates to 1 (np.sum(density * np.diff(bins)) == 1).
         #TBR: The alpha blending value, between 0 (transparent) and 1 (opaque).
@@ -80,7 +81,7 @@ def plot_histograms(D, L):
     
         plt.legend()
         plt.tight_layout() # TBR: Use with non-default font size to keep axis label inside the figure
-        plt.savefig('../Images/DatasetAnalysis/histogram_%d.pdf' % dIdx)
+        plt.savefig('../Images/DatasetAnalysis/histogram_beforeGaussianization_%d.pdf' % dIdx)
     plt.show()
     
 def plot_scatters(D, L):
@@ -125,5 +126,22 @@ def compute_rank(x_one_value, x_all_samples):
     for xi in x_all_samples:
         if xi<x_one_value:
             rank+=1
-    return (rank +1)/ (x_all_samples.shape[1] +2)
+    return (rank +1)/ (x_all_samples.shape[0] +2)
+
+"""
+def gaussianize (DTR):
+    rank_DTR = numpy.zeros(DTR.shape)
+    for i in range(DTR.shape[0]):
+        for j in range(DTR.shape[1]):
+            rank_DTR[i][j] = (DTR[i] < DTR[i][j]).sum()
+    rank_DTR = (rank_DTR+1) / (DTR.shape[1]+2)
+    return statist.norm.ppf(rank_DTR)
+"""
+
+def gaussianize (DTR):
+    rank_DTR = numpy.zeros(DTR.shape)
+    for i in range(DTR.shape[0]):
+        for j in range(DTR.shape[1]):
+            rank_DTR[i][j] = compute_rank(DTR[i][j], DTR[i])
+    return statist.norm.ppf(rank_DTR)
 
