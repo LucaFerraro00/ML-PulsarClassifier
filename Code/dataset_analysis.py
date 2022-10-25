@@ -119,7 +119,11 @@ def plot_scatters(D, L):
             plt.savefig('../Images/DatasetAnalysis/scatter_%d_%d.pdf' % (dIdx1, dIdx2))
         plt.show()
         
-#---------functions for computing Gaussiziation-------------------------
+        
+#################################################
+#---------GAUSSIANIZATION-----------------------#
+#################################################
+
 #for each sample of the feature I have to call this function
 def compute_rank(x_one_value, x_all_samples):
     rank=0
@@ -138,12 +142,24 @@ def gaussianize (DTR):
     return statist.norm.ppf(rank_DTR)
 """
 
-def gaussianize (DTR):
+def gaussianize_training (DTR):
     rank_DTR = numpy.zeros(DTR.shape)
     for i in range(DTR.shape[0]):
         for j in range(DTR.shape[1]):
             rank_DTR[i][j] = compute_rank(DTR[i][j], DTR[i])
     return statist.norm.ppf(rank_DTR)
+
+def gaussianize_evaluation (DTE, DTR):
+    rank_DTE = numpy.zeros(DTE.shape)
+    for i in range(DTE.shape[0]):
+        for j in range(DTE.shape[1]):
+            rank_DTE[i][j] = compute_rank(DTE[i][j], DTR[i])
+    return statist.norm.ppf(rank_DTE)
+
+
+####################################
+#-----------HEATMAP----------------#
+####################################
 
 def pearce_correlation_map (D, L):
     D0 = D[:, L==0]
