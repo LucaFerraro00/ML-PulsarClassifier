@@ -31,10 +31,32 @@ def split_db_2to1(D, L, seed=0):
     return (DTR, LTR), (DTE, LTE)
 
 
-def compute_mean_covariance(D):
+def full_compute_mean_covariance(D):
     mu=mcol(D.mean(1))
     C=numpy.dot(D-mu, (D-mu).T)/float(D.shape[1])
     return mu,C
+
+def naive_byas_compute_mu_covariance(D):
+    mu = D.mean(1)
+    mu=mu.reshape(mu.size,1)
+    DC = D - mu
+    C = numpy.dot(DC,DC.T)
+    C=C/float(D.shape[1])
+    C_diagonal = C * numpy.identity(C.shape[0])
+    return mu,C_diagonal
+
+def tied_compute_mu_covariance(D,L):
+    C_tied=0
+    for i in range(0,3):
+        Dclass=D[:,L==i]
+        mu = Dclass.mean(1)
+        mu=mu.reshape(mu.size,1)
+        DC = Dclass - mu
+        C = numpy.dot(DC,DC.T)
+        C=C/float(Dclass.shape[1])
+        C_tied+=C * Dclass.shape[1]
+    C_tied = C_tied/D.shape[1]
+    return mu,C_tied
 
 def logpdf_onesample(x, mu, C):
     P=numpy.linalg.inv(C)
@@ -50,12 +72,19 @@ def logpdf_GAU_ND(X,mu,C): #this function take as input a matrix of samples
     return numpy.array(y).ravel()
     #if i don't use ravel() i obtain a row-vector, while I want a 1-Dimensional vector
 
-def gaussian_classifier(D,L):
+def gaussian_classifier(D,L,classifier_type):
     D0 = D[:, L==0]
     D1 = D[:, L==1]
     
-    mu0, C0 = compute_mean_covariance(D0)
-    mu1, C1 = compute_mean_covariance(D1)
+    mu0, C0 = full_compute_mean_covariance(D0)
+    mu1, C1 = full_compute_mean_covariance(D1)
+    
+    """
+    match classifier_type:
+        case 'full':
+             full_compute_mu_covariance(D, L)
+        ...
+    """
     
     (DTrain, LTrain), (DTest, LTest) = split_db_2to1(D, L)
     

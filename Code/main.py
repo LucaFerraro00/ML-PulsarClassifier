@@ -29,7 +29,9 @@ gaussianized_DTR = analys.gaussianize_training(DTR)
 #compute correlation of pearce for the features
 #analys.pearce_correlation_map(DTR, LTR)
 
-predictions,accuracy = gauss.gaussian_classifier(scaled_DTR, LTR)
+#predictions,accuracy = gauss.gaussian_classifier(scaled_DTR, LTR)
+
+analys.pca(1, gaussianized_DTR)
 
 
 

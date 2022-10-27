@@ -6,6 +6,7 @@ Created on Tue Oct 18 15:15:35 2022
 """
 
 import numpy
+import pylab
 import matplotlib
 import matplotlib.pyplot as plt
 import scipy.stats as statist
@@ -193,6 +194,7 @@ def pca(m, D):
     #I need to take the first m eigenvectors corresponding to the m largest eigenvalues
     P = U[:, ::-1][:, 0:m] #I invert the columns of U then I take the firsts m
     DProjected = numpy.dot(P.T, D)
+    pylab.scatter(DProjected[0], DProjected[1])
     return DProjected
 
 
