@@ -57,3 +57,7 @@ def bayes_error_plot(pArray, scores, labels, minCost=False):
         else:
             y.append(compute_act_DCF(scores, labels, pi, 1, 1)) 
         return numpy.array(y)    
+
+
+    
+    

@@ -72,39 +72,20 @@ def logpdf_GAU_ND(X,mu,C): #this function take as input a matrix of samples
     return numpy.array(y).ravel()
     #if i don't use ravel() i obtain a row-vector, while I want a 1-Dimensional vector
 
-def gaussian_classifier(D,L,classifier_type):
-    D0 = D[:, L==0]
-    D1 = D[:, L==1]
-    
+def train_gaussian_classifier(DTR,LTR,classifier_type):
+    D0 = DTR[:, LTR==0]
+    D1 = DTR[:, LTR==1]
+    #Insert kind of switch case which compure full, naive or tied
     mu0, C0 = full_compute_mean_covariance(D0)
     mu1, C1 = full_compute_mean_covariance(D1)
-    
-    """
-    match classifier_type:
-        case 'full':
-             full_compute_mu_covariance(D, L)
-        ...
-    """
-    
-    (DTrain, LTrain), (DTest, LTest) = split_db_2to1(D, L)
-    
-    #why accuracy doesn't change if I gaussianize or not the features
-    DTrain = analys.gaussianize_training(DTrain)
-    DTest = analys.gaussianize_evaluation(DTest, DTrain)
-    
-    
-    ScoreJoint=numpy.zeros((2, DTest.shape[1]))
-    ScoreJoint[0, :] = numpy.exp(logpdf_GAU_ND(DTest, mu0, C0).ravel())* 0.5 #class posterior probability is set to 0.5 for the moment
-    ScoreJoint[1, :] = numpy.exp(logpdf_GAU_ND(DTest, mu1, C1).ravel())* 0.5 #class posterior probability is set to 0.5 for the moment
+    return mu0,C0,mu1,C1
 
-    SMarginal = ScoreJoint.sum(0)
-    Posterior = ScoreJoint/mrow(SMarginal)
-    LPred=Posterior.argmax(0)
-    
-    Compare=LTest==LPred #Compare is an array that contain true when the compared elements are equal, False otherwise
-    TotCorrect=Compare.sum()
-    Accuracy=TotCorrect/LTest.size
-    return LPred, Accuracy
+def compute_score(DTE, mu0,C0,mu1,C1):
+    log_density_c0 = logpdf_GAU_ND(DTE, mu0, C0)
+    log_density_c1 = logpdf_GAU_ND(DTE, mu0, C1)
+    score = log_density_c1 - log_density_c0
+    return score
+
 
     
 
