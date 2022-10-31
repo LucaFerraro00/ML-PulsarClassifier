@@ -72,7 +72,7 @@ def logpdf_GAU_ND(X,mu,C): #this function take as input a matrix of samples
     return numpy.array(y).ravel()
     #if i don't use ravel() i obtain a row-vector, while I want a 1-Dimensional vector
 
-def train_gaussian_classifier(DTR,LTR,classifier_type):
+def train_gaussian_classifier(DTR,LTR):
     D0 = DTR[:, LTR==0]
     D1 = DTR[:, LTR==1]
     #Insert kind of switch case which compure full, naive or tied
@@ -80,7 +80,8 @@ def train_gaussian_classifier(DTR,LTR,classifier_type):
     mu1, C1 = full_compute_mean_covariance(D1)
     return mu0,C0,mu1,C1
 
-def compute_score(DTE, mu0,C0,mu1,C1):
+def compute_score(DTE,DTR,LTR):
+    mu0,C0,mu1,C1= train_gaussian_classifier(DTR, LTR)
     log_density_c0 = logpdf_GAU_ND(DTE, mu0, C0)
     log_density_c1 = logpdf_GAU_ND(DTE, mu0, C1)
     score = log_density_c1 - log_density_c0

@@ -6,6 +6,7 @@ Created on Tue Oct 25 19:38:12 2022
 """
 
 import numpy
+import gaussian_classifiers as gauss
 
 
 
@@ -59,5 +60,29 @@ def bayes_error_plot(pArray, scores, labels, minCost=False):
         return numpy.array(y)    
 
 
+def kfold(D,L, k, compute_s):
+    numpy.random.seed(0)
+    indexes = numpy.random.permutation(D.shape[1]) #Why to take it randomly? Why don't take simpli indexes = [0,1.....,D.shape[0]]
+    fold_dim  = int(D.shape[1]/k)
+    scores = numpy.array([])
+    labels = numpy.array([]) #if fold_dim is a float number labels < L
+    
+    for i in range(k):
+        idx_test = indexes[i*fold_dim:(i+1)*fold_dim]
+        
+        idx_train_left = indexes [0 : i*fold_dim]
+        idx_train_right = indexes [(i+1)*fold_dim :]
+        idx_train = numpy.hstack([idx_train_left, idx_train_right])
+        
+        DTR = D[:,idx_train]
+        LTR = L[idx_train]
+        DTE = D[:,idx_test]
+        LTE = L[idx_test]
+        score_ith = compute_s(DTE,DTR,LTR)  
+        scores = numpy.append(scores, score_ith)
+        labels = numpy.append(labels, LTE) 
+    min_dcf = compute_min_DCF(scores, labels, 0.5, 1, 1)
+    return min_dcf
+        
     
     

@@ -8,15 +8,19 @@ Created on Wed Oct 19 17:43:38 2022
 import dataset_analysis as analys
 import gaussian_classifiers as gauss
 import validate
+import logistic_regression as log_reg
 
+D,L = analys.load('../Data/Train.txt')
 
 def main():
-    D,L = analys.load('../Data/Train.txt')
     #plot(D, L)
     DTR,LTR,DTE,LTE = load_and_scale()
     
     classifier_type =1 #change
-    train_evaluate_gaussian(DTR, LTR, DTE, LTE, classifier_type)
+    print ("GAUSSIAN")
+    train_evaluate_gaussian(DTR, LTR, DTE, LTE)
+    print("LOGREG")
+    train_evaluate_log_reg(DTR, LTR, DTE, LTE)
     
     
 
@@ -48,10 +52,22 @@ def load_and_scale():
 
     return gaussianized_DTR, LTR, gaussianized_DTE, LTE
 
-def train_evaluate_gaussian(DTR,LTR,DTE,LTE,classifier_type):
-    mu0,C0,mu1,C1 = gauss.train_gaussian_classifier(DTR, LTR, classifier_type)
-    scores = gauss.compute_score(DTE, mu0, C0, mu1, C1)  
-    min_dcf = validate.compute_min_DCF(scores, LTE, 0.1, 1, 1)
+
+def train_evaluate_gaussian(DTR,LTR,DTE,LTE):
+    scores = gauss.compute_score(DTE,DTR,LTR)  
+    min_dcf = validate.compute_min_DCF(scores, LTE, 0.5, 1, 1)
     print(min_dcf)
+    print("KFOLD")
+    min_dcf_kfold = validate.kfold(D, L, 7, gauss.compute_score)
+    print(min_dcf_kfold)
+    
+    
+def train_evaluate_log_reg(DTR,LTR,DTE,LTE):
+    scores = log_reg.compute_score(DTE,DTR,LTR)
+    min_dcf = validate.compute_min_DCF(scores, LTE, 0.5, 1, 1)
+    print(min_dcf)
+    print("KFOLD")
+    min_dcf_kfold = validate.kfold(D, L, 7, log_reg.compute_score)
+    print(min_dcf_kfold)
     
 main()
