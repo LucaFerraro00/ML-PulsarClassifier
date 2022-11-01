@@ -7,6 +7,7 @@ Created on Tue Oct 25 19:38:12 2022
 
 import numpy
 import gaussian_classifiers as gauss
+import dataset_analysis as analys
 
 
 
@@ -60,7 +61,7 @@ def bayes_error_plot(pArray, scores, labels, minCost=False):
         return numpy.array(y)    
 
 
-def kfold(D,L, k, compute_s):
+def kfold(D,L, k, pi, compute_s, gaussianize):
     numpy.random.seed(0)
     indexes = numpy.random.permutation(D.shape[1]) #Why to take it randomly? Why don't take simpli indexes = [0,1.....,D.shape[0]]
     fold_dim  = int(D.shape[1]/k)
@@ -78,10 +79,17 @@ def kfold(D,L, k, compute_s):
         LTR = L[idx_train]
         DTE = D[:,idx_test]
         LTE = L[idx_test]
+        
+        DTR = analys.scale_ZNormalization(DTR)
+        DTE = analys.scale_ZNormalization(DTE)
+        if gaussianize:
+            DTE = analys.gaussianize_evaluation(DTE, DTR)
+            DTR = analys.gaussianize_training(DTR)
+            
         score_ith = compute_s(DTE,DTR,LTR)  
         scores = numpy.append(scores, score_ith)
         labels = numpy.append(labels, LTE) 
-    min_dcf = compute_min_DCF(scores, labels, 0.5, 1, 1)
+    min_dcf = compute_min_DCF(scores, labels, pi, 1, 1)
     return min_dcf
         
     

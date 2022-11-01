@@ -16,8 +16,7 @@ import scipy.stats as statist
 def mcol(v):
     return v.reshape((v.size, 1))
 
-def load(fname):
-    
+def load_wine_dataset(fname):
     #setup visualization font
     plt.rc('font', size=16)
     plt.rc('xtick', labelsize=16)
@@ -38,7 +37,29 @@ def load(fname):
 
     return numpy.hstack(DList), numpy.array(labelsList, dtype=numpy.int32)
 
-#to be changed
+
+def load_pulsar_dataset(fname):
+    #setup visualization font
+    plt.rc('font', size=16)
+    plt.rc('xtick', labelsize=16)
+    plt.rc('ytick', labelsize=16)
+    
+    DList = []
+    labelsList = []
+    with open(fname) as f:
+        for line in f:
+            try:
+                attrs = line.split(',')[0:8]
+                attrs = mcol(numpy.array([float(i) for i in attrs]))
+                label = line.split(',')[-1].strip()
+                DList.append(attrs)
+                labelsList.append(label)
+            except:
+                pass
+
+    return numpy.hstack(DList), numpy.array(labelsList, dtype=numpy.int32)
+
+
 def split_db_2to1(D, L, seed=0):
     nTrain = int(D.shape[1]*8.0/10.0)
     numpy.random.seed(seed)
@@ -61,7 +82,9 @@ def compute_variance (D):
     sigma = D.std(1) #D is a matrix where each column is a vector, i need the variance for each feature
     return sigma.reshape(sigma.shape[0],1)
 
-def scale_ZNormalization(D, mu, sigma):
+def scale_ZNormalization(D): 
+    mu=compute_mean(D)
+    sigma=compute_variance(D)
     scaled_DTR = (D-mu) #TBR: CORRECT OR NOT???????? 
     scaled_DTR = scaled_DTR / sigma
     return scaled_DTR
@@ -72,20 +95,17 @@ def plot_histograms(D, L):
     D1 = D[:, L==1]
 
     hFea = {
-        0: 'fixed acidity',
-        1: 'volatile acidity',
-        2: 'citric acid',
-        3: 'residual sugar',
-        4: 'chlorides',
-        5: 'free sulfur dioxide',
-        6: 'total sulfur dioxide',
-        7: 'density',
-        8: 'pH',
-        9: 'sulphates',
-        10: 'alcohol'
+         0: 'Mean of the integrated profile',
+         1: 'Standard deviation of the integrated profile',
+         2: 'Excess kurtosis of the integrated profile',
+         3: 'skewness of the integrated profile',
+         4: 'Mean of the DM-SNR curve',
+         5: 'Standard deviation of the DM-SNR curve',
+         6: 'Excess kurtosis of the DM-SNR curve',
+         7: 'skewness of the DM-SNR curve'
         }
 
-    for dIdx in range(11):
+    for dIdx in range(8):
         plt.figure()
         plt.xlabel(hFea[dIdx])
         plt.hist(D0[dIdx, :], bins = 45, density = True, alpha = 0.8, label = '0 - Low quality' , color= 'red')
@@ -106,21 +126,18 @@ def plot_scatters(D, L):
     D1 = D[:, L==1]
 
     hFea = {
-        0: 'fixed acidity',
-        1: 'volatile acidity',
-        2: 'citric acid',
-        3: 'residual sugar',
-        4: 'chlorides',
-        5: 'free sulfur dioxide',
-        6: 'total sulfur dioxide',
-        7: 'density',
-        8: 'pH',
-        9: 'sulphates',
-        10: 'alcohol'
+         0: 'Mean of the integrated profile',
+         1: 'Standard deviation of the integrated profile',
+         2: 'Excess kurtosis of the integrated profile',
+         3: 'skewness of the integrated profile',
+         4: 'Mean of the DM-SNR curve',
+         5: 'Standard deviation of the DM-SNR curve',
+         6: 'Excess kurtosis of the DM-SNR curve',
+         7: 'skewness of the DM-SNR curve'
         }
 
-    for dIdx1 in range(11):
-        for dIdx2 in range(11):
+    for dIdx1 in range(8):
+        for dIdx2 in range(8):
             if dIdx1 == dIdx2:
                 continue
             plt.figure()

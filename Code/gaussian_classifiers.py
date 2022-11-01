@@ -45,9 +45,9 @@ def naive_byas_compute_mu_covariance(D):
     C_diagonal = C * numpy.identity(C.shape[0])
     return mu,C_diagonal
 
-def tied_compute_mu_covariance(D,L):
+def tied_compute_covariance(D,L):
     C_tied=0
-    for i in range(0,3):
+    for i in range(0,2):
         Dclass=D[:,L==i]
         mu = Dclass.mean(1)
         mu=mu.reshape(mu.size,1)
@@ -56,7 +56,7 @@ def tied_compute_mu_covariance(D,L):
         C=C/float(Dclass.shape[1])
         C_tied+=C * Dclass.shape[1]
     C_tied = C_tied/D.shape[1]
-    return mu,C_tied
+    return C_tied
 
 def logpdf_onesample(x, mu, C):
     P=numpy.linalg.inv(C)
@@ -72,21 +72,44 @@ def logpdf_GAU_ND(X,mu,C): #this function take as input a matrix of samples
     return numpy.array(y).ravel()
     #if i don't use ravel() i obtain a row-vector, while I want a 1-Dimensional vector
 
-def train_gaussian_classifier(DTR,LTR):
+def train_gaussian_classifier(DTR,LTR, gaussian_type):
     D0 = DTR[:, LTR==0]
     D1 = DTR[:, LTR==1]
     #Insert kind of switch case which compure full, naive or tied
-    mu0, C0 = full_compute_mean_covariance(D0)
-    mu1, C1 = full_compute_mean_covariance(D1)
+    if gaussian_type == 'full':
+        mu0, C0 = full_compute_mean_covariance(D0)
+        mu1, C1 = full_compute_mean_covariance(D1)
+    if gaussian_type == 'naive':
+        mu0, C0 = naive_byas_compute_mu_covariance(D0)
+        mu1, C1 = naive_byas_compute_mu_covariance(D1)
+    if gaussian_type == 'tied':
+        C_tied = tied_compute_covariance(DTR, LTR)
+        mu0=mcol(D0.mean(1))
+        mu1=mcol(D1.mean(1))
+        C0=C_tied
+        C1=C_tied
     return mu0,C0,mu1,C1
 
-def compute_score(DTE,DTR,LTR):
-    mu0,C0,mu1,C1= train_gaussian_classifier(DTR, LTR)
+def compute_score_full(DTE,DTR,LTR):
+    mu0,C0,mu1,C1= train_gaussian_classifier(DTR, LTR, 'full')
     log_density_c0 = logpdf_GAU_ND(DTE, mu0, C0)
-    log_density_c1 = logpdf_GAU_ND(DTE, mu0, C1)
+    log_density_c1 = logpdf_GAU_ND(DTE, mu1, C1)
     score = log_density_c1 - log_density_c0
     return score
 
+def compute_score_naive(DTE,DTR,LTR):
+    mu0,C0,mu1,C1= train_gaussian_classifier(DTR, LTR, 'naive')
+    log_density_c0 = logpdf_GAU_ND(DTE, mu0, C0)
+    log_density_c1 = logpdf_GAU_ND(DTE, mu1, C1)
+    score = log_density_c1 - log_density_c0
+    return score
+
+def compute_score_tied(DTE,DTR,LTR):
+    mu0,C0,mu1,C1= train_gaussian_classifier(DTR, LTR, 'tied')
+    log_density_c0 = logpdf_GAU_ND(DTE, mu0, C0)
+    log_density_c1 = logpdf_GAU_ND(DTE, mu1, C1)
+    score = log_density_c1 - log_density_c0
+    return score
 
     
 
