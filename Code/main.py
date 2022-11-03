@@ -9,12 +9,13 @@ import dataset_analysis as analys
 import gaussian_classifiers as gauss
 import validate
 import logistic_regression as log_reg
+import svm
 
 #D,L = analys.load('../Data/Train.txt')
 
 k=3
 D,L = analys.load_pulsar_dataset('PULSAR_TRAIN.txt')
-gaussianize= True 
+gaussianize= False 
 
 def main():
     D,L = analys.load_pulsar_dataset('PULSAR_TRAIN.txt')
@@ -27,21 +28,21 @@ def main():
     DTR = analys.scale_ZNormalization(DTR)
     DTE = analys.scale_ZNormalization(DTE)
     
-    """
+    
     #evaluate without gaussianization
     print("EVALUATION WITHOUT GAUSSIANIZATION")
-    train_evaluate_gaussian_models(DTR, LTR, DTE, LTE)
-    train_evaluate_log_reg(DTR, LTR, DTE, LTE)
+    #train_evaluate_gaussian_models(DTR, LTR, DTE, LTE)
+    #train_evaluate_log_reg(DTR, LTR, DTE, LTE)
+    train_evaluate_svm(DTR, LTR, DTE, LTE)
+    
     """
-
     print("")
     print("EVALUATION WITH GAUSSIANIZATION")
     #evaluate with gaussianization
-    DTE = analys.gaussianize_evaluation(DTE, DTR)
-    DTR = analys.gaussianize_training(DTR)
+    gaussianize=True
     train_evaluate_gaussian_models(DTR, LTR, DTE, LTE)
     train_evaluate_log_reg(DTR, LTR, DTE, LTE)
-    
+    """
 
 def plot(DTR, LTR):
     #save histograms of the distribution of all the features in '../Images' folder. E
@@ -49,8 +50,6 @@ def plot(DTR, LTR):
 
     #compute correlation of pearce for the features
     analys.pearce_correlation_map(DTR, LTR)
-
-
 
 
 def train_evaluate_gaussian_models(DTR,LTR,DTE,LTE):
@@ -89,11 +88,23 @@ def train_evaluate_log_reg(DTR,LTR,DTE,LTE):
     print("-------------------LOGISTIC REGRESSION-----------------")
     for pi in [0.1, 0.5, 0.9]:
         scores = log_reg.compute_score(DTE,DTR,LTR)
-        min_dcf = validate.compute_min_DCF(scores, LTE, 0.5, 1, 1)
+        min_dcf = validate.compute_min_DCF(scores, LTE, pi, 1, 1)
         print ("Logistic regression with single fold")
         print("- pi = %f  minDCF = %f" %(pi,min_dcf))
         min_dcf_kfold = validate.kfold(D, L, k, pi, log_reg.compute_score, gaussianize)
         print ("Logistic regression with k-fold")
         print("- pi = %f  minDCF = %f" %(pi,min_dcf_kfold))
+
+
+def train_evaluate_svm(DTR,LTR,DTE,LTE):
+    print("-------------------LINEAR SVM-----------------")
+    for pi in [0.1, 0.5, 0.9]:
+        scores = svm.compute_score_linear(DTE, DTR, LTR)
+        min_dcf = validate.compute_min_DCF(scores, LTE, pi, 1, 1)
+        print ("LinearSVM with single fold")
+        print("- pi = %f  minDCF = %f" %(pi,min_dcf))
+        #min_dcf_kfold = validate.kfold(D, L, k, pi, svm.compute_score_linear, gaussianize)
+        #print ("Logistic regression with k-fold")
+        #print("- pi = %f  minDCF = %f" %(pi,min_dcf_kfold))
     
 main()

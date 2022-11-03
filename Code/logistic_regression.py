@@ -35,4 +35,5 @@ def train_log_reg(DTR, LTR):
 def compute_score(DTE,DTR,LTR):
     _w,_b= train_log_reg(DTR, LTR)
     score = numpy.dot(_w.T,DTE)+_b
+    print(score)
     return score

@@ -61,7 +61,7 @@ def load_pulsar_dataset(fname):
 
 
 def split_db_2to1(D, L, seed=0):
-    nTrain = int(D.shape[1]*8.0/10.0)
+    nTrain = int(D.shape[1]*2.0/3.0)
     numpy.random.seed(seed)
     idx = numpy.random.permutation(D.shape[1]) #idx contains N numbers from 0 to N (where is equals to number of training samples) in a random  order
     idxTrain = idx[0:nTrain]

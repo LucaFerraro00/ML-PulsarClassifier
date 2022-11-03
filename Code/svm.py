@@ -23,7 +23,7 @@ def mcol(x):
 def train_SVM_linear(DTR, LTR, C, K=1):
     
     #first we simulate the bias by extending our data with ones, this allow us to simulate the effect of a bias
-    DTREXT=numpy.vstack([DTR, numpy.ones((1,DTR.shape[1]))*K])
+    DTREXT=numpy.vstack([DTR, numpy.ones((1,DTR.shape[1]))])
     #DTREXt is the original data matrix  wich contains the original training data x1...xn. Each x has an added feature equals to K=1 appendend
     
     #compute Z to be used to do compute: zi(wTx+b)
@@ -66,8 +66,15 @@ def train_SVM_linear(DTR, LTR, C, K=1):
 
     return wStar, alphaStar
 
-
-
+C=0.1
+K=1
+def compute_score_linear(DTE,DTR,LTR):
+    w,_alfa= train_SVM_linear(DTR, LTR, C)
+    DTE_EXT=numpy.vstack([DTE, numpy.ones((1,DTE.shape[1]))])
+    score = numpy.dot(w.T,DTE_EXT)
+    print(score)
+    return score.ravel()
+    
 
 
 """
