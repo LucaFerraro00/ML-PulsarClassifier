@@ -56,8 +56,19 @@ def load_pulsar_dataset(fname):
                 labelsList.append(label)
             except:
                 pass
+    DTR = numpy.hstack(DList)
+    LTR =numpy.array(labelsList, dtype=numpy.int32)
+    
+    mean=compute_mean(DTR)
+    std=compute_std(DTR)
+    print ('The mean of the features for the entire training set is:')
+    print(mean.ravel())
+    print('')
+    print ('The standard deviation of the features for the entire training set is:')
+    print(std.ravel())
 
-    return numpy.hstack(DList), numpy.array(labelsList, dtype=numpy.int32)
+    
+    return DTR, LTR
 
 
 def split_db_2to1(D, L, seed=0):
@@ -78,18 +89,18 @@ def compute_mean (D):
     mu = D.mean(1) #D is a matrix where each column is a vector, i need the mean for each feature
     return mu.reshape(mu.shape[0],1)
 
-def compute_variance (D):
+def compute_std (D):
     sigma = D.std(1) #D is a matrix where each column is a vector, i need the variance for each feature
     return sigma.reshape(sigma.shape[0],1)
 
 def scale_ZNormalization(D): 
     mu=compute_mean(D)
-    sigma=compute_variance(D)
+    sigma=compute_std(D)
     scaled_DTR = (D-mu) #TBR: CORRECT OR NOT???????? 
     scaled_DTR = scaled_DTR / sigma
     return scaled_DTR
     
-def plot_histograms(D, L):
+def plot_histograms(D, L, gaussianize):
 
     D0 = D[:, L==0]
     D1 = D[:, L==1]
@@ -108,19 +119,22 @@ def plot_histograms(D, L):
     for dIdx in range(8):
         plt.figure()
         plt.xlabel(hFea[dIdx])
-        plt.hist(D0[dIdx, :], bins = 45, density = True, alpha = 0.8, label = '0 - Low quality' , color= 'red')
-        plt.hist(D1[dIdx, :], bins = 45, density = True, alpha = 0.8, label = '1 - Good quality', color= 'green')
+        plt.hist(D0[dIdx, :], bins = 45, density = True, alpha = 0.8, label = '0 - Not pulsar' , color= 'red')
+        plt.hist(D1[dIdx, :], bins = 45, density = True, alpha = 0.8, label = '1 - Pulsar', color= 'green')
         #TBR: bins represents the 'number of towers' showed in the histogram
         #TBR: density=true: draw and return a probability density: each bin will display the bin's raw count divided by the total number of counts and the bin width (density = counts / (sum(counts) * np.diff(bins))), so that the area under the histogram integrates to 1 (np.sum(density * np.diff(bins)) == 1).
         #TBR: The alpha blending value, between 0 (transparent) and 1 (opaque).
 
-    
         plt.legend()
         plt.tight_layout() # TBR: Use with non-default font size to keep axis label inside the figure
-        plt.savefig('../Images/DatasetAnalysis/histogram_beforeGaussianization_%d.pdf' % dIdx)
+        if gaussianize:
+            plt.savefig('../Images/DatasetAnalysis/histogram_afterGaussianization_%d.jpg' % dIdx)
+        else:
+            plt.savefig('../Images/DatasetAnalysis/histogram_beforeGaussianization_%d.jpg' % dIdx)
+
     plt.show()
     
-def plot_scatters(D, L):
+def plot_scatters(D, L, gaussianize):
     
     D0 = D[:, L==0]
     D1 = D[:, L==1]
@@ -143,13 +157,13 @@ def plot_scatters(D, L):
             plt.figure()
             plt.xlabel(hFea[dIdx1])
             plt.ylabel(hFea[dIdx2])
-            plt.scatter(D0[dIdx1, :], D0[dIdx2, :], label = '0 - Low quality' , color= 'red', alpha=0.2)
-            plt.scatter(D1[dIdx1, :], D1[dIdx2, :], label = '1 - Good quality', color= 'green', alpha=0.2)
+            plt.scatter(D0[dIdx1, :], D0[dIdx2, :], label = '0 - Not pulsar' , color= 'red', alpha=0.2)
+            plt.scatter(D1[dIdx1, :], D1[dIdx2, :], label = '1 - Pulsar', color= 'green', alpha=0.2)
             #TBR: The alpha blending value, between 0 (transparent) and 1 (opaque).
         
             plt.legend()
             plt.tight_layout() # Use with non-default font size to keep axis label inside the figure
-            plt.savefig('../Images/DatasetAnalysis/scatter_%d_%d.pdf' % (dIdx1, dIdx2))
+            plt.savefig('../Images/DatasetAnalysis/scatter_%d_%d.jpg' % (dIdx1, dIdx2))
         plt.show()
         
         
@@ -194,18 +208,27 @@ def gaussianize_evaluation (DTE, DTR):
 #-----------HEATMAP----------------#
 ####################################
 
-def pearce_correlation_map (D, L):
+def pearce_correlation_map (D, L, gaussianize):
     D0 = D[:, L==0]
     D1 = D[:, L==1]
     plt.figure()
     plt.imshow(numpy.corrcoef(D0), cmap='Oranges')
-    plt.savefig('../Images/DatasetAnalysis/correlation_class_zero.pdf')
+    if gaussianize:
+        plt.savefig('../Images/DatasetAnalysis/correlation_class_zero_afterGauss.jpg')
+    else:
+        plt.savefig('../Images/DatasetAnalysis/correlation_class_zero_beforeGauss.jpg')
     plt.figure()
     plt.imshow(numpy.corrcoef(D1), cmap='Greens')
-    plt.savefig('../Images/DatasetAnalysis/correlation_class_one.pdf')
+    if gaussianize:
+        plt.savefig('../Images/DatasetAnalysis/correlation_class_one_afterGauss.jpg')
+    else:
+        plt.savefig('../Images/DatasetAnalysis/correlation_class_one_beforeGauss.jpg')
     plt.figure()
     plt.imshow(numpy.corrcoef(D), cmap='Greys')
-    plt.savefig('../Images/DatasetAnalysis/correlation_all_training_set.pdf')
+    if gaussianize:
+        plt.savefig('../Images/DatasetAnalysis/correlation_all_training_set_afterGauss.jpg')
+    else:
+        plt.savefig('../Images/DatasetAnalysis/correlation_all_training_set_beforeGauss.jpg')
     plt.show()
 
 def plot_heatmap(correlations):  

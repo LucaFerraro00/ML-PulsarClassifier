@@ -14,16 +14,19 @@ import svm
 #D,L = analys.load('../Data/Train.txt')
 
 k=3
-D,L = analys.load_pulsar_dataset('PULSAR_TRAIN.txt')
+D,L = analys.load_pulsar_dataset('../Data/Train.txt')
 gaussianize= False 
 
 def main():
-    D,L = analys.load_pulsar_dataset('PULSAR_TRAIN.txt')
+    D,L = analys.load_pulsar_dataset('../Data/Train.txt')
     D_normal= analys.scale_ZNormalization(D)
-    #plot(D_normal, L) #plot raw features before gaussianization
+    gaussianize=False
+    plot(D_normal, L, gaussianize) #plot raw features before gaussianization
     D_gaussianized= analys.gaussianize_training(D_normal)
-    #plot(D_gaussianized, L) #plot gaussianized features
+    gaussianize= True
+    plot(D_gaussianized, L, gaussianize) #plot gaussianized features
     
+    """
     DTR,LTR,DTE,LTE = analys.split_db_2to1(D, L)
     DTR = analys.scale_ZNormalization(DTR)
     DTE = analys.scale_ZNormalization(DTE)
@@ -35,7 +38,7 @@ def main():
     #train_evaluate_log_reg(DTR, LTR, DTE, LTE)
     train_evaluate_svm(DTR, LTR, DTE, LTE)
     
-    """
+    
     print("")
     print("EVALUATION WITH GAUSSIANIZATION")
     #evaluate with gaussianization
@@ -43,13 +46,12 @@ def main():
     train_evaluate_gaussian_models(DTR, LTR, DTE, LTE)
     train_evaluate_log_reg(DTR, LTR, DTE, LTE)
     """
-
-def plot(DTR, LTR):
+def plot(DTR, LTR, gaussianize):
     #save histograms of the distribution of all the features in '../Images' folder. E
-    analys.plot_histograms(DTR, LTR)
+    analys.plot_histograms(DTR, LTR,gaussianize)
 
     #compute correlation of pearce for the features
-    analys.pearce_correlation_map(DTR, LTR)
+    analys.pearce_correlation_map(DTR, LTR, gaussianize)
 
 
 def train_evaluate_gaussian_models(DTR,LTR,DTE,LTE):
