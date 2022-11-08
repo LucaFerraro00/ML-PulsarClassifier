@@ -79,12 +79,6 @@ def kfold(D,L, k, pi, compute_s, gaussianize):
         LTR = L[idx_train]
         DTE = D[:,idx_test]
         LTE = L[idx_test]
-        
-        DTR = analys.scale_ZNormalization(DTR)
-        DTE = analys.scale_ZNormalization(DTE)
-        if gaussianize:
-            DTE = analys.gaussianize_evaluation(DTE, DTR)
-            DTR = analys.gaussianize_training(DTR)
             
         score_ith = compute_s(DTE,DTR,LTR)  
         scores = numpy.append(scores, score_ith)

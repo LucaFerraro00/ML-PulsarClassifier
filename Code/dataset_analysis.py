@@ -66,9 +66,15 @@ def load_pulsar_dataset(fname):
     print('')
     print ('The standard deviation of the features for the entire training set is:')
     print(std.ravel())
-
+    DTR, LTR = shuffle_dataset(DTR,LTR)
     
     return DTR, LTR
+
+
+def shuffle_dataset(D, L):
+    numpy.random.seed(0)
+    idx = numpy.random.permutation(D.shape[1])
+    return D[:, idx], L[idx]
 
 
 def split_db_2to1(D, L, seed=0):
@@ -212,19 +218,19 @@ def pearce_correlation_map (D, L, gaussianize):
     D0 = D[:, L==0]
     D1 = D[:, L==1]
     plt.figure()
-    plt.imshow(numpy.corrcoef(D0), cmap='Oranges')
+    plt.imshow(numpy.absolute(numpy.corrcoef(D0)), cmap='Oranges')
     if gaussianize:
         plt.savefig('../Images/DatasetAnalysis/correlation_class_zero_afterGauss.jpg')
     else:
         plt.savefig('../Images/DatasetAnalysis/correlation_class_zero_beforeGauss.jpg')
     plt.figure()
-    plt.imshow(numpy.corrcoef(D1), cmap='Greens')
+    plt.imshow(numpy.absolute(numpy.corrcoef(D1)), cmap='Greens')
     if gaussianize:
         plt.savefig('../Images/DatasetAnalysis/correlation_class_one_afterGauss.jpg')
     else:
         plt.savefig('../Images/DatasetAnalysis/correlation_class_one_beforeGauss.jpg')
     plt.figure()
-    plt.imshow(numpy.corrcoef(D), cmap='Greys')
+    plt.imshow(numpy.absolute(numpy.corrcoef(D)), cmap='Greys')
     if gaussianize:
         plt.savefig('../Images/DatasetAnalysis/correlation_all_training_set_afterGauss.jpg')
     else:

@@ -1,0 +1,244 @@
+runfile('C:/Users/lucaf/Desktop/PoliTo/PRIMO ANNO/MachineLearning/Project/ML-WineClassifier/Code/main.py', wdir='C:/Users/lucaf/Desktop/PoliTo/PRIMO ANNO/MachineLearning/Project/ML-WineClassifier/Code')
+Reloaded modules: dataset_analysis, gaussian_classifiers, validate, logistic_regression, svm
+The mean of the features for the entire training set is:
+[110.86274796  46.46524273   0.4872975    1.84146135  12.66631061
+  26.24642558   8.33306583 105.41024504]
+
+The standard deviation of the features for the entire training set is:
+[ 25.81349141   6.83556489   1.08866809   6.37106726  29.59696398
+  19.49308701   4.49121422 104.33393347]
+The mean of the features for the entire training set is:
+[110.86274796  46.46524273   0.4872975    1.84146135  12.66631061
+  26.24642558   8.33306583 105.41024504]
+
+The standard deviation of the features for the entire training set is:
+[ 25.81349141   6.83556489   1.08866809   6.37106726  29.59696398
+  19.49308701   4.49121422 104.33393347]
+ 
+ K=3
+ 
+EVALUATION WITHOUT GAUSSIANIZATION
+##########################################
+# Gaussian classifier with NO PCA #
+##########################################
+-------------------FULL GAUSSIAN CLASSIFIER-----------------
+Full Gaussian with single fold
+- pi = 0.100000  minDCF = 0.257013
+Gaussian with Kfold
+- pi = 0.100000  minDCF = 0.284991
+Full Gaussian with single fold
+- pi = 0.500000  minDCF = 0.115183
+Gaussian with Kfold
+- pi = 0.500000  minDCF = 0.142203
+Full Gaussian with single fold
+- pi = 0.900000  minDCF = 0.558233
+Gaussian with Kfold
+- pi = 0.900000  minDCF = 0.660819
+-------------------DIAG-COV GAUSSIAN CLASSIFIER-----------------
+Full Gaussian with single fold
+- pi = 0.100000  minDCF = 0.264031
+Gaussian with Kfold
+- pi = 0.100000  minDCF = 0.315240
+Full Gaussian with single fold
+- pi = 0.500000  minDCF = 0.171217
+Gaussian with Kfold
+- pi = 0.500000  minDCF = 0.192512
+Full Gaussian with single fold
+- pi = 0.900000  minDCF = 0.620872
+Gaussian with Kfold
+- pi = 0.900000  minDCF = 0.736213
+-------------------TIED FULL-COV GAUSSIAN CLASSIFIER-----------------
+Full Gaussian with single fold
+- pi = 0.100000  minDCF = 0.209214
+Gaussian with Kfold
+- pi = 0.100000  minDCF = 0.223766
+Full Gaussian with single fold
+- pi = 0.500000  minDCF = 0.090914
+Gaussian with Kfold
+- pi = 0.500000  minDCF = 0.111890
+Full Gaussian with single fold
+- pi = 0.900000  minDCF = 0.474230
+Gaussian with Kfold
+- pi = 0.900000  minDCF = 0.574354
+-------------------TIED DIAG-COV GAUSSIAN CLASSIFIER-----------------
+Full Gaussian with single fold
+- pi = 0.100000  minDCF = 0.243146
+Gaussian with Kfold
+- pi = 0.100000  minDCF = 0.265210
+Full Gaussian with single fold
+- pi = 0.500000  minDCF = 0.142607
+Gaussian with Kfold
+- pi = 0.500000  minDCF = 0.160195
+Full Gaussian with single fold
+- pi = 0.900000  minDCF = 0.551871
+Gaussian with Kfold
+- pi = 0.900000  minDCF = 0.580458
+##########################################
+# Gaussian classifier with m = 7 #
+##########################################
+-------------------FULL GAUSSIAN CLASSIFIER-----------------
+Full Gaussian with single fold
+- pi = 0.100000  minDCF = 0.263758
+Gaussian with Kfold
+- pi = 0.100000  minDCF = 0.304079
+Full Gaussian with single fold
+- pi = 0.500000  minDCF = 0.115149
+Gaussian with Kfold
+- pi = 0.500000  minDCF = 0.140307
+Full Gaussian with single fold
+- pi = 0.900000  minDCF = 0.522877
+Gaussian with Kfold
+- pi = 0.900000  minDCF = 0.627454
+-------------------DIAG-COV GAUSSIAN CLASSIFIER-----------------
+Full Gaussian with single fold
+- pi = 0.100000  minDCF = 0.485303
+Gaussian with Kfold
+- pi = 0.100000  minDCF = 0.504410
+Full Gaussian with single fold
+- pi = 0.500000  minDCF = 0.181859
+Gaussian with Kfold
+- pi = 0.500000  minDCF = 0.214176
+Full Gaussian with single fold
+- pi = 0.900000  minDCF = 0.562991
+Gaussian with Kfold
+- pi = 0.900000  minDCF = 0.719716
+-------------------TIED FULL-COV GAUSSIAN CLASSIFIER-----------------
+Full Gaussian with single fold
+- pi = 0.100000  minDCF = 0.209214
+Gaussian with Kfold
+- pi = 0.100000  minDCF = 0.222656
+Full Gaussian with single fold
+- pi = 0.500000  minDCF = 0.090914
+Gaussian with Kfold
+- pi = 0.500000  minDCF = 0.111643
+Full Gaussian with single fold
+- pi = 0.900000  minDCF = 0.473857
+Gaussian with Kfold
+- pi = 0.900000  minDCF = 0.568927
+-------------------TIED DIAG-COV GAUSSIAN CLASSIFIER-----------------
+Full Gaussian with single fold
+- pi = 0.100000  minDCF = 0.236230
+Gaussian with Kfold
+- pi = 0.100000  minDCF = 0.270006
+Full Gaussian with single fold
+- pi = 0.500000  minDCF = 0.103895
+Gaussian with Kfold
+- pi = 0.500000  minDCF = 0.137886
+Full Gaussian with single fold
+- pi = 0.900000  minDCF = 0.567554
+Gaussian with Kfold
+- pi = 0.900000  minDCF = 0.590569
+##########################################
+# Gaussian classifier with m = 6 #
+##########################################
+-------------------FULL GAUSSIAN CLASSIFIER-----------------
+Full Gaussian with single fold
+- pi = 0.100000  minDCF = 0.260539
+Gaussian with Kfold
+- pi = 0.100000  minDCF = 0.291899
+Full Gaussian with single fold
+- pi = 0.500000  minDCF = 0.119555
+Gaussian with Kfold
+- pi = 0.500000  minDCF = 0.151886
+Full Gaussian with single fold
+- pi = 0.900000  minDCF = 0.543515
+Gaussian with Kfold
+- pi = 0.900000  minDCF = 0.636351
+-------------------DIAG-COV GAUSSIAN CLASSIFIER-----------------
+Full Gaussian with single fold
+- pi = 0.100000  minDCF = 0.506120
+Gaussian with Kfold
+- pi = 0.100000  minDCF = 0.530838
+Full Gaussian with single fold
+- pi = 0.500000  minDCF = 0.194704
+Gaussian with Kfold
+- pi = 0.500000  minDCF = 0.222673
+Full Gaussian with single fold
+- pi = 0.900000  minDCF = 0.568014
+Gaussian with Kfold
+- pi = 0.900000  minDCF = 0.721594
+-------------------TIED FULL-COV GAUSSIAN CLASSIFIER-----------------
+Full Gaussian with single fold
+- pi = 0.100000  minDCF = 0.236435
+Gaussian with Kfold
+- pi = 0.100000  minDCF = 0.253677
+Full Gaussian with single fold
+- pi = 0.500000  minDCF = 0.108879
+Gaussian with Kfold
+- pi = 0.500000  minDCF = 0.138194
+Full Gaussian with single fold
+- pi = 0.900000  minDCF = 0.506690
+Gaussian with Kfold
+- pi = 0.900000  minDCF = 0.576944
+-------------------TIED DIAG-COV GAUSSIAN CLASSIFIER-----------------
+Full Gaussian with single fold
+- pi = 0.100000  minDCF = 0.250131
+Gaussian with Kfold
+- pi = 0.100000  minDCF = 0.298389
+Full Gaussian with single fold
+- pi = 0.500000  minDCF = 0.137318
+Gaussian with Kfold
+- pi = 0.500000  minDCF = 0.163419
+Full Gaussian with single fold
+- pi = 0.900000  minDCF = 0.563627
+Gaussian with Kfold
+- pi = 0.900000  minDCF = 0.595391
+##########################################
+# Gaussian classifier with m = 5 #
+##########################################
+-------------------FULL GAUSSIAN CLASSIFIER-----------------
+Full Gaussian with single fold
+- pi = 0.100000  minDCF = 0.239791
+Gaussian with Kfold
+- pi = 0.100000  minDCF = 0.253722
+Full Gaussian with single fold
+- pi = 0.500000  minDCF = 0.129116
+Gaussian with Kfold
+- pi = 0.500000  minDCF = 0.150605
+Full Gaussian with single fold
+- pi = 0.900000  minDCF = 0.630347
+Gaussian with Kfold
+- pi = 0.900000  minDCF = 0.650740
+-------------------DIAG-COV GAUSSIAN CLASSIFIER-----------------
+Full Gaussian with single fold
+- pi = 0.100000  minDCF = 0.425481
+Gaussian with Kfold
+- pi = 0.100000  minDCF = 0.458629
+Full Gaussian with single fold
+- pi = 0.500000  minDCF = 0.197485
+Gaussian with Kfold
+- pi = 0.500000  minDCF = 0.218632
+Full Gaussian with single fold
+- pi = 0.900000  minDCF = 0.594487
+Gaussian with Kfold
+- pi = 0.900000  minDCF = 0.741151
+-------------------TIED FULL-COV GAUSSIAN CLASSIFIER-----------------
+Full Gaussian with single fold
+- pi = 0.100000  minDCF = 0.236776
+Gaussian with Kfold
+- pi = 0.100000  minDCF = 0.261062
+Full Gaussian with single fold
+- pi = 0.500000  minDCF = 0.124166
+Gaussian with Kfold
+- pi = 0.500000  minDCF = 0.149248
+Full Gaussian with single fold
+- pi = 0.900000  minDCF = 0.516998
+Gaussian with Kfold
+- pi = 0.900000  minDCF = 0.572739
+-------------------TIED DIAG-COV GAUSSIAN CLASSIFIER-----------------
+Full Gaussian with single fold
+- pi = 0.100000  minDCF = 0.266875
+Gaussian with Kfold
+- pi = 0.100000  minDCF = 0.312929
+Full Gaussian with single fold
+- pi = 0.500000  minDCF = 0.142877
+Gaussian with Kfold
+- pi = 0.500000  minDCF = 0.170835
+Full Gaussian with single fold
+- pi = 0.900000  minDCF = 0.581174
+Gaussian with Kfold
+- pi = 0.900000  minDCF = 0.586263
+
+
+K = 5
+
