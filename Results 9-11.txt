@@ -1,0 +1,237 @@
+runfile('C:/Users/lucaf/Desktop/PoliTo/PRIMO ANNO/MachineLearning/Project/ML-WineClassifier/Code/main.py', wdir='C:/Users/lucaf/Desktop/PoliTo/PRIMO ANNO/MachineLearning/Project/ML-WineClassifier/Code')
+Reloaded modules: dataset_analysis, gaussian_classifiers, validate, svm, logistic_regression
+The mean of the features for the entire training set is:
+[110.86274796  46.46524273   0.4872975    1.84146135  12.66631061
+  26.24642558   8.33306583 105.41024504]
+
+The standard deviation of the features for the entire training set is:
+[ 25.81349141   6.83556489   1.08866809   6.37106726  29.59696398
+  19.49308701   4.49121422 104.33393347]
+EVALUATION WITHOUT GAUSSIANIZATION
+##########################################
+#### Gaussian classifiers with NO PCA ####
+##########################################
+ Full-Cov - pi = 0.100000 -> minDCF = 0.284231
+ Diag-cov - pi = 0.100000 -> minDCF = 0.313606
+ Tied full-cov - pi = 0.100000  minDCF = 0.222685
+ Tied diag-cov - pi = 0.100000  minDCF = 0.265244
+ Full-Cov - pi = 0.500000 -> minDCF = 0.140651
+ Diag-cov - pi = 0.500000 -> minDCF = 0.193149
+ Tied full-cov - pi = 0.500000  minDCF = 0.111529
+ Tied diag-cov - pi = 0.500000  minDCF = 0.161174
+ Full-Cov - pi = 0.900000 -> minDCF = 0.668556
+ Diag-cov - pi = 0.900000 -> minDCF = 0.746422
+ Tied full-cov - pi = 0.900000  minDCF = 0.574222
+ Tied diag-cov - pi = 0.900000  minDCF = 0.579728
+##########################################
+##### Gaussian classifiers with m = 7 ####
+##########################################
+ Full-Cov - pi = 0.100000 -> minDCF = 0.301785
+ Diag-cov - pi = 0.100000 -> minDCF = 0.505268
+ Tied full-cov - pi = 0.100000  minDCF = 0.221681
+ Tied diag-cov - pi = 0.100000  minDCF = 0.269901
+ Full-Cov - pi = 0.500000 -> minDCF = 0.139281
+ Diag-cov - pi = 0.500000 -> minDCF = 0.214357
+ Tied full-cov - pi = 0.500000  minDCF = 0.111776
+ Tied diag-cov - pi = 0.500000  minDCF = 0.138119
+ Full-Cov - pi = 0.900000 -> minDCF = 0.642953
+ Diag-cov - pi = 0.900000 -> minDCF = 0.723527
+ Tied full-cov - pi = 0.900000  minDCF = 0.573461
+ Tied diag-cov - pi = 0.900000  minDCF = 0.598674
+##########################################
+##### Gaussian classifiers with m = 6 ####
+##########################################
+ Full-Cov - pi = 0.100000 -> minDCF = 0.286703
+ Diag-cov - pi = 0.100000 -> minDCF = 0.525043
+ Tied full-cov - pi = 0.100000  minDCF = 0.257542
+ Tied diag-cov - pi = 0.100000  minDCF = 0.297092
+ Full-Cov - pi = 0.500000 -> minDCF = 0.152572
+ Diag-cov - pi = 0.500000 -> minDCF = 0.223206
+ Tied full-cov - pi = 0.500000  minDCF = 0.140149
+ Tied diag-cov - pi = 0.500000  minDCF = 0.164024
+ Full-Cov - pi = 0.900000 -> minDCF = 0.647575
+ Diag-cov - pi = 0.900000 -> minDCF = 0.721496
+ Tied full-cov - pi = 0.900000  minDCF = 0.581945
+ Tied diag-cov - pi = 0.900000  minDCF = 0.589672
+##########################################
+##### Gaussian classifiers with m = 5 ####
+##########################################
+ Full-Cov - pi = 0.100000 -> minDCF = 0.249624
+ Diag-cov - pi = 0.100000 -> minDCF = 0.453035
+ Tied full-cov - pi = 0.100000  minDCF = 0.260551
+ Tied diag-cov - pi = 0.100000  minDCF = 0.310848
+ Full-Cov - pi = 0.500000 -> minDCF = 0.149941
+ Diag-cov - pi = 0.500000 -> minDCF = 0.219839
+ Tied full-cov - pi = 0.500000  minDCF = 0.149658
+ Tied diag-cov - pi = 0.500000  minDCF = 0.170914
+ Full-Cov - pi = 0.900000 -> minDCF = 0.642309
+ Diag-cov - pi = 0.900000 -> minDCF = 0.733049
+ Tied full-cov - pi = 0.900000  minDCF = 0.574601
+ Tied diag-cov - pi = 0.900000  minDCF = 0.604770
+##########################################
+#### Logistic regression with NO PCA ####
+##########################################
+-------------------LOGISTIC REGRESSION-----------------
+ Logistic reggression -piT = 0.100000 - pi = 0.100000  minDCF = 0.210934
+ Logistic reggression -piT = 0.100000 - pi = 0.500000  minDCF = 0.113241
+ Logistic reggression -piT = 0.100000 - pi = 0.900000  minDCF = 0.554885
+ Logistic reggression -piT = 0.500000 - pi = 0.100000  minDCF = 0.216487
+ Logistic reggression -piT = 0.500000 - pi = 0.500000  minDCF = 0.116620
+ Logistic reggression -piT = 0.500000 - pi = 0.900000  minDCF = 0.525804
+ Logistic reggression -piT = 0.900000 - pi = 0.100000  minDCF = 0.219890
+ Logistic reggression -piT = 0.900000 - pi = 0.500000  minDCF = 0.118993
+ Logistic reggression -piT = 0.900000 - pi = 0.900000  minDCF = 0.510666
+##########################################
+### Logistic regression with m = 7 ####
+##########################################
+-------------------LOGISTIC REGRESSION-----------------
+ Logistic reggression -piT = 0.100000 - pi = 0.100000  minDCF = 0.208606
+ Logistic reggression -piT = 0.100000 - pi = 0.500000  minDCF = 0.112039
+ Logistic reggression -piT = 0.100000 - pi = 0.900000  minDCF = 0.561839
+ Logistic reggression -piT = 0.500000 - pi = 0.100000  minDCF = 0.215484
+ Logistic reggression -piT = 0.500000 - pi = 0.500000  minDCF = 0.114463
+ Logistic reggression -piT = 0.500000 - pi = 0.900000  minDCF = 0.542092
+ Logistic reggression -piT = 0.900000 - pi = 0.100000  minDCF = 0.217347
+ Logistic reggression -piT = 0.900000 - pi = 0.500000  minDCF = 0.115880
+ Logistic reggression -piT = 0.900000 - pi = 0.900000  minDCF = 0.527961
+##########################################
+### Logistic regression with m = 6 ####
+##########################################
+-------------------LOGISTIC REGRESSION-----------------
+ Logistic reggression -piT = 0.100000 - pi = 0.100000  minDCF = 0.242030
+ Logistic reggression -piT = 0.100000 - pi = 0.500000  minDCF = 0.126253
+ Logistic reggression -piT = 0.100000 - pi = 0.900000  minDCF = 0.578610
+ Logistic reggression -piT = 0.500000 - pi = 0.100000  minDCF = 0.236477
+ Logistic reggression -piT = 0.500000 - pi = 0.500000  minDCF = 0.125576
+ Logistic reggression -piT = 0.500000 - pi = 0.900000  minDCF = 0.565147
+ Logistic reggression -piT = 0.900000 - pi = 0.100000  minDCF = 0.240131
+ Logistic reggression -piT = 0.900000 - pi = 0.500000  minDCF = 0.134461
+ Logistic reggression -piT = 0.900000 - pi = 0.900000  minDCF = 0.523542
+##########################################
+### Logistic regression with m = 5 ####
+##########################################
+-------------------LOGISTIC REGRESSION-----------------
+ Logistic reggression -piT = 0.100000 - pi = 0.100000  minDCF = 0.235044
+ Logistic reggression -piT = 0.100000 - pi = 0.500000  minDCF = 0.133860
+ Logistic reggression -piT = 0.100000 - pi = 0.900000  minDCF = 0.598324
+ Logistic reggression -piT = 0.500000 - pi = 0.100000  minDCF = 0.229957
+ Logistic reggression -piT = 0.500000 - pi = 0.500000  minDCF = 0.135707
+ Logistic reggression -piT = 0.500000 - pi = 0.900000  minDCF = 0.601742
+ Logistic reggression -piT = 0.900000 - pi = 0.100000  minDCF = 0.242173
+ Logistic reggression -piT = 0.900000 - pi = 0.500000  minDCF = 0.142804
+ Logistic reggression -piT = 0.900000 - pi = 0.900000  minDCF = 0.555522
+
+
+EVALUATION WITH GAUSSIANIZATION
+##########################################
+#### Gaussian classifiers with NO PCA ####
+##########################################
+ Full-Cov - pi = 0.100000 -> minDCF = 0.246328
+ Diag-cov - pi = 0.100000 -> minDCF = 0.275884
+ Tied full-cov - pi = 0.100000  minDCF = 0.231927
+ Tied diag-cov - pi = 0.100000  minDCF = 0.290715
+ Full-Cov - pi = 0.500000 -> minDCF = 0.152990
+ Diag-cov - pi = 0.500000 -> minDCF = 0.152827
+ Tied full-cov - pi = 0.500000  minDCF = 0.131499
+ Tied diag-cov - pi = 0.500000  minDCF = 0.162774
+ Full-Cov - pi = 0.900000 -> minDCF = 0.696284
+ Diag-cov - pi = 0.900000 -> minDCF = 0.606134
+ Tied full-cov - pi = 0.900000  minDCF = 0.534191
+ Tied diag-cov - pi = 0.900000  minDCF = 0.613595
+##########################################
+##### Gaussian classifiers with m = 7 ####
+##########################################
+ Full-Cov - pi = 0.100000 -> minDCF = 0.245325
+ Diag-cov - pi = 0.100000 -> minDCF = 0.245970
+ Tied full-cov - pi = 0.100000  minDCF = 0.242675
+ Tied diag-cov - pi = 0.100000  minDCF = 0.253386
+ Full-Cov - pi = 0.500000 -> minDCF = 0.152958
+ Diag-cov - pi = 0.500000 -> minDCF = 0.163291
+ Tied full-cov - pi = 0.500000  minDCF = 0.133689
+ Tied diag-cov - pi = 0.500000  minDCF = 0.137020
+ Full-Cov - pi = 0.900000 -> minDCF = 0.689927
+ Diag-cov - pi = 0.900000 -> minDCF = 0.660432
+ Tied full-cov - pi = 0.900000  minDCF = 0.533411
+ Tied diag-cov - pi = 0.900000  minDCF = 0.561859
+##########################################
+##### Gaussian classifiers with m = 6 ####
+##########################################
+ Full-Cov - pi = 0.100000 -> minDCF = 0.241134
+ Diag-cov - pi = 0.100000 -> minDCF = 0.239343
+ Tied full-cov - pi = 0.100000  minDCF = 0.246759
+ Tied diag-cov - pi = 0.100000  minDCF = 0.255177
+ Full-Cov - pi = 0.500000 -> minDCF = 0.153774
+ Diag-cov - pi = 0.500000 -> minDCF = 0.156286
+ Tied full-cov - pi = 0.500000  minDCF = 0.136260
+ Tied diag-cov - pi = 0.500000  minDCF = 0.141132
+ Full-Cov - pi = 0.900000 -> minDCF = 0.694916
+ Diag-cov - pi = 0.900000 -> minDCF = 0.643416
+ Tied full-cov - pi = 0.900000  minDCF = 0.545500
+ Tied diag-cov - pi = 0.900000  minDCF = 0.587561
+##########################################
+##### Gaussian classifiers with m = 5 ####
+##########################################
+ Full-Cov - pi = 0.100000 -> minDCF = 0.245791
+ Diag-cov - pi = 0.100000 -> minDCF = 0.240023
+ Tied full-cov - pi = 0.100000  minDCF = 0.246759
+ Tied diag-cov - pi = 0.100000  minDCF = 0.255715
+ Full-Cov - pi = 0.500000 -> minDCF = 0.152078
+ Diag-cov - pi = 0.500000 -> minDCF = 0.156397
+ Tied full-cov - pi = 0.500000  minDCF = 0.136013
+ Tied diag-cov - pi = 0.500000  minDCF = 0.141224
+ Full-Cov - pi = 0.900000 -> minDCF = 0.697531
+ Diag-cov - pi = 0.900000 -> minDCF = 0.632928
+ Tied full-cov - pi = 0.900000  minDCF = 0.542292
+ Tied diag-cov - pi = 0.900000  minDCF = 0.593608
+##########################################
+#### Logistic regression with NO PCA ####
+##########################################
+-------------------LOGISTIC REGRESSION-----------------
+ Logistic reggression -piT = 0.100000 - pi = 0.100000  minDCF = 0.229312
+ Logistic reggression -piT = 0.100000 - pi = 0.500000  minDCF = 0.126806
+ Logistic reggression -piT = 0.100000 - pi = 0.900000  minDCF = 0.523519
+ Logistic reggression -piT = 0.500000 - pi = 0.100000  minDCF = 0.232250
+ Logistic reggression -piT = 0.500000 - pi = 0.500000  minDCF = 0.124518
+ Logistic reggression -piT = 0.500000 - pi = 0.900000  minDCF = 0.512907
+ Logistic reggression -piT = 0.900000 - pi = 0.100000  minDCF = 0.230029
+ Logistic reggression -piT = 0.900000 - pi = 0.500000  minDCF = 0.127380
+ Logistic reggression -piT = 0.900000 - pi = 0.900000  minDCF = 0.514535
+##########################################
+### Logistic regression with m = 7 ####
+##########################################
+-------------------LOGISTIC REGRESSION-----------------
+ Logistic reggression -piT = 0.100000 - pi = 0.100000  minDCF = 0.230709
+ Logistic reggression -piT = 0.100000 - pi = 0.500000  minDCF = 0.128705
+ Logistic reggression -piT = 0.100000 - pi = 0.900000  minDCF = 0.520454
+ Logistic reggression -piT = 0.500000 - pi = 0.100000  minDCF = 0.237014
+ Logistic reggression -piT = 0.500000 - pi = 0.500000  minDCF = 0.124136
+ Logistic reggression -piT = 0.500000 - pi = 0.900000  minDCF = 0.511836
+ Logistic reggression -piT = 0.900000 - pi = 0.100000  minDCF = 0.237839
+ Logistic reggression -piT = 0.900000 - pi = 0.500000  minDCF = 0.127368
+ Logistic reggression -piT = 0.900000 - pi = 0.900000  minDCF = 0.507271
+##########################################
+### Logistic regression with m = 6 ####
+##########################################
+-------------------LOGISTIC REGRESSION-----------------
+ Logistic reggression -piT = 0.100000 - pi = 0.100000  minDCF = 0.227593
+ Logistic reggression -piT = 0.100000 - pi = 0.500000  minDCF = 0.128239
+ Logistic reggression -piT = 0.100000 - pi = 0.900000  minDCF = 0.533144
+ Logistic reggression -piT = 0.500000 - pi = 0.100000  minDCF = 0.232393
+ Logistic reggression -piT = 0.500000 - pi = 0.500000  minDCF = 0.122464
+ Logistic reggression -piT = 0.500000 - pi = 0.900000  minDCF = 0.516689
+ Logistic reggression -piT = 0.900000 - pi = 0.100000  minDCF = 0.234363
+ Logistic reggression -piT = 0.900000 - pi = 0.500000  minDCF = 0.124116
+ Logistic reggression -piT = 0.900000 - pi = 0.900000  minDCF = 0.530489
+##########################################
+### Logistic regression with m = 5 ####
+##########################################
+-------------------LOGISTIC REGRESSION-----------------
+ Logistic reggression -piT = 0.100000 - pi = 0.100000  minDCF = 0.227808
+ Logistic reggression -piT = 0.100000 - pi = 0.500000  minDCF = 0.127391
+ Logistic reggression -piT = 0.100000 - pi = 0.900000  minDCF = 0.530676
+ Logistic reggression -piT = 0.500000 - pi = 0.100000  minDCF = 0.233611
+ Logistic reggression -piT = 0.500000 - pi = 0.500000  minDCF = 0.121278
+ Logistic reggression -piT = 0.500000 - pi = 0.900000  minDCF = 0.540364
+ Logistic reggression -piT = 0.900000 - pi = 0.100000  minDCF = 0.236477
+ Logistic reggression -piT = 0.900000 - pi = 0.500000  minDCF = 0.128044
+ Logistic reggression -piT = 0.900000 - pi = 0.900000  minDCF = 0.534461

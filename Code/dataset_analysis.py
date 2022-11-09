@@ -16,27 +16,6 @@ import scipy.stats as statist
 def mcol(v):
     return v.reshape((v.size, 1))
 
-def load_wine_dataset(fname):
-    #setup visualization font
-    plt.rc('font', size=16)
-    plt.rc('xtick', labelsize=16)
-    plt.rc('ytick', labelsize=16)
-    
-    DList = []
-    labelsList = []
-    with open(fname) as f:
-        for line in f:
-            try:
-                attrs = line.split(',')[0:11]
-                attrs = mcol(numpy.array([float(i) for i in attrs]))
-                label = line.split(',')[-1].strip()
-                DList.append(attrs)
-                labelsList.append(label)
-            except:
-                pass
-
-    return numpy.hstack(DList), numpy.array(labelsList, dtype=numpy.int32)
-
 
 def load_pulsar_dataset(fname):
     #setup visualization font
@@ -66,16 +45,15 @@ def load_pulsar_dataset(fname):
     print('')
     print ('The standard deviation of the features for the entire training set is:')
     print(std.ravel())
-    DTR, LTR = shuffle_dataset(DTR,LTR)
     
     return DTR, LTR
 
-
+"""
 def shuffle_dataset(D, L):
     numpy.random.seed(0)
     idx = numpy.random.permutation(D.shape[1])
     return D[:, idx], L[idx]
-
+"""
 
 def split_db_2to1(D, L, seed=0):
     nTrain = int(D.shape[1]*2.0/3.0)
@@ -255,7 +233,6 @@ def pca(m, D):
     #I need to take the first m eigenvectors corresponding to the m largest eigenvalues
     P = U[:, ::-1][:, 0:m] #I invert the columns of U then I take the firsts m
     DProjected = numpy.dot(P.T, D)
-    pylab.scatter(DProjected[0], DProjected[1])
     return DProjected
 
 

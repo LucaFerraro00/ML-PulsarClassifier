@@ -68,11 +68,10 @@ def train_SVM_linear(DTR, LTR, C, K=1):
 
 C=0.1
 K=1
-def compute_score_linear(DTE,DTR,LTR):
+def compute_score_linear(DTE,DTR,LTR, Options):
     w,_alfa= train_SVM_linear(DTR, LTR, C)
     DTE_EXT=numpy.vstack([DTE, numpy.ones((1,DTE.shape[1]))])
     score = numpy.dot(w.T,DTE_EXT)
-    print(score)
     return score.ravel()
     
 

@@ -61,7 +61,7 @@ def bayes_error_plot(pArray, scores, labels, minCost=False):
         return numpy.array(y)    
 
 
-def kfold(D,L, k, pi, compute_s, gaussianize):
+def kfold(D,L, k, pi, compute_s, Options):
     numpy.random.seed(0)
     indexes = numpy.random.permutation(D.shape[1]) #Why to take it randomly? Why don't take simpli indexes = [0,1.....,D.shape[0]]
     fold_dim  = int(D.shape[1]/k)
@@ -79,8 +79,8 @@ def kfold(D,L, k, pi, compute_s, gaussianize):
         LTR = L[idx_train]
         DTE = D[:,idx_test]
         LTE = L[idx_test]
-            
-        score_ith = compute_s(DTE,DTR,LTR)  
+        
+        score_ith = compute_s(DTE,DTR,LTR, Options)
         scores = numpy.append(scores, score_ith)
         labels = numpy.append(labels, LTE) 
     min_dcf = compute_min_DCF(scores, labels, pi, 1, 1)
