@@ -19,29 +19,32 @@ def main():
     D= analys.scale_ZNormalization(D)
     gaussianize= False 
     plot(D, L, gaussianize) #plot raw features before gaussianization
-    D_gaussianized= analys.gaussianize_training(D)
+    #D_gaussianized= analys.gaussianize_training(D)
     gaussianize= True
-    plot(D_gaussianized, L, gaussianize) #plot gaussianized features    
+    #plot(D_gaussianized, L, gaussianize) #plot gaussianized features    
     
     #evaluate without gaussianization
     print("EVALUATION WITHOUT GAUSSIANIZATION")
     gaussianize=False
-    train_evaluate_gaussian_models(D, L)
+    #train_evaluate_gaussian_models(D, L)
     
-    log_reg.plot_minDCF_wrt_lamda(D, L, gaussianize)
-    train_evaluate_log_reg(D, L)
+    #log_reg.plot_minDCF_wrt_lamda(D, L, gaussianize)
+    #train_evaluate_log_reg(D, L)
     
-    #svm.plot_minDCF
-    #train_evaluate_svm(D,L)
+    svm.plot_linear_minDCF_wrt_C(D, L, gaussianize)
+    train_evaluate_svm(D,L)
     
     #evaluate with gaussianization
     print('\n')
     print("EVALUATION WITH GAUSSIANIZATION")
     gaussianize=True
-    train_evaluate_gaussian_models(D_gaussianized, L)
+    #train_evaluate_gaussian_models(D_gaussianized, L)
     
-    log_reg.plot_minDCF_wrt_lamda(D_gaussianized, L, gaussianize)
-    train_evaluate_log_reg(D_gaussianized, L)
+    #log_reg.plot_minDCF_wrt_lamda(D_gaussianized, L, gaussianize)
+    #train_evaluate_log_reg(D_gaussianized, L)
+    
+    #svm.plot_minDCF_wrt_C(D_gaussianized, L, gaussianize)
+    #train_evaluate_svm(D_gaussianized,L)
     
     
     
@@ -54,10 +57,7 @@ def plot(DTR, LTR, gaussianize):
 
 
 def train_evaluate_gaussian_models(D,L):
-    Options={
-    'lambdaa' : None,
-    'piT': None,
-    }  
+    Options={ }  
     m = 8
     while m>=5:
         if m < 8:
@@ -102,9 +102,9 @@ def train_evaluate_log_reg(D,L):
             
         print("-------------------LOGISTIC REGRESSION-----------------")
         for piT in [0.1, 0.5, 0.9]:
+            Options['lambdaa']=0
+            Options['piT']=piT
             for pi in [0.1, 0.5, 0.9]:
-                Options['lambdaa']=0
-                Options['piT']=piT
                 min_dcf_kfold = validate.kfold(D, L, k, pi, log_reg.compute_score, Options)
                 print(" Logistic reggression -piT = %f - pi = %f  minDCF = %f" %(Options['piT'], pi,min_dcf_kfold))    
             
@@ -113,7 +113,7 @@ def train_evaluate_log_reg(D,L):
 
 def train_evaluate_svm(D,L):
     Options={
-        'lambdaa' : None,
+        'C' : None,
         'piT': None,
         }  
     m = 8
@@ -128,9 +128,12 @@ def train_evaluate_svm(D,L):
             print ("#### SVM with NO PCA ####")
             print ("##########################################")
         print("-------------------LINEAR SVM-----------------")
-        for pi in [0.1, 0.5, 0.9]:
-            min_dcf_kfold = validate.kfold(D, L, k, pi, svm.compute_score_linear, Options)
-            print(" SVM - pi = %f  minDCF = %f" %(pi,min_dcf_kfold))
+        for piT in [0.1, 0.5, 0.9]:
+            Options['C']=0.1
+            Options['piT']=piT
+            for pi in [0.1, 0.5, 0.9]:
+                min_dcf_kfold = validate.kfold(D, L, k, pi, svm.compute_score_linear, Options)
+                print(" SVM - pi = %f  minDCF = %f" %(pi,min_dcf_kfold))
         
         m = m-1
     
