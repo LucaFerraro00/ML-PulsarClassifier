@@ -19,9 +19,9 @@ def main():
     D= analys.scale_ZNormalization(D)
     gaussianize= False 
     plot(D, L, gaussianize) #plot raw features before gaussianization
-    #D_gaussianized= analys.gaussianize_training(D)
+    D_gaussianized= analys.gaussianize_training(D)
     gaussianize= True
-    #plot(D_gaussianized, L, gaussianize) #plot gaussianized features    
+    plot(D_gaussianized, L, gaussianize) #plot gaussianized features    
     
     #evaluate without gaussianization
     print("EVALUATION WITHOUT GAUSSIANIZATION")
@@ -31,7 +31,9 @@ def main():
     #log_reg.plot_minDCF_wrt_lamda(D, L, gaussianize)
     #train_evaluate_log_reg(D, L)
     
-    svm.plot_linear_minDCF_wrt_C(D, L, gaussianize)
+    #svm.plot_linear_minDCF_wrt_C(D, L, gaussianize)
+    svm.plot_quadratic_minDCF_wrt_C(D, L, gaussianize)
+    svm.plot_RBF_minDCF_wrt_C(D, L, gaussianize)
     train_evaluate_svm(D,L)
     
     #evaluate with gaussianization
@@ -43,7 +45,9 @@ def main():
     #log_reg.plot_minDCF_wrt_lamda(D_gaussianized, L, gaussianize)
     #train_evaluate_log_reg(D_gaussianized, L)
     
-    #svm.plot_minDCF_wrt_C(D_gaussianized, L, gaussianize)
+    #svm.plot_linear_minDCF_wrt_C(D_gaussianized, L, gaussianize)
+    #svm.plot_quadratic_minDCF_wrt_C(D_gaussianized, L, gaussianize)
+    #svm.plot_RBF_minDCF_wrt_C(D_gaussianized, L, gaussianize)
     #train_evaluate_svm(D_gaussianized,L)
     
     
@@ -115,26 +119,62 @@ def train_evaluate_svm(D,L):
     Options={
         'C' : None,
         'piT': None,
+        'gamma':None
         }  
     m = 8
     while m>=5:
         if m < 8:
             D = analys.pca(m, D)
             print ("##########################################")
-            print ("### SVM with m = %d ####" %m)
+            print ("############# SVM LINEAR with m = %d ##############" %m)
             print ("##########################################")
         else:
             print ("##########################################")
-            print ("#### SVM with NO PCA ####")
+            print ("##############SVM LINEAR with NO PCA ##############")
             print ("##########################################")
         print("-------------------LINEAR SVM-----------------")
         for piT in [0.1, 0.5, 0.9]:
-            Options['C']=0.1
+            Options['C']=1
             Options['piT']=piT
             for pi in [0.1, 0.5, 0.9]:
                 min_dcf_kfold = validate.kfold(D, L, k, pi, svm.compute_score_linear, Options)
-                print(" SVM - pi = %f  minDCF = %f" %(pi,min_dcf_kfold))
-        
+                print(" SVM -piT = %f -C=%f - pi = %f - minDCF = %f" %(piT,Options['C'], pi,min_dcf_kfold))      
+                
+        if m < 8:
+            D = analys.pca(m, D)
+            print ("##########################################")
+            print ("############# SVM QUADRATIC with m = %d ##############" %m)
+            print ("##########################################")
+        else:
+            print ("##########################################")
+            print ("##############SVM QUADRATIC with NO PCA ##############")
+            print ("##########################################")
+        print("-------------------LINEAR SVM-----------------")
+        for piT in [0.1, 0.5, 0.9]:
+            Options['C']=1
+            Options['piT']=piT
+            for pi in [0.1, 0.5, 0.9]:
+                min_dcf_kfold = validate.kfold(D, L, k, pi, svm.compute_score_quadratic, Options)
+                print(" SVM -piT = %f -C=%f - pi = %f - minDCF = %f" %(piT,Options['C'], pi,min_dcf_kfold))      
+           
+        if m < 8:
+            D = analys.pca(m, D)
+            print ("##########################################")
+            print ("############# SVM RBF with m = %d ##############" %m)
+            print ("##########################################")
+        else:
+            print ("##########################################")
+            print ("##############SVM RBF with NO PCA ##############")
+            print ("##########################################")
+        print("-------------------LINEAR SVM-----------------")
+        for piT in [0.1, 0.5, 0.9]:
+            Options['C']=1
+            Options['piT']=piT
+            Options['gamma']=0.1
+            for pi in [0.1, 0.5, 0.9]:
+                min_dcf_kfold = validate.kfold(D, L, k, pi, svm.compute_score_RBF, Options)
+                print(" SVM -piT = %f -C=%f - pi = %f - minDCF = %f" %(piT,Options['C'], pi,min_dcf_kfold))      
+                
         m = m-1
     
 main()

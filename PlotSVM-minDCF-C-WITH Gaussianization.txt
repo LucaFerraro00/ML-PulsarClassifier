@@ -1,0 +1,141 @@
+
+EVALUATION WITHOUT GAUSSIANIZATION
+computation for plotting min_cdf wrt C started...
+computed min_dcf for pi=0.100000 -C=0.000100 - results min_dcf=0.318658 
+computed min_dcf for pi=0.100000 -C=0.001000 - results min_dcf=0.268898 
+computed min_dcf for pi=0.100000 -C=0.010000 - results min_dcf=0.222219 
+computed min_dcf for pi=0.100000 -C=0.100000 - results min_dcf=0.221431 
+computed min_dcf for pi=0.100000 -C=1.000000 - results min_dcf=0.221108 
+computed min_dcf for pi=0.100000 -C=10.000000 - results min_dcf=0.219783 
+computed min_dcf for pi=0.100000 -C=100.000000 - results min_dcf=0.221001 
+computed min_dcf for pi=0.100000 -C=1000.000000 - results min_dcf=0.259261 
+computed min_dcf for pi=0.500000 -C=0.000100 - results min_dcf=0.176590 
+computed min_dcf for pi=0.500000 -C=0.001000 - results min_dcf=0.147728 
+computed min_dcf for pi=0.500000 -C=0.010000 - results min_dcf=0.121353 
+computed min_dcf for pi=0.500000 -C=0.100000 - results min_dcf=0.114781 
+computed min_dcf for pi=0.500000 -C=1.000000 - results min_dcf=0.112365 
+computed min_dcf for pi=0.500000 -C=10.000000 - results min_dcf=0.111840 
+computed min_dcf for pi=0.500000 -C=100.000000 - results min_dcf=0.111223 
+computed min_dcf for pi=0.500000 -C=1000.000000 - results min_dcf=0.134493 
+computed min_dcf for pi=0.900000 -C=0.000100 - results min_dcf=0.636940 
+computed min_dcf for pi=0.900000 -C=0.001000 - results min_dcf=0.558803 
+computed min_dcf for pi=0.900000 -C=0.010000 - results min_dcf=0.565167 
+computed min_dcf for pi=0.900000 -C=0.100000 - results min_dcf=0.562049 
+computed min_dcf for pi=0.900000 -C=1.000000 - results min_dcf=0.552704 
+computed min_dcf for pi=0.900000 -C=10.000000 - results min_dcf=0.540651 
+computed min_dcf for pi=0.900000 -C=100.000000 - results min_dcf=0.533247 
+computed min_dcf for pi=0.900000 -C=1000.000000 - results min_dcf=0.580365 
+##########################################
+##############SVM with NO PCA ##############
+##########################################
+-------------------LINEAR SVM-----------------
+ SVM -piT = 0.100000 -C=1.000000 - pi = 0.100000  minDCF = 0.213155
+ SVM -piT = 0.100000 -C=1.000000 - pi = 0.500000  minDCF = 0.113165
+ SVM -piT = 0.100000 -C=1.000000 - pi = 0.900000  minDCF = 0.543056
+ SVM -piT = 0.500000 -C=1.000000 - pi = 0.100000  minDCF = 0.221108
+ SVM -piT = 0.500000 -C=1.000000 - pi = 0.500000  minDCF = 0.112365
+ SVM -piT = 0.500000 -C=1.000000 - pi = 0.900000  minDCF = 0.552704
+ SVM -piT = 0.900000 -C=1.000000 - pi = 0.100000  minDCF = 0.226554
+ SVM -piT = 0.900000 -C=1.000000 - pi = 0.500000  minDCF = 0.122663
+ SVM -piT = 0.900000 -C=1.000000 - pi = 0.900000  minDCF = 0.539334
+##########################################
+############# SVM with m = 7 ##############
+##########################################
+-------------------LINEAR SVM-----------------
+ SVM -piT = 0.100000 -C=1.000000 - pi = 0.100000  minDCF = 0.213048
+ SVM -piT = 0.100000 -C=1.000000 - pi = 0.500000  minDCF = 0.111824
+ SVM -piT = 0.100000 -C=1.000000 - pi = 0.900000  minDCF = 0.554285
+ SVM -piT = 0.500000 -C=1.000000 - pi = 0.100000  minDCF = 0.219783
+ SVM -piT = 0.500000 -C=1.000000 - pi = 0.500000  minDCF = 0.111748
+ SVM -piT = 0.500000 -C=1.000000 - pi = 0.900000  minDCF = 0.558790
+ SVM -piT = 0.900000 -C=1.000000 - pi = 0.100000  minDCF = 0.224798
+ SVM -piT = 0.900000 -C=1.000000 - pi = 0.500000  minDCF = 0.120442
+ SVM -piT = 0.900000 -C=1.000000 - pi = 0.900000  minDCF = 0.537403
+##########################################
+############# SVM with m = 6 ##############
+##########################################
+-------------------LINEAR SVM-----------------
+ SVM -piT = 0.100000 -C=1.000000 - pi = 0.100000  minDCF = 0.236405
+ SVM -piT = 0.100000 -C=1.000000 - pi = 0.500000  minDCF = 0.121202
+ SVM -piT = 0.100000 -C=1.000000 - pi = 0.900000  minDCF = 0.608469
+ SVM -piT = 0.500000 -C=1.000000 - pi = 0.100000  minDCF = 0.234041
+ SVM -piT = 0.500000 -C=1.000000 - pi = 0.500000  minDCF = 0.124952
+ SVM -piT = 0.500000 -C=1.000000 - pi = 0.900000  minDCF = 0.578647
+ SVM -piT = 0.900000 -C=1.000000 - pi = 0.100000  minDCF = 0.246902
+ SVM -piT = 0.900000 -C=1.000000 - pi = 0.500000  minDCF = 0.137761
+ SVM -piT = 0.900000 -C=1.000000 - pi = 0.900000  minDCF = 0.528208
+##########################################
+############# SVM with m = 5 ##############
+##########################################
+-------------------LINEAR SVM-----------------
+ SVM -piT = 0.100000 -C=1.000000 - pi = 0.100000  minDCF = 0.230638
+ SVM -piT = 0.100000 -C=1.000000 - pi = 0.500000  minDCF = 0.123503
+ SVM -piT = 0.100000 -C=1.000000 - pi = 0.900000  minDCF = 0.627782
+ SVM -piT = 0.500000 -C=1.000000 - pi = 0.100000  minDCF = 0.229061
+ SVM -piT = 0.500000 -C=1.000000 - pi = 0.500000  minDCF = 0.129664
+ SVM -piT = 0.500000 -C=1.000000 - pi = 0.900000  minDCF = 0.592671
+ SVM -piT = 0.900000 -C=1.000000 - pi = 0.100000  minDCF = 0.252956
+ SVM -piT = 0.900000 -C=1.000000 - pi = 0.500000  minDCF = 0.147226
+ SVM -piT = 0.900000 -C=1.000000 - pi = 0.900000  minDCF = 0.553217
+ 
+
+computation for plotting min_cdf wrt RBF C started...
+computed min_dcf for pi=0.500000 -gamma=0.000100 -C=0.000100 - results min_dcf=0.179842 
+computed min_dcf for pi=0.500000 -gamma=0.000100 -C=0.001000 - results min_dcf=0.179842 
+computed min_dcf for pi=0.500000 -gamma=0.000100 -C=0.010000 - results min_dcf=0.179842 
+computed min_dcf for pi=0.500000 -gamma=0.000100 -C=0.100000 - results min_dcf=0.178362 
+computed min_dcf for pi=0.500000 -gamma=0.000100 -C=1.000000 - results min_dcf=0.165763 
+computed min_dcf for pi=0.500000 -gamma=0.000100 -C=10.000000 - results min_dcf=0.134274 
+computed min_dcf for pi=0.500000 -gamma=0.000100 -C=100.000000 - results min_dcf=0.117329 
+computed min_dcf for pi=0.500000 -gamma=0.000100 -C=1000.000000 - results min_dcf=0.111736 
+computed min_dcf for pi=0.500000 -gamma=0.001000 -C=0.000100 - results min_dcf=0.179842 
+computed min_dcf for pi=0.500000 -gamma=0.001000 -C=0.001000 - results min_dcf=0.179842 
+computed min_dcf for pi=0.500000 -gamma=0.001000 -C=0.010000 - results min_dcf=0.178485 
+computed min_dcf for pi=0.500000 -gamma=0.001000 -C=0.100000 - results min_dcf=0.166627 
+computed min_dcf for pi=0.500000 -gamma=0.001000 -C=1.000000 - results min_dcf=0.134369 
+computed min_dcf for pi=0.500000 -gamma=0.001000 -C=10.000000 - results min_dcf=0.119148 
+computed min_dcf for pi=0.500000 -gamma=0.001000 -C=100.000000 - results min_dcf=0.122249 
+computed min_dcf for pi=0.500000 -gamma=0.001000 -C=1000.000000 - results min_dcf=0.176670 
+computed min_dcf for pi=0.500000 -gamma=0.010000 -C=0.000100 - results min_dcf=0.179842 
+computed min_dcf for pi=0.500000 -gamma=0.010000 -C=0.001000 - results min_dcf=0.179349 
+computed min_dcf for pi=0.500000 -gamma=0.010000 -C=0.010000 - results min_dcf=0.167491 
+computed min_dcf for pi=0.500000 -gamma=0.010000 -C=0.100000 - results min_dcf=0.140893 
+computed min_dcf for pi=0.500000 -gamma=0.010000 -C=1.000000 - results min_dcf=0.131933 
+computed min_dcf for pi=0.500000 -gamma=0.010000 -C=10.000000 - results min_dcf=0.155243 
+computed min_dcf for pi=0.500000 -gamma=0.010000 -C=100.000000 - results min_dcf=0.526427 
+computed min_dcf for pi=0.500000 -gamma=0.010000 -C=1000.000000 - results min_dcf=0.842048 
+computed min_dcf for pi=0.500000 -gamma=0.100000 -C=0.000100 - results min_dcf=0.179842 
+computed min_dcf for pi=0.500000 -gamma=0.100000 -C=0.001000 - results min_dcf=0.179902 
+computed min_dcf for pi=0.500000 -gamma=0.100000 -C=0.010000 - results min_dcf=0.175325 
+computed min_dcf for pi=0.500000 -gamma=0.100000 -C=0.100000 - results min_dcf=0.166496 
+computed min_dcf for pi=0.500000 -gamma=0.100000 -C=1.000000 - results min_dcf=0.168088 
+computed min_dcf for pi=0.500000 -gamma=0.100000 -C=10.000000 - results min_dcf=0.196608 
+computed min_dcf for pi=0.500000 -gamma=0.100000 -C=100.000000 - results min_dcf=0.168578 
+
+
+
+EVALUATION WITH GAUSSIANIZATION
+computation for plotting min_cdf wrt C started...
+computed min_dcf for pi=0.100000 -C=0.000100 - results min_dcf=0.281795 
+computed min_dcf for pi=0.100000 -C=0.001000 - results min_dcf=0.262378 
+computed min_dcf for pi=0.100000 -C=0.010000 - results min_dcf=0.242030 
+computed min_dcf for pi=0.100000 -C=0.100000 - results min_dcf=0.252025 
+computed min_dcf for pi=0.100000 -C=1.000000 - results min_dcf=0.251559 
+computed min_dcf for pi=0.100000 -C=10.000000 - results min_dcf=0.249123 
+computed min_dcf for pi=0.100000 -C=100.000000 - results min_dcf=0.253350 
+computed min_dcf for pi=0.100000 -C=1000.000000 - results min_dcf=0.633304 
+computed min_dcf for pi=0.500000 -C=0.000100 - results min_dcf=0.156318 
+computed min_dcf for pi=0.500000 -C=0.001000 - results min_dcf=0.145005 
+computed min_dcf for pi=0.500000 -C=0.010000 - results min_dcf=0.125764 
+computed min_dcf for pi=0.500000 -C=0.100000 - results min_dcf=0.119765 
+computed min_dcf for pi=0.500000 -C=1.000000 - results min_dcf=0.120251 
+computed min_dcf for pi=0.500000 -C=10.000000 - results min_dcf=0.119550 
+computed min_dcf for pi=0.500000 -C=100.000000 - results min_dcf=0.119148 
+computed min_dcf for pi=0.500000 -C=1000.000000 - results min_dcf=0.333382 
+computed min_dcf for pi=0.900000 -C=0.000100 - results min_dcf=0.599547 
+computed min_dcf for pi=0.900000 -C=0.001000 - results min_dcf=0.556009 
+computed min_dcf for pi=0.900000 -C=0.010000 - results min_dcf=0.550126 
+computed min_dcf for pi=0.900000 -C=0.100000 - results min_dcf=0.521895 
+computed min_dcf for pi=0.900000 -C=1.000000 - results min_dcf=0.515885 
+computed min_dcf for pi=0.900000 -C=10.000000 - results min_dcf=0.518970 
+computed min_dcf for pi=0.900000 -C=100.000000 - results min_dcf=0.522185 

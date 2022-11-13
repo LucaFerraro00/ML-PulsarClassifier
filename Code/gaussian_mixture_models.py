@@ -23,11 +23,56 @@ def mrow(x):
 def mcol(x):
     return numpy.reshape(x, (x.shape[0],1))
 
-#copy and paste from lab 4
+
+def train_gmm(DTR,LTR, iterations_LBG, Type):
+    D0 = DTR[:, LTR==0]
+    D1 = DTR[:, LTR==1]
+    
+    gmm0 = LBG(D0, iterations_LBG, Type)
+    gmm1 = LBG(D1, iterations_LBG, Type)
+    return gmm0, gmm1
+    
+def compute_score(DTE,DTR,LTR, Options):
+    if Options['iterations_LBG'] == None:
+        Options['iterations_LBG'] = 32
+    if Options['Type'] == None:
+        Options['Type'] = 'full'
+        
+    gmm0, gmm1 = train_gmm(DTR, LTR, Options['iterations_LBG'], Options['Type'])
+    
+    ll0 = GMM_ll_perSample(DTE, gmm0)
+    ll1 = GMM_ll_perSample(DTE, gmm1)
+    return ll1-ll0
+    
+def LBG(D, iterations, Type):
+    start_mu = mcol(D.mean(1))
+    start_sigma = numpy.cov(D)
+        
+    gmm = [(1.0, start_mu, start_sigma)]
+    for i in range(iterations):
+            gmm_double = []
+            for g in gmm:
+                
+                #Split the components of each g-components of gmm adding and subtracting epsilon to the mean g[1]
+                #A good value for epsilon can be a displacement along the principal eigenvector of the covariance matrix 
+                U, s, Vh = numpy.linalg.svd(g[2])
+                epsilon = U[:, 0:1] * s[0]**0.5 * 0.1
+                component1 = (g[0]/2, g[1]+epsilon, g[2])
+                component2 = (g[0]/2, g[1]-epsilon, g[2])
+                gmm_double.append(component1)
+                gmm_double.append(component2)
+            if Type == "full":
+                gmm = EM(D, gmm_double)
+            if Type == "diag":
+                gmm = EM_diag(D, gmm_double)
+            if Type == "full-tied":
+                gmm = EM_full_tied(D, gmm_double)
+            if Type == "diag-tied":
+                gmm = EM_diag_tied(D, gmm_double)
+
+    return gmm   
+    
 def logpdf_GAU_ND_opt1 (X,mu,C):
-#una prima idea per rendere piu efficiente questa funzione è dividerla in due parti:
-#una parte della formula può essere calcolata solo una volta, solo l'addendo che considera xi deve essere
-#calcolata iterativamente
      P=numpy.linalg.inv(C)
      const= -0.5 * X.shape[0] * numpy.log(2*numpy.pi)
      const += -0.5*numpy.linalg.slogdet(C)[1]
@@ -48,32 +93,155 @@ def GMM_ll_perSample(X, gmm):
         S[g, :] = logpdf_GAU_ND_opt1(X, gmm[g][1], gmm[g][2]) + numpy.log(gmm[g][0]) #the second addend represents the prior for each gaussian
     return scipy.special.logsumexp(S,axis=0)
 
-def GMM_EM(X,gmm):
-    llNew=None
-    llOld=None
-    G=len(gmm)
-    N=X.shape[1]
-    while llOld is None or llNew - llOld > 1e-6 :
-        llOld=llNew
-        SJ=numpy.zeros((G,N))
+def EM(X, gmm):
+        ll_new = None
+        ll_old = None
+        G = len(gmm)
+        N = X.shape[1]
+        
+        psi = 0.01
+        
+        while ll_old is None or ll_new-ll_old>1e-6:
+            ll_old = ll_new
+            SJ = numpy.zeros((G, N))
+            for g in range(G):
+                SJ[g, :] = logpdf_GAU_ND_opt1(X, gmm[g][1], gmm[g][2]) + numpy.log(gmm[g][0])
+            SM = scipy.special.logsumexp(SJ, axis=0)
+            ll_new = SM.sum() / N
+            P = numpy.exp(SJ - SM)
+            
+            gmm_new = []
+            for g in range(G):
+                gamma = P[g, :]
+                Z = gamma.sum()
+                F = (mrow(gamma)*X).sum(1)
+                S = numpy.dot(X, (mrow(gamma)*X).T)
+                w = Z/N
+                mu = mcol(F/Z)
+                sigma = S/Z - numpy.dot(mu, mu.T)
+                #constraint
+                U, s, _ = numpy.linalg.svd(sigma)
+                s[s<psi] = psi
+                sigma = numpy.dot(U, mcol(s)*U.T)
+                
+                gmm_new.append((w, mu, sigma))
+            gmm = gmm_new
+        return gmm
+    
+def EM_diag(X, gmm):
+    ll_new = None
+    ll_old = None
+    G = len(gmm)
+    N = X.shape[1]
+    
+    psi = 0.01
+    
+    while ll_old is None or ll_new-ll_old>1e-6:
+        ll_old = ll_new
+        SJ = numpy.zeros((G, N))
         for g in range(G):
-            SJ[g, :] = logpdf_GAU_ND_opt1(X, gmm[g][1], gmm[g][2]) + numpy.log(gmm[g][0]) #the second addend represents the prior for each gaussian
-        SM= scipy.special.logsumexp(SJ,axis=0) #M stays for Marginal
-        llNew=SM.sum()/N #This is the average (because divided by N) log-likelihood for all the dataset
-        P =numpy.exp(SJ-SM) #P is the posterior. P is computed the same as MVG
-        #this following is the new part for GMM different from MVG:
-        gmmNew=[] #we need to compute the updated parameter for our gmm. We'll use zero, first and second order statistics
+            SJ[g, :] = logpdf_GAU_ND_opt1(X, gmm[g][1], gmm[g][2]) + numpy.log(gmm[g][0])
+        SM = scipy.special.logsumexp(SJ, axis=0)
+        ll_new = SM.sum() / N
+        P = numpy.exp(SJ - SM)
+        
+        gmm_new = []
         for g in range(G):
-            gamma=P[g,:]
-            Z=gamma.sum() #Z=zero order statistic
-            F=(mrow(gamma)*X).sum(1)
-            S=numpy.dot(X,(mrow(gamma)*X).T)
-            w=Z/N
+            gamma = P[g, :]
+            Z = gamma.sum()
+            F = (mrow(gamma)*X).sum(1)
+            S = numpy.dot(X, (mrow(gamma)*X).T)
+            w = Z/N
             mu = mcol(F/Z)
-            Sigma=S/Z - numpy.dot(mu, mu.T)
-            gmmNew.append((w,mu,Sigma))
-        gmm=gmmNew
-        print(llNew)
-    print (llNew-llOld) #Check that new lilelihood is always greather than old likelihood
+            sigma = S/Z - numpy.dot(mu, mu.T)
+          
+            sigma = sigma * numpy.eye(sigma.shape[0])
+            
+            #constraint
+            U, s, _ = numpy.linalg.svd(sigma)
+            s[s<psi] = psi
+            sigma = numpy.dot(U, mcol(s)*U.T)
+            
+            gmm_new.append((w, mu, sigma))
+        gmm = gmm_new
     return gmm
+
+def EM_full_tied(X, gmm):
+    ll_new = None
+    ll_old = None
+    G = len(gmm)
+    N = X.shape[1]
+    
+    psi = 0.01
+    
+    while ll_old is None or ll_new-ll_old>1e-6:
+        ll_old = ll_new
+        SJ = numpy.zeros((G, N))
+        for g in range(G):
+            SJ[g, :] = logpdf_GAU_ND_opt1(X, gmm[g][1], gmm[g][2]) + numpy.log(gmm[g][0])
+        SM = scipy.special.logsumexp(SJ, axis=0)
+        ll_new = SM.sum() / N
+        P = numpy.exp(SJ - SM)
+        
+        gmm_new = []
+        summatory = numpy.zeros((X.shape[0], X.shape[0]))
+        for g in range(G):
+            gamma = P[g, :]
+            Z = gamma.sum()
+            F = (mrow(gamma)*X).sum(1)
+            S = numpy.dot(X, (mrow(gamma)*X).T)
+            w = Z/N
+            mu = mcol(F/Z)
+            sigma = S/Z - numpy.dot(mu, mu.T)
+            summatory += Z*sigma
+            gmm_new.append((w, mu, sigma))
+       
+        sigma = summatory / G
+        #constraint
+        U, s, _ = numpy.linalg.svd(sigma)
+        s[s<psi] = psi
+        sigma = numpy.dot(U, mcol(s)*U.T)
+        gmm = gmm_new
+    return gmm
+    
+def EM_diag_tied(X, gmm):
+    ll_new = None
+    ll_old = None
+    G = len(gmm)
+    N = X.shape[1]
+    
+    psi = 0.01
+    
+    while ll_old is None or ll_new-ll_old>1e-6:
+        ll_old = ll_new
+        SJ = numpy.zeros((G, N))
+        for g in range(G):
+            SJ[g, :] = logpdf_GAU_ND_opt1(X, gmm[g][1], gmm[g][2]) + numpy.log(gmm[g][0])
+        SM = scipy.special.logsumexp(SJ, axis=0)
+        ll_new = SM.sum() / N
+        P = numpy.exp(SJ - SM)
+        
+        gmm_new = []
+        summatory = numpy.zeros((X.shape[0], X.shape[0]))
+        for g in range(G):
+            gamma = P[g, :]
+            Z = gamma.sum()
+            F = (mrow(gamma)*X).sum(1)
+            S = numpy.dot(X, (mrow(gamma)*X).T)
+            w = Z/N
+            mu = mcol(F/Z)
+            sigma = S/Z - numpy.dot(mu, mu.T)
+            #diagonalization
+            sigma = sigma * numpy.eye(sigma.shape[0])
+            summatory += Z*sigma
+            gmm_new.append((w, mu, sigma))
+      
+        sigma = summatory / G
+        #constraint
+        U, s, _ = numpy.linalg.svd(sigma)
+        s[s<psi] = psi
+        sigma = numpy.dot(U, mcol(s)*U.T)
+        gmm = gmm_new
+    return gmm
+
 
