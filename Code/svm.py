@@ -96,7 +96,7 @@ def compute_score_linear(DTE,DTR,LTR, Options):
     return score.ravel()
     
 def plot_linear_minDCF_wrt_C(D,L,gaussianize):
-    print('computation for plotting min_cdf wrt C started...')
+    print('Linear SVM: computation for plotting min_cdf wrt C started...')
     min_DCFs=[]
     for pi in [0.1, 0.5, 0.9]:
         C_array = numpy.logspace(-4,3, num = 8)
@@ -210,7 +210,7 @@ def compute_score_RBF(DTE,DTR,LTR, Options):
     return score.ravel()
     
 def plot_RBF_minDCF_wrt_C(D,L,gaussianize):
-    print('computation for plotting min_cdf wrt C started...')
+    print('RBF SVM: computation for plotting min_cdf wrt C started...')
     min_DCFs=[]
     pi=0.5
     gamma_array= [0.0001, 0.001, 0.01, 0.1]
@@ -324,7 +324,7 @@ def compute_score_quadratic(DTE,DTR,LTR, Options):
     return score.ravel()
     
 def plot_quadratic_minDCF_wrt_C(D,L,gaussianize):
-    print('computation for plotting min_cdf wrt C started...')
+    print('Quadratic SVM: computation for plotting min_cdf wrt C started...')
     min_DCFs=[]
     for pi in [0.1, 0.5, 0.9]:
         C_array = numpy.logspace(-4,3, num = 8)

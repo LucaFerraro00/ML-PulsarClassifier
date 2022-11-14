@@ -1,0 +1,55 @@
+
+WITHOUT GAUSSIANIZATION
+
+##########################################
+#### Logistic regression with NO PCA ####
+##########################################
+-------------------LOGISTIC REGRESSION-----------------
+ Logistic reggression -piT = 0.100000 - pi = 0.100000  minDCF = 0.210934
+ Logistic reggression -piT = 0.100000 - pi = 0.500000  minDCF = 0.113241
+ Logistic reggression -piT = 0.100000 - pi = 0.900000  minDCF = 0.554885
+ Logistic reggression -piT = 0.500000 - pi = 0.100000  minDCF = 0.216487
+ Logistic reggression -piT = 0.500000 - pi = 0.500000  minDCF = 0.116620
+ Logistic reggression -piT = 0.500000 - pi = 0.900000  minDCF = 0.525804
+ Logistic reggression -piT = 0.900000 - pi = 0.100000  minDCF = 0.219890
+ Logistic reggression -piT = 0.900000 - pi = 0.500000  minDCF = 0.118993
+ Logistic reggression -piT = 0.900000 - pi = 0.900000  minDCF = 0.510666
+##########################################
+### Logistic regression with m = 7 ####
+##########################################
+-------------------LOGISTIC REGRESSION-----------------
+ Logistic reggression -piT = 0.100000 - pi = 0.100000  minDCF = 0.208606
+ Logistic reggression -piT = 0.100000 - pi = 0.500000  minDCF = 0.112039
+ Logistic reggression -piT = 0.100000 - pi = 0.900000  minDCF = 0.561839
+ Logistic reggression -piT = 0.500000 - pi = 0.100000  minDCF = 0.215484
+ Logistic reggression -piT = 0.500000 - pi = 0.500000  minDCF = 0.114463
+ Logistic reggression -piT = 0.500000 - pi = 0.900000  minDCF = 0.542092
+ Logistic reggression -piT = 0.900000 - pi = 0.100000  minDCF = 0.217347
+ Logistic reggression -piT = 0.900000 - pi = 0.500000  minDCF = 0.115880
+ Logistic reggression -piT = 0.900000 - pi = 0.900000  minDCF = 0.527961
+##########################################
+### Logistic regression with m = 6 ####
+##########################################
+-------------------LOGISTIC REGRESSION-----------------
+ Logistic reggression -piT = 0.100000 - pi = 0.100000  minDCF = 0.242030
+ Logistic reggression -piT = 0.100000 - pi = 0.500000  minDCF = 0.126253
+ Logistic reggression -piT = 0.100000 - pi = 0.900000  minDCF = 0.578610
+ Logistic reggression -piT = 0.500000 - pi = 0.100000  minDCF = 0.236477
+ Logistic reggression -piT = 0.500000 - pi = 0.500000  minDCF = 0.125576
+ Logistic reggression -piT = 0.500000 - pi = 0.900000  minDCF = 0.565147
+ Logistic reggression -piT = 0.900000 - pi = 0.100000  minDCF = 0.240131
+ Logistic reggression -piT = 0.900000 - pi = 0.500000  minDCF = 0.134461
+ Logistic reggression -piT = 0.900000 - pi = 0.900000  minDCF = 0.523542
+##########################################
+### Logistic regression with m = 5 ####
+##########################################
+-------------------LOGISTIC REGRESSION-----------------
+ Logistic reggression -piT = 0.100000 - pi = 0.100000  minDCF = 0.235044
+ Logistic reggression -piT = 0.100000 - pi = 0.500000  minDCF = 0.133860
+ Logistic reggression -piT = 0.100000 - pi = 0.900000  minDCF = 0.598324
+ Logistic reggression -piT = 0.500000 - pi = 0.100000  minDCF = 0.229957
+ Logistic reggression -piT = 0.500000 - pi = 0.500000  minDCF = 0.135707
+ Logistic reggression -piT = 0.500000 - pi = 0.900000  minDCF = 0.601742
+ Logistic reggression -piT = 0.900000 - pi = 0.100000  minDCF = 0.242173
+ Logistic reggression -piT = 0.900000 - pi = 0.500000  minDCF = 0.142804
+ Logistic reggression -piT = 0.900000 - pi = 0.900000  minDCF = 0.555522

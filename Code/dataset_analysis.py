@@ -17,7 +17,7 @@ def mcol(v):
     return v.reshape((v.size, 1))
 
 
-def load_pulsar_dataset(fname):
+def loda_training_set(fname):
     #setup visualization font
     plt.rc('font', size=16)
     plt.rc('xtick', labelsize=16)
@@ -48,12 +48,26 @@ def load_pulsar_dataset(fname):
     
     return DTR, LTR
 
-"""
-def shuffle_dataset(D, L):
-    numpy.random.seed(0)
-    idx = numpy.random.permutation(D.shape[1])
-    return D[:, idx], L[idx]
-"""
+def loda_evaluation_set(fname):
+
+    DList = []
+    labelsList = []
+    with open(fname) as f:
+        for line in f:
+            try:
+                attrs = line.split(',')[0:8]
+                attrs = mcol(numpy.array([float(i) for i in attrs]))
+                label = line.split(',')[-1].strip()
+                DList.append(attrs)
+                labelsList.append(label)
+            except:
+                pass
+    DEV = numpy.hstack(DList)
+    LEV =numpy.array(labelsList, dtype=numpy.int32)
+
+    return DEV, LEV
+
+
 
 def split_db_2to1(D, L, seed=0):
     nTrain = int(D.shape[1]*2.0/3.0)

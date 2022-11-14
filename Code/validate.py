@@ -8,6 +8,7 @@ Created on Tue Oct 25 19:38:12 2022
 import numpy
 import gaussian_classifiers as gauss
 import dataset_analysis as analys
+import matplotlib.pyplot as plt
 
 
 
@@ -50,16 +51,26 @@ def compute_min_DCF(scores, labels, pi, Cfn, Cfp):
         dcfList.append(compute_act_DCF(scores, labels, pi, Cfn, Cfp, th=_th))
     return numpy.array(dcfList).min()
 
-def bayes_error_plot(pArray, scores, labels, minCost=False):
-    y=[]
+def bayes_error_plot(pArray, scores, labels, title):
+    y_min=[]
+    y_act=[]
     for p in pArray:
         pi=1.0/(1.0+numpy.exp(-p))
-        if minCost:
-            y.append(compute_min_DCF(scores, labels, pi, 1, 1))
-        else:
-            y.append(compute_act_DCF(scores, labels, pi, 1, 1)) 
-        return numpy.array(y)    
+        y_min.append(compute_min_DCF(scores, labels, pi, 1, 1))
+        y_act.append(compute_act_DCF(scores, labels, pi, 1, 1)) 
+    
+    plt.figure()
+    plt.plot(pArray, y_min, label='min_DCF')
+    plt.plot(pArray, y_act, label='act_DCF')
+    plt.legend()
+    plt.ylim(top=1.5)
+    plt.ylim(bottom=0)
+    plt.xlabel("application")
+    plt.ylabel("cost")
+    plt.tight_layout() # Use with non-default font size to keep axis label inside the figure
+    plt.savefig(title)
 
+    
 
 def kfold(D,L, k, pi, compute_s, Options):
     numpy.random.seed(0)
@@ -82,9 +93,9 @@ def kfold(D,L, k, pi, compute_s, Options):
         
         score_ith = compute_s(DTE,DTR,LTR, Options)
         scores = numpy.append(scores, score_ith)
-        labels = numpy.append(labels, LTE) 
+        labels = numpy.append(labels, LTE)  
     min_dcf = compute_min_DCF(scores, labels, pi, 1, 1)
-    return min_dcf
+    return min_dcf, scores, labels
         
     
     

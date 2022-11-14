@@ -14,7 +14,6 @@ Created on Mon Oct 17 16:08:28 2022
 
 import numpy
 import scipy.special
-import json
 
 
 def mrow(x):
@@ -33,18 +32,18 @@ def train_gmm(DTR,LTR, iterations_LBG, Type):
     return gmm0, gmm1
     
 def compute_score(DTE,DTR,LTR, Options):
-    if Options['iterations_LBG'] == None:
-        Options['iterations_LBG'] = 32
+    if Options['iterations'] == None:
+        Options['iterations'] = 8
     if Options['Type'] == None:
         Options['Type'] = 'full'
         
-    gmm0, gmm1 = train_gmm(DTR, LTR, Options['iterations_LBG'], Options['Type'])
+    gmm0, gmm1 = train_gmm(DTR, LTR, Options['iterations'], Options['Type'])
     
     ll0 = GMM_ll_perSample(DTE, gmm0)
     ll1 = GMM_ll_perSample(DTE, gmm1)
     return ll1-ll0
     
-def LBG(D, iterations, Type):
+def LBG(D, iterations, Type,alfa=0.1):
     start_mu = mcol(D.mean(1))
     start_sigma = numpy.cov(D)
         
@@ -56,13 +55,14 @@ def LBG(D, iterations, Type):
                 #Split the components of each g-components of gmm adding and subtracting epsilon to the mean g[1]
                 #A good value for epsilon can be a displacement along the principal eigenvector of the covariance matrix 
                 U, s, Vh = numpy.linalg.svd(g[2])
-                epsilon = U[:, 0:1] * s[0]**0.5 * 0.1
-                component1 = (g[0]/2, g[1]+epsilon, g[2])
-                component2 = (g[0]/2, g[1]-epsilon, g[2])
+                d = U[:, 0:1] * s[0]**0.5 * alfa
+                #g[0]=sigma, g[1]=mu, g[2]=w
+                component1 = (g[0]/2, g[1]+d, g[2])
+                component2 = (g[0]/2, g[1]-d, g[2])
                 gmm_double.append(component1)
                 gmm_double.append(component2)
             if Type == "full":
-                gmm = EM(D, gmm_double)
+                gmm = EM_full(D, gmm_double)
             if Type == "diag":
                 gmm = EM_diag(D, gmm_double)
             if Type == "full-tied":
@@ -93,7 +93,7 @@ def GMM_ll_perSample(X, gmm):
         S[g, :] = logpdf_GAU_ND_opt1(X, gmm[g][1], gmm[g][2]) + numpy.log(gmm[g][0]) #the second addend represents the prior for each gaussian
     return scipy.special.logsumexp(S,axis=0)
 
-def EM(X, gmm):
+def EM_full(X, gmm):
         ll_new = None
         ll_old = None
         G = len(gmm)

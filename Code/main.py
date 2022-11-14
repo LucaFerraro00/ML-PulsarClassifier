@@ -10,18 +10,27 @@ import gaussian_classifiers as gauss
 import validate
 import logistic_regression as log_reg
 import svm
+import numpy
+import evaluation
+import gaussian_mixture_models as gmm
 
-#D,L = analys.load('../Data/Train.txt')
 k=5
+
+DEV, LEV = analys.loda_evaluation_set('../Data/Test.txt')
+
   
 def main():
-    D,L = analys.load_pulsar_dataset('../Data/Train.txt')
+    D,L = analys.loda_training_set('../Data/Train.txt')
     D= analys.scale_ZNormalization(D)
+    train_evaluate_gmm(D, L)
+
+
+    """
     gaussianize= False 
     plot(D, L, gaussianize) #plot raw features before gaussianization
-    D_gaussianized= analys.gaussianize_training(D)
+    #D_gaussianized= analys.gaussianize_training(D)
     gaussianize= True
-    plot(D_gaussianized, L, gaussianize) #plot gaussianized features    
+    #plot(D_gaussianized, L, gaussianize) #plot gaussianized features    
     
     #evaluate without gaussianization
     print("EVALUATION WITHOUT GAUSSIANIZATION")
@@ -36,6 +45,8 @@ def main():
     svm.plot_RBF_minDCF_wrt_C(D, L, gaussianize)
     train_evaluate_svm(D,L)
     
+    train_evaluate_gmm(D, L)
+    
     #evaluate with gaussianization
     print('\n')
     print("EVALUATION WITH GAUSSIANIZATION")
@@ -49,8 +60,11 @@ def main():
     #svm.plot_quadratic_minDCF_wrt_C(D_gaussianized, L, gaussianize)
     #svm.plot_RBF_minDCF_wrt_C(D_gaussianized, L, gaussianize)
     #train_evaluate_svm(D_gaussianized,L)
+    """
+    #score_calibration(D, L)
+    evaluation.evaluation(D,L)
     
-    
+
     
 def plot(DTR, LTR, gaussianize):
     #save histograms of the distribution of all the features in '../Images' folder. E
@@ -75,13 +89,13 @@ def train_evaluate_gaussian_models(D,L):
             print ("##########################################")
         
         for pi in [0.1, 0.5, 0.9]:
-            min_dcf_full = validate.kfold(D, L, k, pi, gauss.compute_score_full, Options)
+            min_dcf_full, _ , _ = validate.kfold(D, L, k, pi, gauss.compute_score_full, Options)
             print(" Full-Cov - pi = %f -> minDCF = %f" %(pi,min_dcf_full))
-            min_dcf_diag = validate.kfold(D, L, k, pi, gauss.compute_score_diag, Options)
+            min_dcf_diag , _ , _= validate.kfold(D, L, k, pi, gauss.compute_score_diag, Options)
             print(" Diag-cov - pi = %f -> minDCF = %f" %(pi,min_dcf_diag))
-            min_dcf_tied_full = validate.kfold(D, L, k, pi, gauss.compute_score_tied_full, Options)
+            min_dcf_tied_full , _ , _ = validate.kfold(D, L, k, pi, gauss.compute_score_tied_full, Options)
             print(" Tied full-cov - pi = %f  minDCF = %f" %(pi,min_dcf_tied_full))
-            min_dcf_tied_diag = validate.kfold(D, L, k, pi, gauss.compute_score_tied_diag, Options)
+            min_dcf_tied_diag , _ , _ = validate.kfold(D, L, k, pi, gauss.compute_score_tied_diag, Options)
             print(" Tied diag-cov - pi = %f  minDCF = %f" %(pi,min_dcf_tied_diag))
 
         m=m-1
@@ -109,7 +123,7 @@ def train_evaluate_log_reg(D,L):
             Options['lambdaa']=0
             Options['piT']=piT
             for pi in [0.1, 0.5, 0.9]:
-                min_dcf_kfold = validate.kfold(D, L, k, pi, log_reg.compute_score, Options)
+                min_dcf_kfold, _, _, = validate.kfold(D, L, k, pi, log_reg.compute_score, Options)
                 print(" Logistic reggression -piT = %f - pi = %f  minDCF = %f" %(Options['piT'], pi,min_dcf_kfold))    
             
         m = m-1
@@ -176,5 +190,63 @@ def train_evaluate_svm(D,L):
                 print(" SVM -piT = %f -C=%f - pi = %f - minDCF = %f" %(piT,Options['C'], pi,min_dcf_kfold))      
                 
         m = m-1
+        
+def train_evaluate_gmm(D,L):
+    Options={ 
+        'Type':None,
+        'iterations':None #components will be 2^iterations
+        }  
+    m = 8
+    while m>=5:
+        if m < 8:
+            D = analys.pca(m, D)
+            print ("##########################################")
+            print ("############# GMM with m = %d ##############" %m)
+            print ("##########################################")
+        else:
+            print ("##########################################")
+            print ("########## GMM LINEAR with NO PCA ########")
+            print ("##########################################")
+            for n in [2,3,4,5]:
+                Options['iterations']= n
+                for pi in [0.1, 0.5, 0.9]:
+                    Options['Type']='full'
+                    min_dcf_kfold = validate.kfold(D, L, k, pi, gmm.compute_score, Options)[0]
+                    print(" gmm %s -components=%d - pi = %f --> minDCF = %f" %(Options['Type'], 2**Options['iterations'], pi,min_dcf_kfold))
+                    
+                    Options['Type']='diag'
+                    min_dcf_kfold = validate.kfold(D, L, k, pi, gmm.compute_score, Options)[0]
+                    print(" gmm %s -components=%d - pi = %f --> minDCF = %f" %(Options['Type'], 2**Options['iterations'], pi,min_dcf_kfold))
+                    
+                    Options['Type']='full-tied'
+                    min_dcf_kfold = validate.kfold(D, L, k, pi, gmm.compute_score, Options)[0]
+                    print(" gmm %s -components=%d - pi = %f --> minDCF = %f" %(Options['Type'], 2**Options['iterations'], pi,min_dcf_kfold))
+                    
+                    Options['Type']='full-diag'
+                    min_dcf_kfold = validate.kfold(D, L, k, pi, gmm.compute_score, Options)[0]
+                    print(" gmm %s -components=%d - pi = %f --> minDCF = %f" %(Options['Type'], 2**Options['iterations'], pi,min_dcf_kfold))
+            
+
+def score_calibration(D,L):
+    pi_array = numpy.linspace(-4, 4, 20)
+
+    #comparison for Gaussian models
+    Options={}
+    _ , scores_gauss, labels_gauss = validate.kfold(D, L, k, 0.5, gauss.compute_score_tied_full  , Options)
+    title = "../Images/ScoreCalibration/actVsmin_full_tied_covariance_mvg.pdf"
+    validate.bayes_error_plot(pi_array, scores_gauss, labels_gauss, title)
     
+    #comparison for LogReg models
+    Options={
+    'lambdaa' : 0,
+    'piT' : 0.1,
+    }
+    _ , scores_logReg, labels_logReg = validate.kfold(D, L, k, 0.5, log_reg.compute_score , Options)
+    title = "../Images/ScoreCalibration/actVsmin_linear_logReg.pdf"
+    validate.bayes_error_plot(pi_array, scores_logReg, labels_logReg, title)
+
+
+        
+         
+
 main()
