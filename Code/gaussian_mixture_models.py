@@ -14,6 +14,9 @@ Created on Mon Oct 17 16:08:28 2022
 
 import numpy
 import scipy.special
+import validate
+import matplotlib.pyplot as plt
+
 
 
 def mrow(x):
@@ -33,7 +36,7 @@ def train_gmm(DTR,LTR, iterations_LBG, Type):
     
 def compute_score(DTE,DTR,LTR, Options):
     if Options['iterations'] == None:
-        Options['iterations'] = 8
+        Options['iterations'] = 4
     if Options['Type'] == None:
         Options['Type'] = 'full'
         
@@ -244,4 +247,33 @@ def EM_diag_tied(X, gmm):
         gmm = gmm_new
     return gmm
 
+K_fold=5
+def plot_minDCF_wrt_components(D, D_gaussianized,L):
+    for Type in ['full','diag','full-tied','diag-tied']:
+        print('%s gmm: computation for plotting min_cdf wrt C started...' %Type)
+        min_DCFs_raw=[]
+        min_DCFs_gauss=[]
+        pi = 0.5
+        iterations_array = [0,1,2,3,4,5,6]
+        for n in iterations_array:
+                Options= {'iterations': n,
+                          'Type':Type}
+                
+                min_dcf_raw= validate.kfold(D, L, K_fold, pi, compute_score, Options ) [0]
+                min_DCFs_raw.append(min_dcf_raw)
+                print ("computed min_dcf for raw features -components=%d -pi=%f --> results min_dcf=%f "%(n, pi,  min_dcf_raw))
+                
+                min_dcf_gauss= validate.kfold(D_gaussianized, L, K_fold, pi, compute_score, Options ) [0]
+                min_DCFs_gauss.append(min_dcf_gauss)
+                print ("computed min_dcf for gaussianized features -components=%d pi=%f --> results min_dcf=%f "%(n, pi,  min_dcf_gauss))
+        print('')
+        plt.figure()
+        plt.plot(iterations_array, min_DCFs_raw, 'o', label='raw features')
+        plt.plot(iterations_array, min_DCFs_gauss, 'o', label='gaussianized features')
+        plt.legend()
+        plt.xlabel("log_2(components)")
+        plt.ylabel("min_DCF")
+        plt.savefig("../Images/%s_gmm_minDCF_wrt_components.pdf" %Type)
 
+    return min_DCFs_raw, min_DCFs_gauss
+    

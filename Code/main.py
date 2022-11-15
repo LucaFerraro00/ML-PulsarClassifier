@@ -14,15 +14,12 @@ import numpy
 import evaluation
 import gaussian_mixture_models as gmm
 
-k=5
-
-DEV, LEV = analys.loda_evaluation_set('../Data/Test.txt')
-
+k=5 #kfold
   
 def main():
     D,L = analys.loda_training_set('../Data/Train.txt')
     D= analys.scale_ZNormalization(D)
-    train_evaluate_gmm(D, L)
+    train_evaluate_svm(D,L)
 
 
     """
@@ -45,6 +42,7 @@ def main():
     svm.plot_RBF_minDCF_wrt_C(D, L, gaussianize)
     train_evaluate_svm(D,L)
     
+    gmm.plot_minDCF_wrt_components(D, D_gaussianized, L)
     train_evaluate_gmm(D, L)
     
     #evaluate with gaussianization
@@ -60,6 +58,9 @@ def main():
     #svm.plot_quadratic_minDCF_wrt_C(D_gaussianized, L, gaussianize)
     #svm.plot_RBF_minDCF_wrt_C(D_gaussianized, L, gaussianize)
     #train_evaluate_svm(D_gaussianized,L)
+    
+    train_evaluate_gmm(D_gaussianized, L)
+
     """
     #score_calibration(D, L)
     evaluation.evaluation(D,L)
@@ -89,13 +90,13 @@ def train_evaluate_gaussian_models(D,L):
             print ("##########################################")
         
         for pi in [0.1, 0.5, 0.9]:
-            min_dcf_full, _ , _ = validate.kfold(D, L, k, pi, gauss.compute_score_full, Options)
+            min_dcf_full = validate.kfold(D, L, k, pi, gauss.compute_score_full, Options)[0]
             print(" Full-Cov - pi = %f -> minDCF = %f" %(pi,min_dcf_full))
-            min_dcf_diag , _ , _= validate.kfold(D, L, k, pi, gauss.compute_score_diag, Options)
+            min_dcf_diag = validate.kfold(D, L, k, pi, gauss.compute_score_diag, Options)[0]
             print(" Diag-cov - pi = %f -> minDCF = %f" %(pi,min_dcf_diag))
-            min_dcf_tied_full , _ , _ = validate.kfold(D, L, k, pi, gauss.compute_score_tied_full, Options)
+            min_dcf_tied_full = validate.kfold(D, L, k, pi, gauss.compute_score_tied_full, Options)[0]
             print(" Tied full-cov - pi = %f  minDCF = %f" %(pi,min_dcf_tied_full))
-            min_dcf_tied_diag , _ , _ = validate.kfold(D, L, k, pi, gauss.compute_score_tied_diag, Options)
+            min_dcf_tied_diag = validate.kfold(D, L, k, pi, gauss.compute_score_tied_diag, Options)[0]
             print(" Tied diag-cov - pi = %f  minDCF = %f" %(pi,min_dcf_tied_diag))
 
         m=m-1
@@ -123,7 +124,7 @@ def train_evaluate_log_reg(D,L):
             Options['lambdaa']=0
             Options['piT']=piT
             for pi in [0.1, 0.5, 0.9]:
-                min_dcf_kfold, _, _, = validate.kfold(D, L, k, pi, log_reg.compute_score, Options)
+                min_dcf_kfold = validate.kfold(D, L, k, pi, log_reg.compute_score, Options)[0]
                 print(" Logistic reggression -piT = %f - pi = %f  minDCF = %f" %(Options['piT'], pi,min_dcf_kfold))    
             
         m = m-1
@@ -133,61 +134,79 @@ def train_evaluate_svm(D,L):
     Options={
         'C' : None,
         'piT': None,
-        'gamma':None
+        'gamma':None,
+        'rebalance':None
         }  
     m = 8
     while m>=5:
+        '''
         if m < 8:
             D = analys.pca(m, D)
             print ("##########################################")
-            print ("############# SVM LINEAR with m = %d ##############" %m)
+            print ("############ SVM LINEAR with m = %d #######" %m)
             print ("##########################################")
         else:
             print ("##########################################")
-            print ("##############SVM LINEAR with NO PCA ##############")
+            print ("######## SVM LINEAR with NO PCA ##########")
             print ("##########################################")
-        print("-------------------LINEAR SVM-----------------")
+            
+        Options['C']=1
         for piT in [0.1, 0.5, 0.9]:
-            Options['C']=1
-            Options['piT']=piT
             for pi in [0.1, 0.5, 0.9]:
-                min_dcf_kfold = validate.kfold(D, L, k, pi, svm.compute_score_linear, Options)
-                print(" SVM -piT = %f -C=%f - pi = %f - minDCF = %f" %(piT,Options['C'], pi,min_dcf_kfold))      
+                Options['piT']=piT
+                Options['rebalance']=True
+                min_dcf_kfold = validate.kfold(D, L, k, pi, svm.compute_score_linear, Options)[0]
+                print("Linear SVM -piT = %f -C=%f - pi = %f - minDCF = %f" %(piT,Options['C'], pi,min_dcf_kfold))
                 
+        Options['rebalance']=False
+        for pi in [0.1, 0.5, 0.9]:
+                min_dcf_kfold = validate.kfold(D, L, k, pi, svm.compute_score_linear, Options)[0]
+                print("Linear SVM without rebalancing -C=%f - pi = %f - minDCF = %f" %(Options['C'], pi,min_dcf_kfold)) 
+        '''        
         if m < 8:
             D = analys.pca(m, D)
             print ("##########################################")
-            print ("############# SVM QUADRATIC with m = %d ##############" %m)
+            print ("########## SVM QUADRATIC with m = %d ######" %m)
             print ("##########################################")
         else:
             print ("##########################################")
-            print ("##############SVM QUADRATIC with NO PCA ##############")
+            print ("########SVM QUADRATIC with NO PCA ########")
             print ("##########################################")
-        print("-------------------LINEAR SVM-----------------")
         for piT in [0.1, 0.5, 0.9]:
-            Options['C']=1
-            Options['piT']=piT
             for pi in [0.1, 0.5, 0.9]:
-                min_dcf_kfold = validate.kfold(D, L, k, pi, svm.compute_score_quadratic, Options)
-                print(" SVM -piT = %f -C=%f - pi = %f - minDCF = %f" %(piT,Options['C'], pi,min_dcf_kfold))      
-           
+                Options['C']=0.1
+                Options['piT']=piT
+                Options['rebalance']=True
+                min_dcf_kfold = validate.kfold(D, L, k, pi, svm.compute_score_quadratic, Options)[0]
+                print("Quadratric SVM -piT = %f -C=%f - pi = %f - minDCF = %f" %(piT,Options['C'], pi,min_dcf_kfold))
+                
+            Options['rebalance']=False
+            for pi in [0.1, 0.5, 0.9]:
+                min_dcf_kfold = validate.kfold(D, L, k, pi, svm.compute_score_quadratic, Options)[0]
+                print("Quadratic SVM without rebalancing -C=%f - pi = %f - minDCF = %f" %(Options['C'], pi,min_dcf_kfold))
+            
         if m < 8:
             D = analys.pca(m, D)
             print ("##########################################")
-            print ("############# SVM RBF with m = %d ##############" %m)
+            print ("######### SVM RBF with m = %d #############" %m)
             print ("##########################################")
         else:
             print ("##########################################")
-            print ("##############SVM RBF with NO PCA ##############")
+            print ("##########SVM RBF with NO PCA ############")
             print ("##########################################")
-        print("-------------------LINEAR SVM-----------------")
         for piT in [0.1, 0.5, 0.9]:
-            Options['C']=1
-            Options['piT']=piT
-            Options['gamma']=0.1
             for pi in [0.1, 0.5, 0.9]:
-                min_dcf_kfold = validate.kfold(D, L, k, pi, svm.compute_score_RBF, Options)
-                print(" SVM -piT = %f -C=%f - pi = %f - minDCF = %f" %(piT,Options['C'], pi,min_dcf_kfold))      
+                Options['C']=1
+                Options['piT']=piT
+                Options['gamma']=0.1
+                Options['rebalance']=True
+                min_dcf_kfold = validate.kfold(D, L, k, pi, svm.compute_score_RBF, Options)[0]
+                print("RBF SVM -piT = %f -gamma =%f -C=%f - pi = %f -> minDCF = %f" %(piT, Options['gamma'], Options['C'], pi,min_dcf_kfold))      
+            
+            Options['rebalance']=False
+            for pi in [0.1, 0.5, 0.9]:
+                min_dcf_kfold = validate.kfold(D, L, k, pi, svm.compute_score_RBF, Options)[0]
+                print("RBF SVM without rebalancing -gamma =%f -C=%f - pi = %f -> minDCF = %f" %(Options['gamma'], Options['C'], pi,min_dcf_kfold))
                 
         m = m-1
         

@@ -22,7 +22,7 @@ def mcol(x):
 """
 #we are considering a binary problem, we're supposing that LTR is labels 0 or 1
 #C and K are hyperparameters
-def train_SVM_linear(DTR, LTR, C, piT, K=1):
+def train_SVM_linear(DTR, LTR, C, piT, rebalance, K=1):
     
     #first we simulate the bias by extending our data with ones, this allow us to simulate the effect of a bias
     DTREXT=numpy.vstack([DTR, numpy.ones((1,DTR.shape[1]))])
@@ -55,20 +55,24 @@ def train_SVM_linear(DTR, LTR, C, piT, K=1):
         loss = numpy.maximum(numpy.zeros(S.shape), 1-Z*S).sum()
         return 0.5 * numpy.linalg.norm(w)**2+C*loss
     
-    DTR0 = DTR[:, LTR==0]
-    DTR1 = DTR[:, LTR==1]
-    pi_emp_F = (DTR0.shape[1] / DTR.shape[1])
-    pi_emp_T = (DTR1.shape[1] / DTR.shape[1])
-    CT = C * piT/pi_emp_T 
-    CF = C * (1-piT)/pi_emp_F
-    
-    #bounds: a list of DTR.shape[1] elements. Each element is a tuple (0,CT) or (0,CF)
-    bounds = [(0,1)]*DTR.shape[1] #Initialize the array with random values 
-    for i in range(DTR.shape[1]):
-        if LTR[i]==0:
-            bounds[i]=(0,CF)
-        else:
-            bounds[i]=(0,CT)
+    if rebalance:
+        DTR0 = DTR[:, LTR==0]
+        DTR1 = DTR[:, LTR==1]
+        pi_emp_F = (DTR0.shape[1] / DTR.shape[1])
+        pi_emp_T = (DTR1.shape[1] / DTR.shape[1])
+        CT = C * piT/pi_emp_T 
+        CF = C * (1-piT)/pi_emp_F
+        
+        #bounds: a list of DTR.shape[1] elements. Each element is a tuple (0,CT) or (0,CF)
+        bounds = [(0,1)]*DTR.shape[1] #Initialize the array with random values 
+        for i in range(DTR.shape[1]):
+            if LTR[i]==0:
+                bounds[i]=(0,CF)
+            else:
+                bounds[i]=(0,CT)
+    else:#no re-balancing
+        bounds = [(0,C)]*DTR.shape[1]
+        
     alphaStar, _x, _y = scipy.optimize.fmin_l_bfgs_b(
                                                        compute_LDual_and_gradient, #function to minimze
                                                        numpy.zeros(DTR.shape[1]), #initiazilation affect only number of iterations to get to the minimum, but since the problem is convex the solution will be reached with any initial value 
@@ -87,10 +91,12 @@ K_fold=5
 def compute_score_linear(DTE,DTR,LTR, Options):
     if Options['C']== None:
         Options['C'] = 0
-    
     if Options['piT'] == None:
         Options['piT']=0.5
-    w,_alfa= train_SVM_linear(DTR, LTR, Options['C'], Options['piT'])
+    if Options['rebalance'] == None:
+        Options['rebalance']=True
+
+    w,_alfa= train_SVM_linear(DTR, LTR, Options['C'], Options['piT'], Options['rebalance'])
     DTE_EXT=numpy.vstack([DTE, numpy.ones((1,DTE.shape[1]))])
     score = numpy.dot(w.T,DTE_EXT)
     return score.ravel()
@@ -102,7 +108,8 @@ def plot_linear_minDCF_wrt_C(D,L,gaussianize):
         C_array = numpy.logspace(-4,3, num = 8)
         for C in C_array:
                 Options= {'C': C,
-                          'piT':0.5}
+                          'piT':0.5,
+                          'rebalance':True}
                 min_dcf_kfold = validate.kfold(D, L, K_fold, pi, compute_score_linear, Options ) 
                 min_DCFs.append(min_dcf_kfold)
                 print ("computed min_dcf for pi=%f -C=%f - results min_dcf=%f "%(pi,C,min_dcf_kfold))
@@ -131,7 +138,7 @@ def plot_linear_minDCF_wrt_C(D,L,gaussianize):
 ----------------------------------------------------------------------------------------------------------------------
 """
 
-def train_SVM_RBF(DTR, LTR, C, piT, gamma, K=1):
+def train_SVM_RBF(DTR, LTR, C, piT, gamma, rebalance, K=1):
     
     #first we simulate the bias by extending our data with ones, this allow us to simulate the effect of a bias
     DTREXT=numpy.vstack([DTR, numpy.ones((1,DTR.shape[1]))])
@@ -166,20 +173,24 @@ def train_SVM_RBF(DTR, LTR, C, piT, gamma, K=1):
         loss = numpy.maximum(numpy.zeros(S.shape), 1-Z*S).sum()
         return 0.5 * numpy.linalg.norm(w)**2+C*loss
     
-    DTR0 = DTR[:, LTR==0]
-    DTR1 = DTR[:, LTR==1]
-    pi_emp_F = (DTR0.shape[1] / DTR.shape[1])
-    pi_emp_T = (DTR1.shape[1] / DTR.shape[1])
-    CT = C * piT/pi_emp_T 
-    CF = C * (1-piT)/pi_emp_F
-    
-    #bounds: a list of DTR.shape[1] elements. Each element is a tuple (0,CT) or (0,CF)
-    bounds = [(0,1)]*DTR.shape[1] #Initialize the array with random values 
-    for i in range(DTR.shape[1]):
-        if LTR[i]==0:
-            bounds[i]=(0,CF)
-        else:
-            bounds[i]=(0,CT)
+    if rebalance:
+        DTR0 = DTR[:, LTR==0]
+        DTR1 = DTR[:, LTR==1]
+        pi_emp_F = (DTR0.shape[1] / DTR.shape[1])
+        pi_emp_T = (DTR1.shape[1] / DTR.shape[1])
+        CT = C * piT/pi_emp_T 
+        CF = C * (1-piT)/pi_emp_F
+        
+        #bounds: a list of DTR.shape[1] elements. Each element is a tuple (0,CT) or (0,CF)
+        bounds = [(0,1)]*DTR.shape[1] #Initialize the array with random values 
+        for i in range(DTR.shape[1]):
+            if LTR[i]==0:
+                bounds[i]=(0,CF)
+            else:
+                bounds[i]=(0,CT)
+    else:#no re-balancing
+        bounds = [(0,C)]*DTR.shape[1]
+        
     alphaStar, _x, _y = scipy.optimize.fmin_l_bfgs_b(
                                                        compute_LDual_and_gradient, #function to minimze
                                                        numpy.zeros(DTR.shape[1]), #initiazilation affect only number of iterations to get to the minimum, but since the problem is convex the solution will be reached with any initial value 
@@ -198,13 +209,14 @@ def train_SVM_RBF(DTR, LTR, C, piT, gamma, K=1):
 def compute_score_RBF(DTE,DTR,LTR, Options):
     if Options['C']== None:
         Options['C'] = 0
-    
     if Options['piT'] == None:
         Options['piT']=0.5
-        
     if Options['gamma']==None:
         Options['gamma']=0.1
-    w,_alfa= train_SVM_RBF(DTR, LTR, Options['C'], Options['piT'], Options['gamma'])
+    if Options['rebalance']==None:
+        Options['rebalance']=True
+        
+    w,_alfa= train_SVM_RBF(DTR, LTR, Options['C'], Options['piT'], Options['gamma'], Options['rebalance'])
     DTE_EXT=numpy.vstack([DTE, numpy.ones((1,DTE.shape[1]))])
     score = numpy.dot(w.T,DTE_EXT)
     return score.ravel()
@@ -219,7 +231,8 @@ def plot_RBF_minDCF_wrt_C(D,L,gaussianize):
         for C in C_array:
                 Options= {'C': C,
                           'piT':0.5,
-                          'gamma':gamma}
+                          'gamma':gamma,
+                          'rebalance':True}
                 min_dcf_kfold = validate.kfold(D, L, K_fold, pi, compute_score_RBF, Options ) 
                 min_DCFs.append(min_dcf_kfold)
                 print ("computed min_dcf for pi=%f -gamma=%f -C=%f - results min_dcf=%f "%(pi, gamma, C,min_dcf_kfold))
@@ -234,6 +247,7 @@ def plot_RBF_minDCF_wrt_C(D,L,gaussianize):
     plt.plot(C_array, min_DCFs_g2, label='gamma=0.01')
     plt.plot(C_array, min_DCFs_g3, label='gamma=0.1')
     plt.legend()
+    plt.tight_layout() # TBR: Use with non-default font size to keep axis label inside the figure
     plt.semilogx()
     plt.xlabel("C")
     plt.ylabel("min_DCF")
@@ -250,7 +264,7 @@ def plot_RBF_minDCF_wrt_C(D,L,gaussianize):
 ----------------------------------------------------------------------------------------------------------------------
 """
 
-def train_SVM_Quadratic(DTR, LTR, C, piT, d=2, K=1):
+def train_SVM_Quadratic(DTR, LTR, C, piT, rebalance, d=2, K=1):
     
     #first we simulate the bias by extending our data with ones, this allow us to simulate the effect of a bias
     DTREXT=numpy.vstack([DTR, numpy.ones((1,DTR.shape[1]))])
@@ -283,20 +297,24 @@ def train_SVM_Quadratic(DTR, LTR, C, piT, d=2, K=1):
         loss = numpy.maximum(numpy.zeros(S.shape), 1-Z*S).sum()
         return 0.5 * numpy.linalg.norm(w)**2+C*loss
     
-    DTR0 = DTR[:, LTR==0]
-    DTR1 = DTR[:, LTR==1]
-    pi_emp_F = (DTR0.shape[1] / DTR.shape[1])
-    pi_emp_T = (DTR1.shape[1] / DTR.shape[1])
-    CT = C * piT/pi_emp_T 
-    CF = C * (1-piT)/pi_emp_F
-    
-    #bounds: a list of DTR.shape[1] elements. Each element is a tuple (0,CT) or (0,CF)
-    bounds = [(0,1)]*DTR.shape[1] #Initialize the array with random values 
-    for i in range(DTR.shape[1]):
-        if LTR[i]==0:
-            bounds[i]=(0,CF)
-        else:
-            bounds[i]=(0,CT)
+    if rebalance:
+        DTR0 = DTR[:, LTR==0]
+        DTR1 = DTR[:, LTR==1]
+        pi_emp_F = (DTR0.shape[1] / DTR.shape[1])
+        pi_emp_T = (DTR1.shape[1] / DTR.shape[1])
+        CT = C * piT/pi_emp_T 
+        CF = C * (1-piT)/pi_emp_F
+        
+        #bounds: a list of DTR.shape[1] elements. Each element is a tuple (0,CT) or (0,CF)
+        bounds = [(0,1)]*DTR.shape[1] #Initialize the array with random values 
+        for i in range(DTR.shape[1]):
+            if LTR[i]==0:
+                bounds[i]=(0,CF)
+            else:
+                bounds[i]=(0,CT)
+    else:#no re-balancing
+        bounds = [(0,C)]*DTR.shape[1]
+            
     alphaStar, _x, _y = scipy.optimize.fmin_l_bfgs_b(
                                                        compute_LDual_and_gradient, #function to minimze
                                                        numpy.zeros(DTR.shape[1]), #initiazilation affect only number of iterations to get to the minimum, but since the problem is convex the solution will be reached with any initial value 
@@ -315,10 +333,11 @@ K_fold=5
 def compute_score_quadratic(DTE,DTR,LTR, Options):
     if Options['C']== None:
         Options['C'] = 0
-    
     if Options['piT'] == None:
         Options['piT']=0.5
-    w,_alfa= train_SVM_Quadratic(DTR, LTR, Options['C'], Options['piT'])
+    if Options['rebalance']==None:
+        Options['rebalance']=True
+    w,_alfa= train_SVM_Quadratic(DTR, LTR, Options['C'], Options['piT'], Options['rebalance'])
     DTE_EXT=numpy.vstack([DTE, numpy.ones((1,DTE.shape[1]))])
     score = numpy.dot(w.T,DTE_EXT)
     return score.ravel()
@@ -330,7 +349,8 @@ def plot_quadratic_minDCF_wrt_C(D,L,gaussianize):
         C_array = numpy.logspace(-4,3, num = 8)
         for C in C_array:
                 Options= {'C': C,
-                          'piT':0.5}
+                          'piT':0.5,
+                          'balance':True}
                 min_dcf_kfold = validate.kfold(D, L, K_fold, pi, compute_score_quadratic, Options ) 
                 min_DCFs.append(min_dcf_kfold)
                 print ("computed min_dcf for pi=%f -C=%f - results min_dcf=%f "%(pi,C,min_dcf_kfold))
@@ -343,6 +363,7 @@ def plot_quadratic_minDCF_wrt_C(D,L,gaussianize):
     plt.plot(C_array, min_DCFs_p1, label='prior=0.5')
     plt.plot(C_array, min_DCFs_p2, label='prior=0.9')
     plt.legend()
+    plt.tight_layout() # Use with non-default font size to keep axis label inside the figure
     plt.semilogx()
     plt.xlabel("C")
     plt.ylabel("min_DCF")

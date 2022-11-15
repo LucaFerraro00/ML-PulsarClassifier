@@ -6,8 +6,6 @@ Created on Tue Oct 25 19:38:12 2022
 """
 
 import numpy
-import gaussian_classifiers as gauss
-import dataset_analysis as analys
 import matplotlib.pyplot as plt
 
 
