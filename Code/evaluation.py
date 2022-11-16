@@ -36,6 +36,7 @@ def evaluation(DTR,LTR):
     Options={
     'C' : 1,
     'piT': 0.1,
+    'rebalance':True
     }  
     scores_linear_svm = svm.compute_score_linear(DEV, DTR, LTR, Options)
     
