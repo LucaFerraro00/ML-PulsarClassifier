@@ -19,8 +19,7 @@ k=5 #kfold
 def main():
     D,L = analys.loda_training_set('../Data/Train.txt')
     D= analys.scale_ZNormalization(D)
-    train_evaluate_svm(D,L)
-
+    train_evaluate_log_reg(D, L)
 
     """
     gaussianize= False 
@@ -121,7 +120,7 @@ def train_evaluate_log_reg(D,L):
             
         print("-------------------LOGISTIC REGRESSION-----------------")
         for piT in [0.1, 0.5, 0.9]:
-            Options['lambdaa']=0
+            Options['lambdaa']=1e-06
             Options['piT']=piT
             for pi in [0.1, 0.5, 0.9]:
                 min_dcf_kfold = validate.kfold(D, L, k, pi, log_reg.compute_score, Options)[0]
