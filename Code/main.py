@@ -19,8 +19,10 @@ k=5 #kfold
 def main():
     D,L = analys.loda_training_set('../Data/Train.txt')
     D= analys.scale_ZNormalization(D)
-    train_evaluate_log_reg(D, L)
-
+    D_gaussianized= analys.gaussianize_training(D)
+    gaussianize= True
+    svm.plot_quadratic_minDCF_wrt_C(D_gaussianized, L, gaussianize)
+    
     """
     gaussianize= False 
     plot(D, L, gaussianize) #plot raw features before gaussianization

@@ -110,7 +110,7 @@ def plot_linear_minDCF_wrt_C(D,L,gaussianize):
                 Options= {'C': C,
                           'piT':0.5,
                           'rebalance':True}
-                min_dcf_kfold = validate.kfold(D, L, K_fold, pi, compute_score_linear, Options ) 
+                min_dcf_kfold = validate.kfold(D, L, K_fold, pi, compute_score_linear, Options )[0] 
                 min_DCFs.append(min_dcf_kfold)
                 print ("computed min_dcf for pi=%f -C=%f - results min_dcf=%f "%(pi,C,min_dcf_kfold))
     min_DCFs_p0 = min_DCFs[0:8] #min_DCF results with prior = 0.1
@@ -134,7 +134,7 @@ def plot_linear_minDCF_wrt_C(D,L,gaussianize):
 
 """
 ----------------------------------------------------------------------------------------------------------------------
----------------------------------------------------------SVM RBF------------------------------------------------------
+---------------------------------------------------------RBF SVM ------------------------------------------------------
 ----------------------------------------------------------------------------------------------------------------------
 """
 
@@ -233,7 +233,7 @@ def plot_RBF_minDCF_wrt_C(D,L,gaussianize):
                           'piT':0.5,
                           'gamma':gamma,
                           'rebalance':True}
-                min_dcf_kfold = validate.kfold(D, L, K_fold, pi, compute_score_RBF, Options ) 
+                min_dcf_kfold = validate.kfold(D, L, K_fold, pi, compute_score_RBF, Options )[0] 
                 min_DCFs.append(min_dcf_kfold)
                 print ("computed min_dcf for pi=%f -gamma=%f -C=%f - results min_dcf=%f "%(pi, gamma, C,min_dcf_kfold))
     min_DCFs_g0 = min_DCFs[0:8] #min_DCF results with gamma = 0.0001
@@ -260,7 +260,7 @@ def plot_RBF_minDCF_wrt_C(D,L,gaussianize):
 
 """
 ----------------------------------------------------------------------------------------------------------------------
----------------------------------------------------------SVM RBF------------------------------------------------------
+---------------------------------------------------------QUADRATRIC SVM------------------------------------------------------
 ----------------------------------------------------------------------------------------------------------------------
 """
 
@@ -350,8 +350,8 @@ def plot_quadratic_minDCF_wrt_C(D,L,gaussianize):
         for C in C_array:
                 Options= {'C': C,
                           'piT':0.5,
-                          'balance':True}
-                min_dcf_kfold = validate.kfold(D, L, K_fold, pi, compute_score_quadratic, Options ) 
+                          'rebalance':True}
+                min_dcf_kfold = validate.kfold(D, L, K_fold, pi, compute_score_quadratic, Options )[0] 
                 min_DCFs.append(min_dcf_kfold)
                 print ("computed min_dcf for pi=%f -C=%f - results min_dcf=%f "%(pi,C,min_dcf_kfold))
     min_DCFs_p0 = min_DCFs[0:8] #min_DCF results with prior = 0.1
@@ -361,7 +361,7 @@ def plot_quadratic_minDCF_wrt_C(D,L,gaussianize):
     plt.figure()
     plt.plot(C_array, min_DCFs_p0, label='prior=0.1')
     plt.plot(C_array, min_DCFs_p1, label='prior=0.5')
-    plt.plot(C_array, min_DCFs_p2, label='prior=0.9')
+    plt.plot(C_array, min_DCFs_p2, label='prior=0.9')   
     plt.legend()
     plt.tight_layout() # Use with non-default font size to keep axis label inside the figure
     plt.semilogx()
