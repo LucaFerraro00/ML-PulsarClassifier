@@ -13,16 +13,15 @@ import svm
 import numpy
 import evaluation
 import gaussian_mixture_models as gmm
+import score_calibration 
 
 k=5 #kfold
   
 def main():
     D,L = analys.loda_training_set('../Data/Train.txt')
     D= analys.scale_ZNormalization(D)
-    D_gaussianized= analys.gaussianize_training(D)
-    gaussianize= True
-    svm.plot_quadratic_minDCF_wrt_C(D_gaussianized, L, gaussianize)
-    
+    #D_gaussianized= analys.gaussianize_training(D)
+    calibration(D, L)    
     """
     gaussianize= False 
     plot(D, L, gaussianize) #plot raw features before gaussianization
@@ -30,7 +29,7 @@ def main():
     gaussianize= True
     #plot(D_gaussianized, L, gaussianize) #plot gaussianized features    
     
-    #evaluate without gaussianization
+    #evaluate models on raw data
     print("EVALUATION WITHOUT GAUSSIANIZATION")
     gaussianize=False
     #train_evaluate_gaussian_models(D, L)
@@ -46,7 +45,7 @@ def main():
     gmm.plot_minDCF_wrt_components(D, D_gaussianized, L)
     train_evaluate_gmm(D, L)
     
-    #evaluate with gaussianization
+    #evaluate models on gaussianized data  
     print('\n')
     print("EVALUATION WITH GAUSSIANIZATION")
     gaussianize=True
@@ -61,10 +60,12 @@ def main():
     #train_evaluate_svm(D_gaussianized,L)
     
     train_evaluate_gmm(D_gaussianized, L)
-
-    """
-    #score_calibration(D, L)
+    
+    validate.two_bests_roc(D, L) #model selection
+    
+    #calibration(D, L)
     evaluation.evaluation(D,L)
+    """
     
 
     
@@ -248,24 +249,9 @@ def train_evaluate_gmm(D,L):
                     print(" gmm %s -components=%d - pi = %f --> minDCF = %f" %(Options['Type'], 2**Options['iterations'], pi,min_dcf_kfold))
             
 
-def score_calibration(D,L):
-    pi_array = numpy.linspace(-4, 4, 20)
-
-    #comparison for Gaussian models
-    Options={}
-    _ , scores_gauss, labels_gauss = validate.kfold(D, L, k, 0.5, gauss.compute_score_tied_full  , Options)
-    title = "../Images/ScoreCalibration/actVsmin_full_tied_covariance_mvg.pdf"
-    validate.bayes_error_plot(pi_array, scores_gauss, labels_gauss, title)
-    
-    #comparison for LogReg models
-    Options={
-    'lambdaa' : 0,
-    'piT' : 0.1,
-    }
-    _ , scores_logReg, labels_logReg = validate.kfold(D, L, k, 0.5, log_reg.compute_score , Options)
-    title = "../Images/ScoreCalibration/actVsmin_linear_logReg.pdf"
-    validate.bayes_error_plot(pi_array, scores_logReg, labels_logReg, title)
-
+def calibration(D,L):
+    #score_calibration.min_vs_act(D, L)
+    score_calibration.optimal_threshold(D,L)
 
         
          

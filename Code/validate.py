@@ -7,6 +7,10 @@ Created on Tue Oct 25 19:38:12 2022
 
 import numpy
 import matplotlib.pyplot as plt
+import pylab
+import gaussian_classifiers as gauss
+import logistic_regression as log_reg
+import dataset_analysis as analys
 
 
 
@@ -49,25 +53,60 @@ def compute_min_DCF(scores, labels, pi, Cfn, Cfp):
         dcfList.append(compute_act_DCF(scores, labels, pi, Cfn, Cfp, th=_th))
     return numpy.array(dcfList).min()
 
-def bayes_error_plot(pArray, scores, labels, title):
+def bayes_error(pArray, scores, labels):
     y_min=[]
     y_act=[]
     for p in pArray:
         pi=1.0/(1.0+numpy.exp(-p))
         y_min.append(compute_min_DCF(scores, labels, pi, 1, 1))
         y_act.append(compute_act_DCF(scores, labels, pi, 1, 1)) 
+    return y_min, y_act
+  
+
+def ROC(scores, Labels):
+    
+    #The ROC curve require to compute and plot TPR and FPR changing threshold. I have to sweep all the possible trhesholds.
+    #I consider all the thresholds corresponding to mhy sorted scores.
+    thresholds = numpy.array(scores)
+    thresholds.sort()
+    thresholds = numpy.concatenate([numpy.array([-numpy.inf]), thresholds, numpy.array([numpy.inf]) ]) #I add -infinity to te beginning and +infinity to the end
+    
+    #I create an array for FPR and TPR, each element of these array correspond to FPR and TPR for a certain threshold
+    FPR = numpy.zeros(thresholds.size)
+    TPR = numpy.zeros(thresholds.size)
+    for idx,t in enumerate(thresholds):
+        #For each value of a trheshold t I compute a new Confusion matrix from which I extract TPR and FPR
+        Pred= numpy.int32(scores>t)
+        Conf = numpy.zeros((2,2))
+        for i in range(2):
+            for j in range(2):
+                Conf[i,j] =((Pred==i) * (Labels==j)).sum()
+            TPR[idx]= Conf[1,1] / (Conf[1,1]+Conf[0,1])
+            FPR[idx]= Conf[1,0] / (Conf[1,0]+Conf[0,0])
+            
+    return FPR,TPR
+
+
+def two_bests_roc(D,L):
+    Options = {}
+    _ , scores_gaus, labels_gaus = kfold(D, L, 5, 0.5, gauss.compute_score_tied_full, Options)
+    FPR1, TPR1 =ROC (scores_gaus, labels_gaus)
+    
+    D = analys.pca(7, D)
+    Options = {'lambdaa':1e-06 ,
+               'piT': 0.1 }
+    _ , scores_gaus, labels_gaus = kfold(D, L, 5, 0.5, log_reg.compute_score, Options)
+    FPR2, TPR2 =ROC (scores_gaus, labels_gaus)
     
     plt.figure()
-    plt.plot(pArray, y_min, label='min_DCF')
-    plt.plot(pArray, y_act, label='act_DCF')
+    plt.plot(FPR1,TPR1, 'r', label = 'full tied-cov MVG', )
+    plt.plot(FPR2,TPR2, 'b', label = 'linear logistic regression')
+    plt.xlabel('False Positive Rate')
+    plt.ylabel('True Negative Rate')
     plt.legend()
-    plt.ylim(top=1.5)
-    plt.ylim(bottom=0)
-    plt.xlabel("application")
-    plt.ylabel("cost")
-    plt.tight_layout() # Use with non-default font size to keep axis label inside the figure
-    plt.savefig(title)
-
+    plt.savefig("../Images/best_two_models_ROC.pdf" )
+    pylab.show()
+    
     
 
 def kfold(D,L, k, pi, compute_s, Options):
