@@ -20,8 +20,9 @@ k=5 #kfold
 def main():
     D,L = analys.loda_training_set('../Data/Train.txt')
     D= analys.scale_ZNormalization(D)
-    #D_gaussianized= analys.gaussianize_training(D)
-    calibration(D, L)    
+    D_gaussianized= analys.gaussianize_training(D)
+    gaussianize=True
+    log_reg.quadratic_plot_minDCF_wrt_lamda(D_gaussianized, L, gaussianize)
     """
     gaussianize= False 
     plot(D, L, gaussianize) #plot raw features before gaussianization
@@ -111,24 +112,40 @@ def train_evaluate_log_reg(D,L):
     }  
     m = 8
     while m>=5:
+        '''
         if m < 8:
             D = analys.pca(m, D)
-            print ("##########################################")
-            print ("### Logistic regression with m = %d ####" %m)
-            print ("##########################################")
+            print ("############################################")
+            print ("### Linear Logistic regression with m = %d ##" %m)
+            print ("###########################################")
         else:
-            print ("##########################################")
-            print ("#### Logistic regression with NO PCA ####")
-            print ("##########################################")
+            print ("################################################")
+            print ("#### Linear Logistic regression with NO PCA ####")
+            print ("###############################################")
             
-        print("-------------------LOGISTIC REGRESSION-----------------")
         for piT in [0.1, 0.5, 0.9]:
             Options['lambdaa']=1e-06
             Options['piT']=piT
             for pi in [0.1, 0.5, 0.9]:
                 min_dcf_kfold = validate.kfold(D, L, k, pi, log_reg.compute_score, Options)[0]
-                print(" Logistic reggression -piT = %f - pi = %f  minDCF = %f" %(Options['piT'], pi,min_dcf_kfold))    
+                print(" Logistic reggression -piT = %f - pi = %f  minDCF = %f" %(Options['piT'], pi,min_dcf_kfold))
+         '''       
+        if m < 8:
+            D = analys.pca(m, D)
+            print ("################################################")
+            print ("### Quadratic Logistic regression with m = %d ##" %m)
+            print ("###############################################")
+        else:
+            print ("###################################################")
+            print ("#### Quadratic Logistic regression with NO PCA ####")
+            print ("##################################################")
             
+        for piT in [0.1, 0.5, 0.9]:
+            Options['lambdaa']=1e-06
+            Options['piT']=piT
+            for pi in [0.1, 0.5, 0.9]:
+                min_dcf_kfold = validate.kfold(D, L, k, pi, log_reg.compute_score_quadratic, Options)[0]
+                print(" Logistic reggression -piT = %f - pi = %f  minDCF = %f" %(Options['piT'], pi,min_dcf_kfold))    
         m = m-1
     
 

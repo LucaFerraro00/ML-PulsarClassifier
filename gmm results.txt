@@ -70,8 +70,9 @@ computed min_dcf for gaussianized features -components=4 pi=0.500000 --> results
 computed min_dcf for raw features -components=5 -pi=0.500000 --> results min_dcf=0.134071 
 computed min_dcf for gaussianized features -components=5 pi=0.500000 --> results min_dcf=0.156592 
 computed min_dcf for raw features -components=6 -pi=0.500000 --> results min_dcf=0.156994 
-computed min_dcf for gaussianized features -components=6 pi=0.500000 --> results min_dcf=0.165178 
-
+computed min_dcf for gaussianized features -components=6 pi=0.500000 --> results min_dcf=0.165178
+min_dcf_raw=[0.140774, 0.148019, 0.134998, 0.123160, 0.116545, 0.134071, 0.156994] 
+min_dcf_gauss = [0.152990, ]
 
 diag gmm: computation for plotting min_cdf wrt C started...
 computed min_dcf for raw features -components=0 -pi=0.500000 --> results min_dcf=0.140774 
@@ -88,39 +89,12 @@ computed min_dcf for gaussianized features -components=4 pi=0.500000 --> results
 full-tied gmm: computation for plotting min_cdf wrt C started...
 computed min_dcf for raw features -components=0 -pi=0.500000 --> results min_dcf=0.140774 
 computed min_dcf for gaussianized features -components=0 pi=0.500000 --> results min_dcf=0.152990 
-computed min_dcf for raw features -components=1 -pi=0.500000 --> results min_dcf=0.158204 
-computed min_dcf for gaussianized features -components=1 pi=0.500000 --> results min_dcf=0.145650 
-computed min_dcf for raw features -components=2 -pi=0.500000 --> results min_dcf=0.150554 
-computed min_dcf for gaussianized features -components=2 pi=0.500000 --> results min_dcf=0.175699 
-computed min_dcf for raw features -components=3 -pi=0.500000 --> results min_dcf=0.145439 
-computed min_dcf for gaussianized features -components=3 pi=0.500000 --> results min_dcf=0.167161 
-/home/students/s301843/MLProject/Code/gaussian_mixture_models.py:197: RuntimeWarning: invalid value encountered in true_divide
-  mu = mcol(F/Z)
-/home/students/s301843/MLProject/Code/gaussian_mixture_models.py:198: RuntimeWarning: invalid value encountered in true_divide
-  sigma = S/Z - numpy.dot(mu, mu.T)
-Traceback (most recent call last):
-  File "main.py", line 273, in <module>
-    main()
-  File "main.py", line 23, in main
-    gmm.plot_minDCF_wrt_components(D, D_gaussianized, L)
-  File "/home/students/s301843/MLProject/Code/gaussian_mixture_models.py", line 262, in plot_minDCF_wrt_components
-    min_dcf_raw= validate.kfold(D, L, K_fold, pi, compute_score, Options ) [0]
-  File "/home/students/s301843/MLProject/Code/validate.py", line 92, in kfold
-    score_ith = compute_s(DTE,DTR,LTR, Options)
-  File "/home/students/s301843/MLProject/Code/gaussian_mixture_models.py", line 43, in compute_score
-    gmm0, gmm1 = train_gmm(DTR, LTR, Options['iterations'], Options['Type'])
-  File "/home/students/s301843/MLProject/Code/gaussian_mixture_models.py", line 34, in train_gmm
-    gmm1 = LBG(D1, iterations_LBG, Type)
-  File "/home/students/s301843/MLProject/Code/gaussian_mixture_models.py", line 72, in LBG
-    gmm = EM_full_tied(D, gmm_double)
-  File "/home/students/s301843/MLProject/Code/gaussian_mixture_models.py", line 204, in EM_full_tied
-    U, s, _ = numpy.linalg.svd(sigma)
-  File "<__array_function__ internals>", line 6, in svd
-  File "/opt/anaconda3/envs/bigdatalab/lib/python3.7/site-packages/numpy/linalg/linalg.py", line 1660, in svd
-    u, s, vh = gufunc(a, signature=signature, extobj=extobj)
-  File "/opt/anaconda3/envs/bigdatalab/lib/python3.7/site-packages/numpy/linalg/linalg.py", line 97, in _raise_linalgerror_svd_nonconvergence
-    raise LinAlgError("SVD did not converge")
-numpy.linalg.LinAlgError: SVD did not converge
+computed min_dcf for raw features -components=1 -pi=0.500000 --> results min_dcf=0.141112 
+computed min_dcf for gaussianized features -components=1 pi=0.500000 --> results min_dcf=0.152914 
+computed min_dcf for raw features -components=2 -pi=0.500000 --> results min_dcf=0.145507 
+computed min_dcf for gaussianized features -components=2 pi=0.500000 --> results min_dcf=0.165218 
+computed min_dcf for raw features -components=3 -pi=0.500000 --> results min_dcf=0.155410 
+computed min_dcf for gaussianized features -components=3 pi=0.500000 --> results min_dcf=0.147103 
 
 
 

@@ -10,8 +10,20 @@ import scipy
 import validate
 import matplotlib.pyplot as plt
 
+def mcol(v):
+    return v.reshape((v.size, 1))
+
+def mrow(v):
+    return v.reshape((1, v.size))
+
 
 K=5
+
+"""
+----------------------------------------------------------------------------------------------------------------------
+----------------------------------------LINEAR LOGISTIC REGRESSION----------------------------------------------------
+----------------------------------------------------------------------------------------------------------------------
+"""
 
 def logreg_obj_wrap(DTR, LTR, l, piT): #l is lamda (used for regularization)
     #compute the labels Z
@@ -63,7 +75,7 @@ def plot_minDCF_wrt_lamda(D,L, gaussianize):
         for l in lambdas:
                 Options= {'lambdaa':l,
                           'piT':0.5}
-                min_dcf_kfold = validate.kfold(D, L, K, pi, compute_score, Options ) 
+                min_dcf_kfold = validate.kfold(D, L, K, pi, compute_score, Options )[0]
                 min_DCFs.append(min_dcf_kfold)
 
     min_DCFs_p0 = min_DCFs[0:10] #min_DCF results with prior = 0.1
@@ -86,7 +98,70 @@ def plot_minDCF_wrt_lamda(D,L, gaussianize):
     return min_DCFs
 
 
+"""
+----------------------------------------------------------------------------------------------------------------------
+----------------------------------------QUADRATIC LOGISTIC REGRESSION----------------------------------------------------
+----------------------------------------------------------------------------------------------------------------------
+"""  
+
+def compute_score_quadratic(DTE,DTR,LTR, Options):
+
+    if Options['lambdaa']== None:
+        Options['lambdaa'] = 0
+    if Options['piT'] == None:
+        Options['piT']=0.5
     
+    phi = numpy.zeros((DTR.shape[0]**2 + DTR.shape[0], DTR.shape[1]))
+    for i in range(DTR.shape[1]):
+        x = DTR [:,i]
+        x = mcol(x)
+        vec = numpy.hstack(x * x.T)
+        vec = mcol(vec)
+        phi_col = numpy.concatenate((vec,x)).ravel()
+        phi [:,i] = phi_col
+    DTR = phi
     
+    phi = numpy.zeros((DTE.shape[0]**2 + DTE.shape[0], DTE.shape[1]))
+    for i in range(DTE.shape[1]):
+        x = DTE [:,i]
+        x = mcol(x)
+        vec = numpy.hstack(x * x.T)
+        vec = mcol(vec)
+        phi_col = numpy.concatenate((vec,x)).ravel()
+        phi [:,i] = phi_col
+    DTE = phi
+
+    _w,_b= train_log_reg(DTR, LTR, Options['lambdaa'], Options['piT'])
+    scores = numpy.dot(_w.T,DTE)+_b
+    return scores
     
-    
+def quadratic_plot_minDCF_wrt_lamda(D,L, gaussianize):
+    print ('Quadratic Logistic Regression: computation for plot minDCF wt lambda started...')
+    min_DCFs=[]
+    for pi in [0.1, 0.5, 0.9]:
+        lambdas = numpy.logspace(-6,3, num = 10)
+        for l in lambdas:
+                Options= {'lambdaa':l,
+                          'piT':0.5}
+                min_dcf_kfold = validate.kfold(D, L, K, pi, compute_score_quadratic, Options )[0]
+                print ("computed min_dcf for pi=%f -lambda=%f - results min_dcf=%f "%(pi, l,min_dcf_kfold))
+                min_DCFs.append(min_dcf_kfold)
+
+    min_DCFs_p0 = min_DCFs[0:10] #min_DCF results with prior = 0.1
+    min_DCFs_p1 = min_DCFs[10:20] #min_DCF results with prior = 0.5
+    min_DCFs_p2 = min_DCFs[20:30] #min_DCF results with prior = 0.9
+
+    plt.figure()
+    plt.plot(lambdas, min_DCFs_p0, label='prior=0.1')
+    plt.plot(lambdas, min_DCFs_p1, label='prior=0.5')
+    plt.plot(lambdas, min_DCFs_p2, label='prior=0.9')
+    plt.legend()
+    plt.semilogx()
+    plt.xlabel("λ")
+    plt.ylabel("min_DCF")
+    if gaussianize:
+        plt.savefig("../Images/min_DCF_lamda_quadratic_log_reg_gaussianized.pdf")
+    else:
+        plt.savefig("../Images/min_DCF_lamda_quadratic_log_reg_raw.pdf")
+    plt.show()
+    return min_DCFs

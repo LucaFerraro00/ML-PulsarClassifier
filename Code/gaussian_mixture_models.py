@@ -129,6 +129,8 @@ def EM_full(X, gmm):
                 
                 gmm_new.append((w, mu, sigma))
             gmm = gmm_new
+            print(ll_new)
+        print(ll_new-ll_old)
         return gmm
     
 def EM_diag(X, gmm):
@@ -157,9 +159,7 @@ def EM_diag(X, gmm):
             w = Z/N
             mu = mcol(F/Z)
             sigma = S/Z - numpy.dot(mu, mu.T)
-          
-            sigma = sigma * numpy.eye(sigma.shape[0])
-            
+            sigma = sigma * numpy.eye(sigma.shape[0]) #diagonalize sigma
             #constraint
             U, s, _ = numpy.linalg.svd(sigma)
             s[s<psi] = psi
@@ -167,6 +167,8 @@ def EM_diag(X, gmm):
             
             gmm_new.append((w, mu, sigma))
         gmm = gmm_new
+        print(ll_new)
+    print(ll_new-ll_old)
     return gmm
 
 def EM_full_tied(X, gmm):
@@ -197,14 +199,22 @@ def EM_full_tied(X, gmm):
             mu = mcol(F/Z)
             sigma = S/Z - numpy.dot(mu, mu.T)
             summatory += Z*sigma
-            gmm_new.append((w, mu, sigma))
+            gmm_new.append((w, mu)) #sigma is inserted later
        
-        sigma = summatory / G
+        sigma = summatory / N #now sigma is tied
         #constraint
         U, s, _ = numpy.linalg.svd(sigma)
         s[s<psi] = psi
         sigma = numpy.dot(U, mcol(s)*U.T)
-        gmm = gmm_new
+        
+        gmm_new2 = []
+        for i in range(len(gmm_new)):
+            (w, mu) = gmm_new[i]
+            gmm_new2.append((w, mu, sigma))
+            
+        gmm = gmm_new2
+        print(ll_new)
+    print(ll_new-ll_old)
     return gmm
     
 def EM_diag_tied(X, gmm):
@@ -234,17 +244,23 @@ def EM_diag_tied(X, gmm):
             w = Z/N
             mu = mcol(F/Z)
             sigma = S/Z - numpy.dot(mu, mu.T)
-            #diagonalization
-            sigma = sigma * numpy.eye(sigma.shape[0])
+            sigma = sigma * numpy.eye(sigma.shape[0]) #diagonalize sigma
             summatory += Z*sigma
-            gmm_new.append((w, mu, sigma))
+            gmm_new.append((w, mu))
       
-        sigma = summatory / G
+        sigma = summatory / N
         #constraint
         U, s, _ = numpy.linalg.svd(sigma)
         s[s<psi] = psi
         sigma = numpy.dot(U, mcol(s)*U.T)
-        gmm = gmm_new
+        
+        gmm_new2 = []
+        for i in range(len(gmm_new)):
+            (w, mu) = gmm_new[i]
+            gmm_new2.append((w, mu, sigma))
+        gmm = gmm_new2
+        print(ll_new)
+    print(ll_new-ll_old)
     return gmm
 
 K_fold=5
