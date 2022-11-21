@@ -10,7 +10,6 @@ import gaussian_classifiers as gauss
 import validate
 import logistic_regression as log_reg
 import svm
-import numpy
 import evaluation
 import gaussian_mixture_models as gmm
 import score_calibration 
@@ -20,9 +19,8 @@ k=5 #kfold
 def main():
     D,L = analys.loda_training_set('../Data/Train.txt')
     D= analys.scale_ZNormalization(D)
-    D_gaussianized= analys.gaussianize_training(D)
-    gaussianize=True
-    log_reg.quadratic_plot_minDCF_wrt_lamda(D_gaussianized, L, gaussianize)
+    #D_gaussianized= analys.gaussianize_training(D)
+    calibration(D, L)
     """
     gaussianize= False 
     plot(D, L, gaussianize) #plot raw features before gaussianization
@@ -36,6 +34,7 @@ def main():
     #train_evaluate_gaussian_models(D, L)
     
     #log_reg.plot_minDCF_wrt_lamda(D, L, gaussianize)
+    log_reg.quadratic_plot_minDCF_wrt_lamda(D, L, gaussianize)
     #train_evaluate_log_reg(D, L)
     
     #svm.plot_linear_minDCF_wrt_C(D, L, gaussianize)
@@ -53,6 +52,7 @@ def main():
     #train_evaluate_gaussian_models(D_gaussianized, L)
     
     #log_reg.plot_minDCF_wrt_lamda(D_gaussianized, L, gaussianize)
+    log_reg.quadratic_plot_minDCF_wrt_lamda(D_gaussianized, L, gaussianize)
     #train_evaluate_log_reg(D_gaussianized, L)
     
     #svm.plot_linear_minDCF_wrt_C(D_gaussianized, L, gaussianize)
@@ -265,11 +265,12 @@ def train_evaluate_gmm(D,L):
                     min_dcf_kfold = validate.kfold(D, L, k, pi, gmm.compute_score, Options)[0]
                     print(" gmm %s -components=%d - pi = %f --> minDCF = %f" %(Options['Type'], 2**Options['iterations'], pi,min_dcf_kfold))
             
-
+            
 def calibration(D,L):
-    #score_calibration.min_vs_act(D, L)
+    score_calibration.min_vs_act(D, L)
     score_calibration.optimal_threshold(D,L)
-
+    score_calibration.validate_score_trasformation(D, L)
+    score_calibration.min_vs_act_after_calibration(D, L)
         
          
 

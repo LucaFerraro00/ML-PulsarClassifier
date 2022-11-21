@@ -42,7 +42,6 @@ def loda_training_set(fname):
     std=compute_std(DTR)
     print ('The mean of the features for the entire training set is:')
     print(mean.ravel())
-    print('')
     print ('The standard deviation of the features for the entire training set is:')
     print(std.ravel())
     
@@ -96,6 +95,7 @@ def scale_ZNormalization(D):
     sigma=compute_std(D)
     scaled_DTR = (D-mu) #TBR: CORRECT OR NOT???????? 
     scaled_DTR = scaled_DTR / sigma
+    print('Z-Normalization done!')
     return scaled_DTR
     
 def plot_histograms(D, L, gaussianize):

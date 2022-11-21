@@ -53,3 +53,30 @@ WITHOUT GAUSSIANIZATION
  Logistic reggression -piT = 0.900000 - pi = 0.100000  minDCF = 0.242173
  Logistic reggression -piT = 0.900000 - pi = 0.500000  minDCF = 0.142804
  Logistic reggression -piT = 0.900000 - pi = 0.900000  minDCF = 0.555399
+ 
+ 
+ 
+ 
+ 
+QUADRATIC WITH GAUSSIANIZATION
+Quadratic Logistic Regression: computation for plot minDCF wt lambda started...
+computed min_dcf for pi=0.100000 -lambda=0.000001 - results min_dcf=0.233575 
+computed min_dcf for pi=0.100000 -lambda=0.000010 - results min_dcf=0.234793 
+computed min_dcf for pi=0.100000 -lambda=0.000100 - results min_dcf=0.230924 
+computed min_dcf for pi=0.100000 -lambda=0.001000 - results min_dcf=0.226016 
+computed min_dcf for pi=0.100000 -lambda=0.010000 - results min_dcf=0.231820 
+computed min_dcf for pi=0.100000 -lambda=0.100000 - results min_dcf=0.257685 
+computed min_dcf for pi=0.100000 -lambda=1.000000 - results min_dcf=0.308233 
+computed min_dcf for pi=0.100000 -lambda=10.000000 - results min_dcf=0.389447 
+computed min_dcf for pi=0.100000 -lambda=100.000000 - results min_dcf=0.427887 
+computed min_dcf for pi=0.100000 -lambda=1000.000000 - results min_dcf=0.433189 
+computed min_dcf for pi=0.500000 -lambda=0.000001 - results min_dcf=0.129457 
+computed min_dcf for pi=0.500000 -lambda=0.000010 - results min_dcf=0.128486 
+computed min_dcf for pi=0.500000 -lambda=0.000100 - results min_dcf=0.126297 
+computed min_dcf for pi=0.500000 -lambda=0.001000 - results min_dcf=0.126838 
+computed min_dcf for pi=0.500000 -lambda=0.010000 - results min_dcf=0.129704 
+computed min_dcf for pi=0.500000 -lambda=0.100000 - results min_dcf=0.142199 
+computed min_dcf for pi=0.500000 -lambda=1.000000 - results min_dcf=0.170600 
+computed min_dcf for pi=0.500000 -lambda=10.000000 - results min_dcf=0.200207 
+computed min_dcf for pi=0.500000 -lambda=100.000000 - results min_dcf=0.212510 
+computed min_dcf for pi=0.500000 -lambda=1000.000000 - results min_dcf=0.214210 
