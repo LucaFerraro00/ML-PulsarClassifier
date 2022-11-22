@@ -25,7 +25,7 @@ K=5
 ----------------------------------------------------------------------------------------------------------------------
 """
 
-def logreg_obj_wrap(DTR, LTR, l, piT, score_calibration): #l is lamda (used for regularization)
+def logreg_obj_wrap(DTR, LTR, l, piT): #l is lamda (used for regularization)
     #compute the labels Z
     Z= LTR * 2.0 -1.0
     M=DTR.shape[0]
@@ -48,8 +48,8 @@ def logreg_obj_wrap(DTR, LTR, l, piT, score_calibration): #l is lamda (used for 
         return cxe+0.5*l*numpy.linalg.norm(w)**2 #I add also the regularization term
     return logreg_obj
 
-def train_log_reg(DTR, LTR, lambdaa, piT, score_calibration=None):
-    logreg_objective=logreg_obj_wrap(DTR, LTR, lambdaa, piT, score_calibration)
+def train_log_reg(DTR, LTR, lambdaa, piT, ):
+    logreg_objective=logreg_obj_wrap(DTR, LTR, lambdaa, piT)
     _v,j,_d = scipy.optimize.fmin_l_bfgs_b(logreg_objective, numpy.zeros(DTR.shape[0]+1) , approx_grad=True) #numpy.zeros(DTR.shape[0]+1) is the starting point. I am providing w and b equal to 0 as starting point
     #I can recover optimal w* and b* from _v:
     _w=_v[0:DTR.shape[0]]

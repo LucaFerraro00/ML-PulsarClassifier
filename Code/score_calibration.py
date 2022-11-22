@@ -97,9 +97,9 @@ def optimal_threshold (D,L):
 
 def score_trasformation(scores_TR, LTR, scores_TE,pi):
     scores_TR= mrow(scores_TR)
-    scores_TE_row= mrow(scores_TE)
-    alfa, beta_prime = log_reg.train_log_reg(scores_TR, LTR, 1e-06, pi, score_calibration=True) #??this pi should be fixed or not????
-    new_scores= numpy.dot(alfa.T,scores_TE_row)+beta_prime - numpy.log(pi/(1-pi))
+    scores_TE= mrow(scores_TE)
+    alfa, beta_prime = log_reg.train_log_reg(scores_TR, LTR, 1e-06, pi) #??this pi should be fixed or not????
+    new_scores= numpy.dot(alfa.T,scores_TE)+beta_prime - numpy.log(pi/(1-pi))
     return new_scores
     
 #second approach to calibrate score: trasform score so that theoretical threshold provide close to optimal values over different applications

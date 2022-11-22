@@ -129,8 +129,8 @@ def EM_full(X, gmm):
                 
                 gmm_new.append((w, mu, sigma))
             gmm = gmm_new
-            print(ll_new)
-        print(ll_new-ll_old)
+            #print(ll_new)
+        #print(ll_new-ll_old)
         return gmm
     
 def EM_diag(X, gmm):
@@ -167,8 +167,8 @@ def EM_diag(X, gmm):
             
             gmm_new.append((w, mu, sigma))
         gmm = gmm_new
-        print(ll_new)
-    print(ll_new-ll_old)
+        #print(ll_new)
+    #print(ll_new-ll_old)
     return gmm
 
 def EM_full_tied(X, gmm):
@@ -213,8 +213,8 @@ def EM_full_tied(X, gmm):
             gmm_new2.append((w, mu, sigma))
             
         gmm = gmm_new2
-        print(ll_new)
-    print(ll_new-ll_old)
+        #print(ll_new)
+    #print(ll_new-ll_old)
     return gmm
     
 def EM_diag_tied(X, gmm):
@@ -259,8 +259,8 @@ def EM_diag_tied(X, gmm):
             (w, mu) = gmm_new[i]
             gmm_new2.append((w, mu, sigma))
         gmm = gmm_new2
-        print(ll_new)
-    print(ll_new-ll_old)
+        #print(ll_new)
+    #print(ll_new-ll_old)
     return gmm
 
 K_fold=5

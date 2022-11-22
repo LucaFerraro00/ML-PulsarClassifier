@@ -89,14 +89,14 @@ def ROC(scores, Labels):
 
 def two_bests_roc(D,L):
     Options = {}
-    _ , scores_gaus, labels_gaus = kfold(D, L, 5, 0.5, gauss.compute_score_tied_full, Options)
-    FPR1, TPR1 =ROC (scores_gaus, labels_gaus)
+    _ , scores1, labels1 = kfold(D, L, 5, 0.5, gauss.compute_score_tied_full, Options)
+    FPR1, TPR1 =ROC (scores1, labels1)
     
     D = analys.pca(7, D)
     Options = {'lambdaa':1e-06 ,
                'piT': 0.1 }
-    _ , scores_gaus, labels_gaus = kfold(D, L, 5, 0.5, log_reg.compute_score, Options)
-    FPR2, TPR2 =ROC (scores_gaus, labels_gaus)
+    _ , scores2, labels2 = kfold(D, L, 5, 0.5, log_reg.compute_score, Options)
+    FPR2, TPR2 =ROC (scores2, labels2)
     
     plt.figure()
     plt.plot(FPR1,TPR1, 'r', label = 'full tied-cov MVG', )
