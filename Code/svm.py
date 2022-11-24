@@ -168,18 +168,10 @@ def plot_linear_minDCF_wrt_C(DTR,LTR,gaussianize, DEV=None, LEV=None, evaluation
 """
 
 def train_SVM_RBF(DTR, LTR, C, piT, gamma, rebalance, K=1):
-    
-    #first we simulate the bias by extending our data with ones, this allow us to simulate the effect of a bias
-    DTREXT=numpy.vstack([DTR, numpy.ones((1,DTR.shape[1]))])
-    #DTREXt is the original data matrix  wich contains the original training data x1...xn. Each x has an added feature equals to K=1 appendend
-    
-    #compute Z to be used to do compute: zi(wTx+b)
     Z=numpy.zeros(LTR.shape)
     Z[LTR==1] = 1
     Z[LTR==0] =-1
     
-    #compute matrix H which is inside the dual formula
-    #Hij=zizjxiTxj (xi and xj are vectors)
     Dist= mcol((DTR**2).sum(0)) +mrow((DTR**2).sum(0)) - 2 * numpy.dot(DTR.T,DTR)
     kernel= numpy.exp(-gamma* Dist) + K #K account for byas term
     H=mcol(Z) *mrow(Z) * kernel
@@ -224,13 +216,11 @@ def train_SVM_RBF(DTR, LTR, C, piT, gamma, rebalance, K=1):
                                                        maxfun= 100000, #these last 3 parameters define how good will be the computation  
                                                       )
     
-    wStar = numpy.dot(DTREXT, mcol(alphaStar)*mcol(Z))
-
-    return wStar, alphaStar
+    return alphaStar,Z
 
 
 
-def compute_score_RBF(DTE,DTR,LTR, Options):
+def compute_score_RBF(DTE,DTR,LTR, Options, K=1):
     if Options['C']== None:
         Options['C'] = 0
     if Options['piT'] == None:
@@ -239,11 +229,13 @@ def compute_score_RBF(DTE,DTR,LTR, Options):
         Options['gamma']=0.1
     if Options['rebalance']==None:
         Options['rebalance']=True
-        
-    w,_alfa= train_SVM_RBF(DTR, LTR, Options['C'], Options['piT'], Options['gamma'], Options['rebalance'])
-    DTE_EXT=numpy.vstack([DTE, numpy.ones((1,DTE.shape[1]))])
-    score = numpy.dot(w.T,DTE_EXT)
+    Dist= mcol((DTR**2).sum(0)) +mrow((DTE**2).sum(0)) - 2 * numpy.dot(DTR.T,DTE)
+    kernel= numpy.exp(-Options['gamma']* Dist) + (K**2) #K account for byas term
+    alphaStar, Z= train_SVM_RBF(DTR, LTR,Options['C'],Options['gamma'],Options['rebalance'], K)
+    score= numpy.dot(alphaStar * Z, kernel)
     return score.ravel()
+        
+   
     
 def plot_RBF_minDCF_wrt_C(DTR,LTR,gaussianize, DEV=None, LEV=None, evaluation=False):
     print('RBF SVM: computation for plotting min_cdf wrt C started...')
@@ -328,19 +320,13 @@ def plot_RBF_minDCF_wrt_C(DTR,LTR,gaussianize, DEV=None, LEV=None, evaluation=Fa
 ----------------------------------------------------------------------------------------------------------------------
 """
 
-def train_SVM_Quadratic(DTR, LTR, C, piT, rebalance, d=2, K=1):
-    
-    DTREXT=numpy.vstack([DTR, numpy.ones((1,DTR.shape[1]))])
-
-    #compute Z to be used to do compute: zi(wTx+b)
+def train_SVM_quadratic(DTR, LTR, C, piT, rebalance, K=1):
     Z=numpy.zeros(LTR.shape)
     Z[LTR==1] = 1
     Z[LTR==0] =-1
     
-    #compute matrix H which is inside the dual formula
-    #Hij=zizjk(xiTxj) (xi and xj are vectors)
-    kernel=((numpy.dot(DTREXT.T,DTREXT)+1)**d) + K
-    H=mcol(Z) * mrow(Z) * kernel #mcol(Z) * mrow(Z) result in a matrix of the same dimension of G?
+    kernel= ((numpy.dot(DTR.T,DTR)+1)**2)+K #K account for byas term
+    H=mcol(Z) *mrow(Z) * kernel
     
     def compute_JDual_and_gradient(alpha):
         Ha = numpy.dot(H,mcol(alpha))
@@ -354,7 +340,6 @@ def train_SVM_Quadratic(DTR, LTR, C, piT, rebalance, d=2, K=1):
         Ldual, grad = compute_JDual_and_gradient(alpha)
         return -Ldual, -grad
 
-    
     if rebalance:
         DTR0 = DTR[:, LTR==0]
         DTR1 = DTR[:, LTR==1]
@@ -382,22 +367,19 @@ def train_SVM_Quadratic(DTR, LTR, C, piT, rebalance, d=2, K=1):
                                                        maxfun= 100000, #these last 3 parameters define how good will be the computation  
                                                       )
 
-    wStar = numpy.dot(DTREXT, mcol(alphaStar)*mcol(Z))
+    return  alphaStar, Z
 
-    return wStar, alphaStar
-
-K=1
 K_fold=5
-def compute_score_quadratic(DTE,DTR,LTR, Options):
+def compute_score_quadratic(DTE,DTR,LTR, Options, c=1, d=2, K=1):
     if Options['C']== None:
         Options['C'] = 0
     if Options['piT'] == None:
         Options['piT']=0.5
     if Options['rebalance']==None:
         Options['rebalance']=True
-    w,_alfa= train_SVM_Quadratic(DTR, LTR, Options['C'], Options['piT'], Options['rebalance'])
-    DTE_EXT=numpy.vstack([DTE, numpy.ones((1,DTE.shape[1]))])
-    score = numpy.dot(w.T,DTE_EXT)
+    kernel= ((numpy.dot(DTR.T,DTE)+c)**d)+K #K account for byas term
+    alphaStar, Z= train_SVM_quadratic(DTR, LTR, Options['C'], Options['piT'], Options['rebalance'] )
+    score= numpy.dot(alphaStar * Z, kernel)
     return score.ravel()
     
 def plot_quadratic_minDCF_wrt_C(DTR,LTR,gaussianize, DEV=None, LEV=None, evaluation=False):

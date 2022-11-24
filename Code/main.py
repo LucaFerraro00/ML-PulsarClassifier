@@ -18,60 +18,58 @@ import fusion
 k=5 #kfold
   
 def main():
-    #D,L = analys.loda_training_set('../Data/Train.txt')
-    #D= analys.scale_ZNormalization(D)[0]
+    D,L = analys.loda_training_set('../Data/Train.txt')
+    D= analys.scale_ZNormalization(D)[0]
     #D_gaussianized= analys.gaussianize_training(D)
-    evaluation.evaluation()
 
-    """
     gaussianize= False 
-    plot(D, L, gaussianize) #plot raw features before gaussianization
-    #D_gaussianized= analys.gaussianize_training(D)
-    gaussianize= True
-    #plot(D_gaussianized, L, gaussianize) #plot gaussianized features    
+    # plot(D, L, gaussianize) #plot raw features before gaussianization
+    # #D_gaussianized= analys.gaussianize_training(D)
+    # gaussianize= True
+    # #plot(D_gaussianized, L, gaussianize) #plot gaussianized features    
     
-    #evaluate models on raw data
+    # #evaluate models on raw data
     print("EVALUATION WITHOUT GAUSSIANIZATION")
-    gaussianize=False
-    #train_evaluate_gaussian_models(D, L)
+    # gaussianize=False
+    # #train_evaluate_gaussian_models(D, L)
     
-    #log_reg.plot_minDCF_wrt_lamda(D, L, gaussianize)
-    log_reg.quadratic_plot_minDCF_wrt_lamda(D, L, gaussianize)
-    #train_evaluate_log_reg(D, L)
+    # log_reg.plot_minDCF_wrt_lamda(D, L, gaussianize)
+    # log_reg.quadratic_plot_minDCF_wrt_lamda(D, L, gaussianize)
+    # train_evaluate_log_reg(D, L)
     
-    #svm.plot_linear_minDCF_wrt_C(D, L, gaussianize)
-    svm.plot_quadratic_minDCF_wrt_C(D, L, gaussianize)
-    svm.plot_RBF_minDCF_wrt_C(D, L, gaussianize)
+    # svm.plot_linear_minDCF_wrt_C(D, L, gaussianize)
+    # svm.plot_quadratic_minDCF_wrt_C(D, L, gaussianize)
+    # svm.plot_RBF_minDCF_wrt_C(D, L, gaussianize)
     train_evaluate_svm(D,L)
     
-    gmm.plot_minDCF_wrt_components(D, D_gaussianized, L)
-    train_evaluate_gmm(D, L)
+    # gmm.plot_minDCF_wrt_components(D, D_gaussianized, L)
+    # train_evaluate_gmm(D, L)
     
-    #evaluate models on gaussianized data  
-    print('\n')
-    print("EVALUATION WITH GAUSSIANIZATION")
-    gaussianize=True
-    #train_evaluate_gaussian_models(D_gaussianized, L)
+    # evaluate models on gaussianized data  
+    # print('\n')
+    # print("EVALUATION WITH GAUSSIANIZATION")
+    # gaussianize=True
+    # train_evaluate_gaussian_models(D_gaussianized, L)
     
-    #log_reg.plot_minDCF_wrt_lamda(D_gaussianized, L, gaussianize)
-    log_reg.quadratic_plot_minDCF_wrt_lamda(D_gaussianized, L, gaussianize)
-    #train_evaluate_log_reg(D_gaussianized, L)
+    # log_reg.plot_minDCF_wrt_lamda(D_gaussianized, L, gaussianize)
+    # log_reg.quadratic_plot_minDCF_wrt_lamda(D_gaussianized, L, gaussianize)
+    # train_evaluate_log_reg(D_gaussianized, L)
     
-    #svm.plot_linear_minDCF_wrt_C(D_gaussianized, L, gaussianize)
-    #svm.plot_quadratic_minDCF_wrt_C(D_gaussianized, L, gaussianize)
-    #svm.plot_RBF_minDCF_wrt_C(D_gaussianized, L, gaussianize)
-    #train_evaluate_svm(D_gaussianized,L)
+    # svm.plot_linear_minDCF_wrt_C(D_gaussianized, L, gaussianize)
+    # svm.plot_quadratic_minDCF_wrt_C(D_gaussianized, L, gaussianize)
+    # svm.plot_RBF_minDCF_wrt_C(D_gaussianized, L, gaussianize)
+    # train_evaluate_svm(D_gaussianized,L)
     
-    train_evaluate_gmm(D_gaussianized, L)
+    # train_evaluate_gmm(D_gaussianized, L)
     
-    validate.two_bests_roc(D, L) #model selection
+    # validate.two_bests_roc(D, L) #model selection
     
-    #calibration(D, L) #score calibration
+    # #calibration(D, L) #score calibration
     
-    fusion.validate_fused_scores(D, L)
+    # fusion.validate_fused_scores(D, L)
     
-    evaluation.evaluation(D,D_gaussianized,L)
-    """
+    # evaluation.evaluation(D,D_gaussianized,L)
+    
     
 
     
@@ -166,28 +164,28 @@ def train_evaluate_svm(D,L):
     m = 8
     while m>=5:
         
-        if m < 8:
-            D = analys.pca(m, D)[0]
-            print ("##########################################")
-            print ("############ SVM LINEAR with m = %d #######" %m)
-            print ("##########################################")
-        else:
-            print ("##########################################")
-            print ("######## SVM LINEAR with NO PCA ##########")
-            print ("##########################################")
+        # if m < 8:
+        #     D = analys.pca(m, D)[0]
+        #     print ("##########################################")
+        #     print ("############ SVM LINEAR with m = %d #######" %m)
+        #     print ("##########################################")
+        # else:
+        #     print ("##########################################")
+        #     print ("######## SVM LINEAR with NO PCA ##########")
+        #     print ("##########################################")
             
-        Options['C']=1
-        for piT in [0.1, 0.5, 0.9]:
-            for pi in [0.1, 0.5, 0.9]:
-                Options['piT']=piT
-                Options['rebalance']=True
-                min_dcf_kfold = validate.kfold(D, L, k, pi, svm.compute_score_linear, Options)[0]
-                print("Linear SVM -piT = %f -C=%f - pi = %f - minDCF = %f" %(piT,Options['C'], pi,min_dcf_kfold))
+        # Options['C']=1
+        # for piT in [0.1, 0.5, 0.9]:
+        #     for pi in [0.1, 0.5, 0.9]:
+        #         Options['piT']=piT
+        #         Options['rebalance']=True
+        #         min_dcf_kfold = validate.kfold(D, L, k, pi, svm.compute_score_linear, Options)[0]
+        #         print("Linear SVM -piT = %f -C=%f - pi = %f - minDCF = %f" %(piT,Options['C'], pi,min_dcf_kfold))
                 
-        Options['rebalance']=False
-        for pi in [0.1, 0.5, 0.9]:
-                min_dcf_kfold = validate.kfold(D, L, k, pi, svm.compute_score_linear, Options)[0]
-                print("Linear SVM without rebalancing -C=%f - pi = %f - minDCF = %f" %(Options['C'], pi,min_dcf_kfold)) 
+        # Options['rebalance']=False
+        # for pi in [0.1, 0.5, 0.9]:
+        #         min_dcf_kfold = validate.kfold(D, L, k, pi, svm.compute_score_linear, Options)[0]
+        #         print("Linear SVM without rebalancing -C=%f - pi = %f - minDCF = %f" %(Options['C'], pi,min_dcf_kfold)) 
           
         if m < 8:
             D = analys.pca(m, D)[0]
