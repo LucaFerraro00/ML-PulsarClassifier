@@ -69,33 +69,64 @@ def compute_score(DTE,DTR,LTR, Options):
     scores = numpy.dot(_w.T,DTE)+_b
     return scores
 
-def plot_minDCF_wrt_lamda(D,L, gaussianize):
+def plot_minDCF_wrt_lamda(DTR,LTR, gaussianize, DEV=None, LEV=None, evaluation=False):
     min_DCFs=[]
     for pi in [0.1, 0.5, 0.9]:
         lambdas = numpy.logspace(-6,3, num = 10)
         for l in lambdas:
                 Options= {'lambdaa':l,
                           'piT':0.5}
-                min_dcf_kfold = validate.kfold(D, L, K, pi, compute_score, Options )[0]
+                min_dcf_kfold = validate.kfold(DTR, LTR, K, pi, compute_score, Options )[0]
                 min_DCFs.append(min_dcf_kfold)
 
     min_DCFs_p0 = min_DCFs[0:10] #min_DCF results with prior = 0.1
     min_DCFs_p1 = min_DCFs[10:20] #min_DCF results with prior = 0.5
     min_DCFs_p2 = min_DCFs[20:30] #min_DCF results with prior = 0.9
 
-    plt.figure()
-    plt.plot(lambdas, min_DCFs_p0, label='prior=0.1')
-    plt.plot(lambdas, min_DCFs_p1, label='prior=0.5')
-    plt.plot(lambdas, min_DCFs_p2, label='prior=0.9')
-    plt.legend()
-    plt.semilogx()
-    plt.xlabel("λ")
-    plt.ylabel("min_DCF")
-    if gaussianize:
-        plt.savefig("../Images/min_DCF_lamda_log_reg_gaussianized.jpg")
-    else:
-        plt.savefig("../Images/min_DCF_lamda_log_reg_raw.jpg")
-    plt.show()
+    if evaluation==False: #plot onlly result for validation set
+        plt.figure()
+        plt.plot(lambdas, min_DCFs_p0, label='prior=0.1')
+        plt.plot(lambdas, min_DCFs_p1, label='prior=0.5')
+        plt.plot(lambdas, min_DCFs_p2, label='prior=0.9')
+        plt.legend()
+        plt.semilogx()
+        plt.xlabel("λ")
+        plt.ylabel("min_DCF")
+        if gaussianize:
+            plt.savefig("../Images/min_DCF_lamda_log_reg_gaussianized.jpg")
+        else:
+            plt.savefig("../Images/min_DCF_lamda_log_reg_raw.jpg")
+    
+    else: #compare plot of validation and evaluation set
+        min_DCFs=[]
+        for pi in [0.1, 0.5, 0.9]:
+            lambdas = numpy.logspace(-6,3, num = 10)
+            for l in lambdas:
+                    Options= {'lambdaa':l,
+                              'piT':0.5}
+                    scores_linear_log_reg = compute_score(DEV, DTR, LTR, Options)
+                    min_DCFs.append(validate.compute_min_DCF(scores_linear_log_reg, LEV, pi, 1, 1))
+                    
+        min_DCFs_p0_ev = min_DCFs[0:10] #min_DCF results with prior = 0.1
+        min_DCFs_p1_ev = min_DCFs[10:20] #min_DCF results with prior = 0.5
+        min_DCFs_p2_ev = min_DCFs[20:30] #min_DCF results with prior = 0.9
+        plt.figure()
+        plt.plot(lambdas, min_DCFs_p0, '--b',  label='prior=0.1-val')
+        plt.plot(lambdas, min_DCFs_p1, '--r', label='prior=0.5-val')
+        plt.plot(lambdas, min_DCFs_p2, '--g', label='prior=0.9-val')
+        plt.plot(lambdas, min_DCFs_p0_ev, 'b', label='prior=0.1-eval')
+        plt.plot(lambdas, min_DCFs_p1_ev, 'r', label='prior=0.5-eval')
+        plt.plot(lambdas, min_DCFs_p2_ev, 'g', label='prior=0.9-eval')
+        plt.semilogx()
+        plt.xlabel("λ")
+        plt.ylabel("min_DCF")
+        plt.legend()
+        plt.show()
+        if gaussianize:
+            plt.savefig("../Images/min_DCF_lamda_log_reg_ev_val_gaussianized.jpg")
+        else:
+            plt.savefig("../Images/min_DCF_lamda_log_reg_ev_val_raw.jpg")
+            
     return min_DCFs
 
 
@@ -136,7 +167,7 @@ def compute_score_quadratic(DTE,DTR,LTR, Options):
     scores = numpy.dot(_w.T,DTE)+_b
     return scores
     
-def quadratic_plot_minDCF_wrt_lamda(D,L, gaussianize):
+def quadratic_plot_minDCF_wrt_lamda(DTR,LTR, gaussianize, DEV=None, LEV=None, evaluation=False):
     print ('Quadratic Logistic Regression: computation for plot minDCF wt lambda started...')
     min_DCFs=[]
     for pi in [0.1, 0.5, 0.9]:
@@ -144,7 +175,7 @@ def quadratic_plot_minDCF_wrt_lamda(D,L, gaussianize):
         for l in lambdas:
                 Options= {'lambdaa':l,
                           'piT':0.5}
-                min_dcf_kfold = validate.kfold(D, L, K, pi, compute_score_quadratic, Options )[0]
+                min_dcf_kfold = validate.kfold(DTR, LTR, K, pi, compute_score_quadratic, Options )[0]
                 print ("computed min_dcf for pi=%f -lambda=%f - results min_dcf=%f "%(pi, l,min_dcf_kfold))
                 min_DCFs.append(min_dcf_kfold)
 
@@ -152,17 +183,49 @@ def quadratic_plot_minDCF_wrt_lamda(D,L, gaussianize):
     min_DCFs_p1 = min_DCFs[10:20] #min_DCF results with prior = 0.5
     min_DCFs_p2 = min_DCFs[20:30] #min_DCF results with prior = 0.9
 
-    plt.figure()
-    plt.plot(lambdas, min_DCFs_p0, label='prior=0.1')
-    plt.plot(lambdas, min_DCFs_p1, label='prior=0.5')
-    plt.plot(lambdas, min_DCFs_p2, label='prior=0.9')
-    plt.legend()
-    plt.semilogx()
-    plt.xlabel("λ")
-    plt.ylabel("min_DCF")
-    if gaussianize:
-        plt.savefig("../Images/min_DCF_lamda_quadratic_log_reg_gaussianized.pdf")
-    else:
-        plt.savefig("../Images/min_DCF_lamda_quadratic_log_reg_raw.pdf")
-    plt.show()
+    if evaluation==False: #plot onlly result for validation set
+        plt.figure()
+        plt.plot(lambdas, min_DCFs_p0, label='prior=0.1')
+        plt.plot(lambdas, min_DCFs_p1, label='prior=0.5')
+        plt.plot(lambdas, min_DCFs_p2, label='prior=0.9')
+        plt.legend()
+        plt.semilogx()
+        plt.xlabel("λ")
+        plt.ylabel("min_DCF")
+        if gaussianize:
+            plt.savefig("../Images/min_DCF_lamda_quadratic_log_reg_gaussianized.pdf")
+        else:
+            plt.savefig("../Images/min_DCF_lamda_quadratic_log_reg_raw.pdf")
+        plt.show()
+        
+    else: #compare plot of validation and evaluation set
+        min_DCFs=[]
+        for pi in [0.1, 0.5, 0.9]:
+            lambdas = numpy.logspace(-6,3, num = 10)
+            for l in lambdas:
+                    Options= {'lambdaa':l,
+                              'piT':0.5}
+                    scores_quadraric_log_reg = compute_score_quadratic(DEV, DTR, LTR, Options)
+                    min_DCFs.append(validate.compute_min_DCF(scores_quadraric_log_reg, LEV, pi, 1, 1))
+                    
+        min_DCFs_p0_ev = min_DCFs[0:10] #min_DCF results with prior = 0.1
+        min_DCFs_p1_ev = min_DCFs[10:20] #min_DCF results with prior = 0.5
+        min_DCFs_p2_ev = min_DCFs[20:30] #min_DCF results with prior = 0.9
+        plt.figure()
+        plt.plot(lambdas, min_DCFs_p0, '--b',  label='prior=0.1-val')
+        plt.plot(lambdas, min_DCFs_p1, '--r', label='prior=0.5-val')
+        plt.plot(lambdas, min_DCFs_p2, '--g', label='prior=0.9-val')
+        plt.plot(lambdas, min_DCFs_p0_ev, 'b', label='prior=0.1-eval')
+        plt.plot(lambdas, min_DCFs_p1_ev, 'r', label='prior=0.5-eval')
+        plt.plot(lambdas, min_DCFs_p2_ev, 'g', label='prior=0.9-eval')
+        plt.semilogx()
+        plt.xlabel("λ")
+        plt.ylabel("min_DCF")
+        plt.legend()
+        plt.show()
+        if gaussianize:
+            plt.savefig("../Images/min_DCF_lamda_quadratic_log_reg_ev_val_gaussianized.jpg")
+        else:
+            plt.savefig("../Images/min_DCF_lamda_quadratic_log_reg_ev_val_raw.jpg")
+    
     return min_DCFs

@@ -18,11 +18,11 @@ import fusion
 k=5 #kfold
   
 def main():
-    D,L = analys.loda_training_set('../Data/Train.txt')
-    D= analys.scale_ZNormalization(D)
-    D_gaussianized= analys.gaussianize_training(D)
-    train_evaluate_log_reg(D_gaussianized, L)
-    
+    #D,L = analys.loda_training_set('../Data/Train.txt')
+    #D= analys.scale_ZNormalization(D)[0]
+    #D_gaussianized= analys.gaussianize_training(D)
+    evaluation.evaluation()
+
     """
     gaussianize= False 
     plot(D, L, gaussianize) #plot raw features before gaussianization
@@ -70,7 +70,7 @@ def main():
     
     fusion.validate_fused_scores(D, L)
     
-    evaluation.evaluation(D,L)
+    evaluation.evaluation(D,D_gaussianized,L)
     """
     
 
@@ -88,7 +88,7 @@ def train_evaluate_gaussian_models(D,L):
     m = 8
     while m>=5:
         if m < 8:
-            D = analys.pca(m, D)
+            D = analys.pca(m, D)[0]
             print ("##########################################")
             print ("##### Gaussian classifiers with m = %d ####" %m)
             print ("##########################################")
@@ -117,9 +117,9 @@ def train_evaluate_log_reg(D,L):
     }  
     m = 8
     while m>=5:
-        '''
+        
         if m < 8:
-            D = analys.pca(m, D)
+            D = analys.pca(m, D)[0]
             print ("############################################")
             print ("### Linear Logistic regression with m = %d ##" %m)
             print ("###########################################")
@@ -134,9 +134,9 @@ def train_evaluate_log_reg(D,L):
             for pi in [0.1, 0.5, 0.9]:
                 min_dcf_kfold = validate.kfold(D, L, k, pi, log_reg.compute_score, Options)[0]
                 print(" Logistic reggression -piT = %f - pi = %f  minDCF = %f" %(Options['piT'], pi,min_dcf_kfold))
-        '''       
+             
         if m < 8:
-            D = analys.pca(m, D)
+            D = analys.pca(m, D)[0]
             print ("################################################")
             print ("### Quadratic Logistic regression with m = %d ##" %m)
             print ("###############################################")
@@ -163,11 +163,11 @@ def train_evaluate_svm(D,L):
         'gamma':None,
         'rebalance':None
         }  
-    m = 7
+    m = 8
     while m>=5:
-        '''
+        
         if m < 8:
-            D = analys.pca(m, D)
+            D = analys.pca(m, D)[0]
             print ("##########################################")
             print ("############ SVM LINEAR with m = %d #######" %m)
             print ("##########################################")
@@ -188,9 +188,9 @@ def train_evaluate_svm(D,L):
         for pi in [0.1, 0.5, 0.9]:
                 min_dcf_kfold = validate.kfold(D, L, k, pi, svm.compute_score_linear, Options)[0]
                 print("Linear SVM without rebalancing -C=%f - pi = %f - minDCF = %f" %(Options['C'], pi,min_dcf_kfold)) 
-         '''      
+          
         if m < 8:
-            D = analys.pca(m, D)
+            D = analys.pca(m, D)[0]
             print ("##########################################")
             print ("########## SVM QUADRATIC with m = %d ######" %m)
             print ("##########################################")
@@ -210,9 +210,9 @@ def train_evaluate_svm(D,L):
         for pi in [0.1, 0.5, 0.9]:
             min_dcf_kfold = validate.kfold(D, L, k, pi, svm.compute_score_quadratic, Options)[0]
             print("Quadratic SVM without rebalancing -C=%f - pi = %f - minDCF = %f" %(Options['C'], pi,min_dcf_kfold))
-            '''    
+           
         if m < 8:
-            D = analys.pca(m, D)
+            D = analys.pca(m, D)[0]
             print ("##########################################")
             print ("######### SVM RBF with m = %d #############" %m)
             print ("##########################################")
@@ -234,7 +234,7 @@ def train_evaluate_svm(D,L):
             pass
             min_dcf_kfold = validate.kfold(D, L, k, pi, svm.compute_score_RBF, Options)[0]
             print("RBF SVM without rebalancing -gamma =%f -C=%f - pi = %f -> minDCF = %f" %(Options['gamma'], Options['C'], pi,min_dcf_kfold))
-        '''        
+              
         m = m-1
         
 def train_evaluate_gmm(D,L):
@@ -245,7 +245,7 @@ def train_evaluate_gmm(D,L):
     m = 8
     while m>=5:
         if m < 8:
-            D = analys.pca(m, D)
+            D = analys.pca(m, D)[0]
             print ("##########################################")
             print ("############# GMM with m = %d ##############" %m)
             print ("##########################################")
@@ -260,14 +260,17 @@ def train_evaluate_gmm(D,L):
                 print(" gmm %s -components=%d - pi = %f --> minDCF = %f" %(Options['Type'], 2**Options['iterations'], pi,min_dcf_kfold))
                 
                 Options['Type']='diag'
+                Options['iterations']= 5
                 min_dcf_kfold = validate.kfold(D, L, k, pi, gmm.compute_score, Options)[0]
                 print(" gmm %s -components=%d - pi = %f --> minDCF = %f" %(Options['Type'], 2**Options['iterations'], pi,min_dcf_kfold))
                 
                 Options['Type']='full-tied'
+                Options['iterations']= 6
                 min_dcf_kfold = validate.kfold(D, L, k, pi, gmm.compute_score, Options)[0]
                 print(" gmm %s -components=%d - pi = %f --> minDCF = %f" %(Options['Type'], 2**Options['iterations'], pi,min_dcf_kfold))
                 
-                Options['Type']='full-diag'
+                Options['Type']='diag-tied'
+                Options['iterations']= 3
                 min_dcf_kfold = validate.kfold(D, L, k, pi, gmm.compute_score, Options)[0]
                 print(" gmm %s -components=%d - pi = %f --> minDCF = %f" %(Options['Type'], 2**Options['iterations'], pi,min_dcf_kfold))
             

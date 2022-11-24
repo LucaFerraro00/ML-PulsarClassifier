@@ -1,0 +1,122 @@
+-----------EVALUATION WITH RAW FEATURES STARTED...-----------------
+##########################################
+#### Gaussian classifiers with NO PCA ####
+##########################################
+full covariance gaussian raw features no PCA - pi = 0.100000 --> min_DCF= 0.282708
+diag covariance gaussian raw features no PCA - pi = 0.100000 --> min_DCF= 0.329677
+full-tied covariance gaussian raw features no PCA - pi = 0.100000 --> min_DCF= 0.207191
+full-diag covariance gaussian raw features no PCA - pi = 0.100000 --> min_DCF= 0.262440
+full covariance gaussian raw features no PCA - pi = 0.500000 --> min_DCF= 0.140498
+diag covariance gaussian raw features no PCA - pi = 0.500000 --> min_DCF= 0.184963
+full-tied covariance gaussian raw features no PCA - pi = 0.500000 --> min_DCF= 0.109502
+full-diag covariance gaussian raw features no PCA - pi = 0.500000 --> min_DCF= 0.151584
+full covariance gaussian raw features no PCA - pi = 0.900000 --> min_DCF= 0.645683
+diag covariance gaussian raw features no PCA - pi = 0.900000 --> min_DCF= 0.620595
+full-tied covariance gaussian raw features no PCA - pi = 0.900000 --> min_DCF= 0.590616
+full-diag covariance gaussian raw features no PCA - pi = 0.900000 --> min_DCF= 0.543735
+##########################################
+##### Gaussian classifiers with m = 7 ####
+##########################################
+full covariance gaussian raw features no PCA - pi = 0.100000 --> min_DCF= 0.292922
+diag covariance gaussian raw features no PCA - pi = 0.100000 --> min_DCF= 0.514388
+full-tied covariance gaussian raw features no PCA - pi = 0.100000 --> min_DCF= 0.208296
+full-diag covariance gaussian raw features no PCA - pi = 0.100000 --> min_DCF= 0.256643
+full covariance gaussian raw features no PCA - pi = 0.500000 --> min_DCF= 0.138671
+diag covariance gaussian raw features no PCA - pi = 0.500000 --> min_DCF= 0.201420
+full-tied covariance gaussian raw features no PCA - pi = 0.500000 --> min_DCF= 0.109502
+full-diag covariance gaussian raw features no PCA - pi = 0.500000 --> min_DCF= 0.140603
+full covariance gaussian raw features no PCA - pi = 0.900000 --> min_DCF= 0.573886
+diag covariance gaussian raw features no PCA - pi = 0.900000 --> min_DCF= 0.755376
+full-tied covariance gaussian raw features no PCA - pi = 0.900000 --> min_DCF= 0.587465
+full-diag covariance gaussian raw features no PCA - pi = 0.900000 --> min_DCF= 0.556175
+##########################################
+##### Gaussian classifiers with m = 6 ####
+##########################################
+full covariance gaussian raw features no PCA - pi = 0.100000 --> min_DCF= 0.276873
+diag covariance gaussian raw features no PCA - pi = 0.100000 --> min_DCF= 0.544162
+full-tied covariance gaussian raw features no PCA - pi = 0.100000 --> min_DCF= 0.243905
+full-diag covariance gaussian raw features no PCA - pi = 0.100000 --> min_DCF= 0.293475
+full covariance gaussian raw features no PCA - pi = 0.500000 --> min_DCF= 0.146006
+diag covariance gaussian raw features no PCA - pi = 0.500000 --> min_DCF= 0.217579
+full-tied covariance gaussian raw features no PCA - pi = 0.500000 --> min_DCF= 0.132616
+full-diag covariance gaussian raw features no PCA - pi = 0.500000 --> min_DCF= 0.158586
+full covariance gaussian raw features no PCA - pi = 0.900000 --> min_DCF= 0.599660
+diag covariance gaussian raw features no PCA - pi = 0.900000 --> min_DCF= 0.725219
+full-tied covariance gaussian raw features no PCA - pi = 0.900000 --> min_DCF= 0.592741
+full-diag covariance gaussian raw features no PCA - pi = 0.900000 --> min_DCF= 0.592707
+##########################################
+##### Gaussian classifiers with m = 5 ####
+##########################################
+full covariance gaussian raw features no PCA - pi = 0.100000 --> min_DCF= 0.249387
+diag covariance gaussian raw features no PCA - pi = 0.100000 --> min_DCF= 0.507568
+full-tied covariance gaussian raw features no PCA - pi = 0.100000 --> min_DCF= 0.253212
+full-diag covariance gaussian raw features no PCA - pi = 0.100000 --> min_DCF= 0.310392
+full covariance gaussian raw features no PCA - pi = 0.500000 --> min_DCF= 0.151562
+diag covariance gaussian raw features no PCA - pi = 0.500000 --> min_DCF= 0.211441
+full-tied covariance gaussian raw features no PCA - pi = 0.500000 --> min_DCF= 0.142540
+full-diag covariance gaussian raw features no PCA - pi = 0.500000 --> min_DCF= 0.163112
+full covariance gaussian raw features no PCA - pi = 0.900000 --> min_DCF= 0.632373
+diag covariance gaussian raw features no PCA - pi = 0.900000 --> min_DCF= 0.706531
+full-tied covariance gaussian raw features no PCA - pi = 0.900000 --> min_DCF= 0.595708
+full-diag covariance gaussian raw features no PCA - pi = 0.900000 --> min_DCF= 0.591396
+-----------EVALUATION ON GAUSSIANIZED FEATURES STARTED...-----------------
+##########################################
+#### Gaussian classifiers with NO PCA ####
+##########################################
+full covariance gaussian raw features no PCA - pi = 0.100000 --> min_DCF= 0.241145
+diag covariance gaussian raw features no PCA - pi = 0.100000 --> min_DCF= 0.285351
+full-tied covariance gaussian raw features no PCA - pi = 0.100000 --> min_DCF= 0.221309
+full-diag covariance gaussian raw features no PCA - pi = 0.100000 --> min_DCF= 0.300612
+full covariance gaussian raw features no PCA - pi = 0.500000 --> min_DCF= 0.150555
+diag covariance gaussian raw features no PCA - pi = 0.500000 --> min_DCF= 0.154147
+full-tied covariance gaussian raw features no PCA - pi = 0.500000 --> min_DCF= 0.125316
+full-diag covariance gaussian raw features no PCA - pi = 0.500000 --> min_DCF= 0.158218
+full covariance gaussian raw features no PCA - pi = 0.900000 --> min_DCF= 0.621851
+diag covariance gaussian raw features no PCA - pi = 0.900000 --> min_DCF= 0.574142
+full-tied covariance gaussian raw features no PCA - pi = 0.900000 --> min_DCF= 0.539853
+full-diag covariance gaussian raw features no PCA - pi = 0.900000 --> min_DCF= 0.568365
+##########################################
+##### Gaussian classifiers with m = 7 ####
+##########################################
+full covariance gaussian raw features no PCA - pi = 0.100000 --> min_DCF= 0.246429
+diag covariance gaussian raw features no PCA - pi = 0.100000 --> min_DCF= 0.249939
+full-tied covariance gaussian raw features no PCA - pi = 0.100000 --> min_DCF= 0.229117
+full-diag covariance gaussian raw features no PCA - pi = 0.100000 --> min_DCF= 0.241854
+full covariance gaussian raw features no PCA - pi = 0.500000 --> min_DCF= 0.151080
+diag covariance gaussian raw features no PCA - pi = 0.500000 --> min_DCF= 0.153433
+full-tied covariance gaussian raw features no PCA - pi = 0.500000 --> min_DCF= 0.125636
+full-diag covariance gaussian raw features no PCA - pi = 0.500000 --> min_DCF= 0.127520
+full covariance gaussian raw features no PCA - pi = 0.900000 --> min_DCF= 0.639747
+diag covariance gaussian raw features no PCA - pi = 0.900000 --> min_DCF= 0.621866
+full-tied covariance gaussian raw features no PCA - pi = 0.900000 --> min_DCF= 0.522677
+full-diag covariance gaussian raw features no PCA - pi = 0.900000 --> min_DCF= 0.518182
+##########################################
+##### Gaussian classifiers with m = 6 ####
+##########################################
+full covariance gaussian raw features no PCA - pi = 0.100000 --> min_DCF= 0.248677
+diag covariance gaussian raw features no PCA - pi = 0.100000 --> min_DCF= 0.250728
+full-tied covariance gaussian raw features no PCA - pi = 0.100000 --> min_DCF= 0.240632
+full-diag covariance gaussian raw features no PCA - pi = 0.100000 --> min_DCF= 0.251043
+full covariance gaussian raw features no PCA - pi = 0.500000 --> min_DCF= 0.146668
+diag covariance gaussian raw features no PCA - pi = 0.500000 --> min_DCF= 0.150388
+full-tied covariance gaussian raw features no PCA - pi = 0.500000 --> min_DCF= 0.128961
+full-diag covariance gaussian raw features no PCA - pi = 0.500000 --> min_DCF= 0.135109
+full covariance gaussian raw features no PCA - pi = 0.900000 --> min_DCF= 0.628079
+diag covariance gaussian raw features no PCA - pi = 0.900000 --> min_DCF= 0.593516
+full-tied covariance gaussian raw features no PCA - pi = 0.900000 --> min_DCF= 0.518986
+full-diag covariance gaussian raw features no PCA - pi = 0.900000 --> min_DCF= 0.534505
+##########################################
+##### Gaussian classifiers with m = 5 ####
+##########################################
+full covariance gaussian raw features no PCA - pi = 0.100000 --> min_DCF= 0.254829
+diag covariance gaussian raw features no PCA - pi = 0.100000 --> min_DCF= 0.253685
+full-tied covariance gaussian raw features no PCA - pi = 0.100000 --> min_DCF= 0.240869
+full-diag covariance gaussian raw features no PCA - pi = 0.100000 --> min_DCF= 0.250649
+full covariance gaussian raw features no PCA - pi = 0.500000 --> min_DCF= 0.148683
+diag covariance gaussian raw features no PCA - pi = 0.500000 --> min_DCF= 0.147938
+full-tied covariance gaussian raw features no PCA - pi = 0.500000 --> min_DCF= 0.129084
+full-diag covariance gaussian raw features no PCA - pi = 0.500000 --> min_DCF= 0.135477
+full covariance gaussian raw features no PCA - pi = 0.900000 --> min_DCF= 0.625988
+diag covariance gaussian raw features no PCA - pi = 0.900000 --> min_DCF= 0.586562
+full-tied covariance gaussian raw features no PCA - pi = 0.900000 --> min_DCF= 0.522912
+full-diag covariance gaussian raw features no PCA - pi = 0.900000 --> min_DCF= 0.538799

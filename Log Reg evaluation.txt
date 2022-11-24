@@ -1,0 +1,172 @@
+-----------EVALUATION WITH RAW FEATURES STARTED...-----------------
+##########################################
+#### Logistic Regression with NO PCA ####
+##########################################
+linear log reg -lamda = 10^-6 -piT=0.100000 - pi = 0.100000 --> min_DCF= 0.198634
+Quadratic log reg -lamda = 10^-6 -piT=0.100000 - pi = 0.100000 --> min_DCF= 0.204983
+linear log reg -lamda = 10^-6 -piT=0.100000 - pi = 0.500000 --> min_DCF= 0.109980
+Quadratic log reg -lamda = 10^-6 -piT=0.100000 - pi = 0.500000 --> min_DCF= 0.100480
+linear log reg -lamda = 10^-6 -piT=0.100000 - pi = 0.900000 --> min_DCF= 0.530255
+Quadratic log reg -lamda = 10^-6 -piT=0.100000 - pi = 0.900000 --> min_DCF= 0.455446
+linear log reg -lamda = 10^-6 -piT=0.500000 - pi = 0.100000 --> min_DCF= 0.198516
+Quadratic log reg -lamda = 10^-6 -piT=0.500000 - pi = 0.100000 --> min_DCF= 0.209242
+linear log reg -lamda = 10^-6 -piT=0.500000 - pi = 0.500000 --> min_DCF= 0.107320
+Quadratic log reg -lamda = 10^-6 -piT=0.500000 - pi = 0.500000 --> min_DCF= 0.108775
+linear log reg -lamda = 10^-6 -piT=0.500000 - pi = 0.900000 --> min_DCF= 0.542207
+Quadratic log reg -lamda = 10^-6 -piT=0.500000 - pi = 0.900000 --> min_DCF= 0.422267
+linear log reg -lamda = 10^-6 -piT=0.900000 - pi = 0.100000 --> min_DCF= 0.202577
+Quadratic log reg -lamda = 10^-6 -piT=0.900000 - pi = 0.100000 --> min_DCF= 0.221664
+linear log reg -lamda = 10^-6 -piT=0.900000 - pi = 0.500000 --> min_DCF= 0.115234
+Quadratic log reg -lamda = 10^-6 -piT=0.900000 - pi = 0.500000 --> min_DCF= 0.115733
+linear log reg -lamda = 10^-6 -piT=0.900000 - pi = 0.900000 --> min_DCF= 0.508720
+Quadratic log reg -lamda = 10^-6 -piT=0.900000 - pi = 0.900000 --> min_DCF= 0.437367
+##########################################
+##### Logistic Regression with m = 7 ####
+##########################################
+linear log reg -lamda = 10^-6 -piT=0.100000 - pi = 0.100000 --> min_DCF= 0.198989
+Quadratic log reg -lamda = 10^-6 -piT=0.100000 - pi = 0.100000 --> min_DCF= 0.206127
+linear log reg -lamda = 10^-6 -piT=0.100000 - pi = 0.500000 --> min_DCF= 0.109756
+Quadratic log reg -lamda = 10^-6 -piT=0.100000 - pi = 0.500000 --> min_DCF= 0.102071
+linear log reg -lamda = 10^-6 -piT=0.100000 - pi = 0.900000 --> min_DCF= 0.534103
+Quadratic log reg -lamda = 10^-6 -piT=0.100000 - pi = 0.900000 --> min_DCF= 0.471714
+linear log reg -lamda = 10^-6 -piT=0.500000 - pi = 0.100000 --> min_DCF= 0.200685
+Quadratic log reg -lamda = 10^-6 -piT=0.500000 - pi = 0.100000 --> min_DCF= 0.208256
+linear log reg -lamda = 10^-6 -piT=0.500000 - pi = 0.500000 --> min_DCF= 0.105852
+Quadratic log reg -lamda = 10^-6 -piT=0.500000 - pi = 0.500000 --> min_DCF= 0.106838
+linear log reg -lamda = 10^-6 -piT=0.500000 - pi = 0.900000 --> min_DCF= 0.541748
+Quadratic log reg -lamda = 10^-6 -piT=0.500000 - pi = 0.900000 --> min_DCF= 0.440552
+linear log reg -lamda = 10^-6 -piT=0.900000 - pi = 0.100000 --> min_DCF= 0.202420
+Quadratic log reg -lamda = 10^-6 -piT=0.900000 - pi = 0.100000 --> min_DCF= 0.214486
+linear log reg -lamda = 10^-6 -piT=0.900000 - pi = 0.500000 --> min_DCF= 0.112810
+Quadratic log reg -lamda = 10^-6 -piT=0.900000 - pi = 0.500000 --> min_DCF= 0.112333
+linear log reg -lamda = 10^-6 -piT=0.900000 - pi = 0.900000 --> min_DCF= 0.532103
+Quadratic log reg -lamda = 10^-6 -piT=0.900000 - pi = 0.900000 --> min_DCF= 0.441293
+##########################################
+##### Logistic Regression with m = 6 ####
+##########################################
+linear log reg -lamda = 10^-6 -piT=0.100000 - pi = 0.100000 --> min_DCF= 0.222335
+Quadratic log reg -lamda = 10^-6 -piT=0.100000 - pi = 0.100000 --> min_DCF= 0.211569
+linear log reg -lamda = 10^-6 -piT=0.100000 - pi = 0.500000 --> min_DCF= 0.117705
+Quadratic log reg -lamda = 10^-6 -piT=0.100000 - pi = 0.500000 --> min_DCF= 0.099096
+linear log reg -lamda = 10^-6 -piT=0.100000 - pi = 0.900000 --> min_DCF= 0.560151
+Quadratic log reg -lamda = 10^-6 -piT=0.100000 - pi = 0.900000 --> min_DCF= 0.455681
+linear log reg -lamda = 10^-6 -piT=0.500000 - pi = 0.100000 --> min_DCF= 0.221506
+Quadratic log reg -lamda = 10^-6 -piT=0.500000 - pi = 0.100000 --> min_DCF= 0.207428
+linear log reg -lamda = 10^-6 -piT=0.500000 - pi = 0.500000 --> min_DCF= 0.118331
+Quadratic log reg -lamda = 10^-6 -piT=0.500000 - pi = 0.500000 --> min_DCF= 0.105708
+linear log reg -lamda = 10^-6 -piT=0.500000 - pi = 0.900000 --> min_DCF= 0.567206
+Quadratic log reg -lamda = 10^-6 -piT=0.500000 - pi = 0.900000 --> min_DCF= 0.471842
+linear log reg -lamda = 10^-6 -piT=0.900000 - pi = 0.100000 --> min_DCF= 0.226751
+Quadratic log reg -lamda = 10^-6 -piT=0.900000 - pi = 0.100000 --> min_DCF= 0.218745
+linear log reg -lamda = 10^-6 -piT=0.900000 - pi = 0.500000 --> min_DCF= 0.128865
+Quadratic log reg -lamda = 10^-6 -piT=0.900000 - pi = 0.500000 --> min_DCF= 0.111242
+linear log reg -lamda = 10^-6 -piT=0.900000 - pi = 0.900000 --> min_DCF= 0.524546
+Quadratic log reg -lamda = 10^-6 -piT=0.900000 - pi = 0.900000 --> min_DCF= 0.424480
+##########################################
+##### Logistic Regression with m = 5 ####
+##########################################
+linear log reg -lamda = 10^-6 -piT=0.100000 - pi = 0.100000 --> min_DCF= 0.231641
+Quadratic log reg -lamda = 10^-6 -piT=0.100000 - pi = 0.100000 --> min_DCF= 0.220126
+linear log reg -lamda = 10^-6 -piT=0.100000 - pi = 0.500000 --> min_DCF= 0.126293
+Quadratic log reg -lamda = 10^-6 -piT=0.100000 - pi = 0.500000 --> min_DCF= 0.112429
+linear log reg -lamda = 10^-6 -piT=0.100000 - pi = 0.900000 --> min_DCF= 0.566476
+Quadratic log reg -lamda = 10^-6 -piT=0.100000 - pi = 0.900000 --> min_DCF= 0.490322
+linear log reg -lamda = 10^-6 -piT=0.500000 - pi = 0.100000 --> min_DCF= 0.234993
+Quadratic log reg -lamda = 10^-6 -piT=0.500000 - pi = 0.100000 --> min_DCF= 0.225213
+linear log reg -lamda = 10^-6 -piT=0.500000 - pi = 0.500000 --> min_DCF= 0.128449
+Quadratic log reg -lamda = 10^-6 -piT=0.500000 - pi = 0.500000 --> min_DCF= 0.112710
+linear log reg -lamda = 10^-6 -piT=0.500000 - pi = 0.900000 --> min_DCF= 0.545128
+Quadratic log reg -lamda = 10^-6 -piT=0.500000 - pi = 0.900000 --> min_DCF= 0.467576
+linear log reg -lamda = 10^-6 -piT=0.900000 - pi = 0.100000 --> min_DCF= 0.243393
+Quadratic log reg -lamda = 10^-6 -piT=0.900000 - pi = 0.100000 --> min_DCF= 0.239173
+linear log reg -lamda = 10^-6 -piT=0.900000 - pi = 0.500000 --> min_DCF= 0.136901
+Quadratic log reg -lamda = 10^-6 -piT=0.900000 - pi = 0.500000 --> min_DCF= 0.117828
+linear log reg -lamda = 10^-6 -piT=0.900000 - pi = 0.900000 --> min_DCF= 0.539101
+Quadratic log reg -lamda = 10^-6 -piT=0.900000 - pi = 0.900000 --> min_DCF= 0.460583
+
+
+-----------EVALUATION ON GAUSSIANIZED FEATURES STARTED...-----------------
+##########################################
+#### Logistic Regression with NO PCA ####
+##########################################
+linear log reg -lamda = 10^-6 -piT=0.100000 - pi = 0.100000 --> min_DCF= 0.210543
+Quadratic log reg -lamda = 10^-6 -piT=0.100000 - pi = 0.100000 --> min_DCF= 0.204155
+linear log reg -lamda = 10^-6 -piT=0.100000 - pi = 0.500000 --> min_DCF= 0.124882
+Quadratic log reg -lamda = 10^-6 -piT=0.100000 - pi = 0.500000 --> min_DCF= 0.117074
+linear log reg -lamda = 10^-6 -piT=0.100000 - pi = 0.900000 --> min_DCF= 0.503528
+Quadratic log reg -lamda = 10^-6 -piT=0.100000 - pi = 0.900000 --> min_DCF= 0.466438
+linear log reg -lamda = 10^-6 -piT=0.500000 - pi = 0.100000 --> min_DCF= 0.214999
+Quadratic log reg -lamda = 10^-6 -piT=0.500000 - pi = 0.100000 --> min_DCF= 0.216300
+linear log reg -lamda = 10^-6 -piT=0.500000 - pi = 0.500000 --> min_DCF= 0.121876
+Quadratic log reg -lamda = 10^-6 -piT=0.500000 - pi = 0.500000 --> min_DCF= 0.117061
+linear log reg -lamda = 10^-6 -piT=0.500000 - pi = 0.900000 --> min_DCF= 0.485449
+Quadratic log reg -lamda = 10^-6 -piT=0.500000 - pi = 0.900000 --> min_DCF= 0.473353
+linear log reg -lamda = 10^-6 -piT=0.900000 - pi = 0.100000 --> min_DCF= 0.212357
+Quadratic log reg -lamda = 10^-6 -piT=0.900000 - pi = 0.100000 --> min_DCF= 0.239449
+linear log reg -lamda = 10^-6 -piT=0.900000 - pi = 0.500000 --> min_DCF= 0.122810
+Quadratic log reg -lamda = 10^-6 -piT=0.900000 - pi = 0.500000 --> min_DCF= 0.120176
+linear log reg -lamda = 10^-6 -piT=0.900000 - pi = 0.900000 --> min_DCF= 0.483687
+Quadratic log reg -lamda = 10^-6 -piT=0.900000 - pi = 0.900000 --> min_DCF= 0.477725
+##########################################
+##### Logistic Regression with m = 7 ####
+##########################################
+linear log reg -lamda = 10^-6 -piT=0.100000 - pi = 0.100000 --> min_DCF= 0.210543
+Quadratic log reg -lamda = 10^-6 -piT=0.100000 - pi = 0.100000 --> min_DCF= 0.201907
+linear log reg -lamda = 10^-6 -piT=0.100000 - pi = 0.500000 --> min_DCF= 0.120956
+Quadratic log reg -lamda = 10^-6 -piT=0.100000 - pi = 0.500000 --> min_DCF= 0.116355
+linear log reg -lamda = 10^-6 -piT=0.100000 - pi = 0.900000 --> min_DCF= 0.484924
+Quadratic log reg -lamda = 10^-6 -piT=0.100000 - pi = 0.900000 --> min_DCF= 0.503283
+linear log reg -lamda = 10^-6 -piT=0.500000 - pi = 0.100000 --> min_DCF= 0.215630
+Quadratic log reg -lamda = 10^-6 -piT=0.500000 - pi = 0.100000 --> min_DCF= 0.213145
+linear log reg -lamda = 10^-6 -piT=0.500000 - pi = 0.500000 --> min_DCF= 0.118936
+Quadratic log reg -lamda = 10^-6 -piT=0.500000 - pi = 0.500000 --> min_DCF= 0.116693
+linear log reg -lamda = 10^-6 -piT=0.500000 - pi = 0.900000 --> min_DCF= 0.480904
+Quadratic log reg -lamda = 10^-6 -piT=0.500000 - pi = 0.900000 --> min_DCF= 0.503700
+linear log reg -lamda = 10^-6 -piT=0.900000 - pi = 0.100000 --> min_DCF= 0.216182
+Quadratic log reg -lamda = 10^-6 -piT=0.900000 - pi = 0.100000 --> min_DCF= 0.230260
+linear log reg -lamda = 10^-6 -piT=0.900000 - pi = 0.500000 --> min_DCF= 0.120601
+Quadratic log reg -lamda = 10^-6 -piT=0.900000 - pi = 0.500000 --> min_DCF= 0.119076
+linear log reg -lamda = 10^-6 -piT=0.900000 - pi = 0.900000 --> min_DCF= 0.468842
+Quadratic log reg -lamda = 10^-6 -piT=0.900000 - pi = 0.900000 --> min_DCF= 0.499897
+##########################################
+##### Logistic Regression with m = 6 ####
+##########################################
+linear log reg -lamda = 10^-6 -piT=0.100000 - pi = 0.100000 --> min_DCF= 0.217129
+Quadratic log reg -lamda = 10^-6 -piT=0.100000 - pi = 0.100000 --> min_DCF= 0.214724
+linear log reg -lamda = 10^-6 -piT=0.100000 - pi = 0.500000 --> min_DCF= 0.125688
+Quadratic log reg -lamda = 10^-6 -piT=0.100000 - pi = 0.500000 --> min_DCF= 0.117924
+linear log reg -lamda = 10^-6 -piT=0.100000 - pi = 0.900000 --> min_DCF= 0.499837
+Quadratic log reg -lamda = 10^-6 -piT=0.100000 - pi = 0.900000 --> min_DCF= 0.487049
+linear log reg -lamda = 10^-6 -piT=0.500000 - pi = 0.100000 --> min_DCF= 0.229748
+Quadratic log reg -lamda = 10^-6 -piT=0.500000 - pi = 0.100000 --> min_DCF= 0.221664
+linear log reg -lamda = 10^-6 -piT=0.500000 - pi = 0.500000 --> min_DCF= 0.116846
+Quadratic log reg -lamda = 10^-6 -piT=0.500000 - pi = 0.500000 --> min_DCF= 0.119265
+linear log reg -lamda = 10^-6 -piT=0.500000 - pi = 0.900000 --> min_DCF= 0.473838
+Quadratic log reg -lamda = 10^-6 -piT=0.500000 - pi = 0.900000 --> min_DCF= 0.489626
+linear log reg -lamda = 10^-6 -piT=0.900000 - pi = 0.100000 --> min_DCF= 0.222570
+Quadratic log reg -lamda = 10^-6 -piT=0.900000 - pi = 0.100000 --> min_DCF= 0.238186
+linear log reg -lamda = 10^-6 -piT=0.900000 - pi = 0.500000 --> min_DCF= 0.118919
+Quadratic log reg -lamda = 10^-6 -piT=0.900000 - pi = 0.500000 --> min_DCF= 0.121613
+linear log reg -lamda = 10^-6 -piT=0.900000 - pi = 0.900000 --> min_DCF= 0.471419
+Quadratic log reg -lamda = 10^-6 -piT=0.900000 - pi = 0.900000 --> min_DCF= 0.485509
+##########################################
+##### Logistic Regression with m = 5 ####
+##########################################
+linear log reg -lamda = 10^-6 -piT=0.100000 - pi = 0.100000 --> min_DCF= 0.217365
+Quadratic log reg -lamda = 10^-6 -piT=0.100000 - pi = 0.100000 --> min_DCF= 0.213343
+linear log reg -lamda = 10^-6 -piT=0.100000 - pi = 0.500000 --> min_DCF= 0.125745
+Quadratic log reg -lamda = 10^-6 -piT=0.100000 - pi = 0.500000 --> min_DCF= 0.117565
+linear log reg -lamda = 10^-6 -piT=0.100000 - pi = 0.900000 --> min_DCF= 0.498365
+Quadratic log reg -lamda = 10^-6 -piT=0.100000 - pi = 0.900000 --> min_DCF= 0.524434
+linear log reg -lamda = 10^-6 -piT=0.500000 - pi = 0.100000 --> min_DCF= 0.228407
+Quadratic log reg -lamda = 10^-6 -piT=0.500000 - pi = 0.100000 --> min_DCF= 0.225725
+linear log reg -lamda = 10^-6 -piT=0.500000 - pi = 0.500000 --> min_DCF= 0.120277
+Quadratic log reg -lamda = 10^-6 -piT=0.500000 - pi = 0.500000 --> min_DCF= 0.115865
+linear log reg -lamda = 10^-6 -piT=0.500000 - pi = 0.900000 --> min_DCF= 0.487947
+Quadratic log reg -lamda = 10^-6 -piT=0.500000 - pi = 0.900000 --> min_DCF= 0.495191
+linear log reg -lamda = 10^-6 -piT=0.900000 - pi = 0.100000 --> min_DCF= 0.230852
+Quadratic log reg -lamda = 10^-6 -piT=0.900000 - pi = 0.100000 --> min_DCF= 0.239961
+linear log reg -lamda = 10^-6 -piT=0.900000 - pi = 0.500000 --> min_DCF= 0.123072
+Quadratic log reg -lamda = 10^-6 -piT=0.900000 - pi = 0.500000 --> min_DCF= 0.120404
+linear log reg -lamda = 10^-6 -piT=0.900000 - pi = 0.900000 --> min_DCF= 0.486715
+Quadratic log reg -lamda = 10^-6 -piT=0.900000 - pi = 0.900000 --> min_DCF= 0.492207

@@ -55,6 +55,61 @@ WITHOUT GAUSSIANIZATION
  Logistic reggression -piT = 0.900000 - pi = 0.900000  minDCF = 0.555399
  
  
+ ###################################################
+#### Quadratic Logistic regression with NO PCA ####
+##################################################
+ Quadratic Log Reg -piT = 0.100000 - pi = 0.100000  minDCF = 0.207316
+ Quadratic Log Reg -piT = 0.100000 - pi = 0.500000  minDCF = 0.109511
+ Quadratic Log Reg -piT = 0.100000 - pi = 0.900000  minDCF = 0.501575
+ Quadratic Log Reg -piT = 0.500000 - pi = 0.100000  minDCF = 0.218923
+ Quadratic Log Reg -piT = 0.500000 - pi = 0.500000  minDCF = 0.114706
+ Quadratic Log Reg -piT = 0.500000 - pi = 0.900000  minDCF = 0.472020
+ Quadratic Log Reg -piT = 0.900000 - pi = 0.100000  minDCF = 0.236477
+ Quadratic Log Reg -piT = 0.900000 - pi = 0.500000  minDCF = 0.124673
+ Quadratic Log Reg -piT = 0.900000 - pi = 0.900000  minDCF = 0.522165
+################################################
+### Quadratic Logistic regression with m = 7 ##
+###############################################
+ Quadratic Log Reg -piT = 0.100000 - pi = 0.100000  minDCF = 0.205059
+ Quadratic Log Reg -piT = 0.100000 - pi = 0.500000  minDCF = 0.110729
+ Quadratic Log Reg -piT = 0.100000 - pi = 0.900000  minDCF = 0.479256
+ Quadratic Log Reg -piT = 0.500000 - pi = 0.100000  minDCF = 0.212618
+ Quadratic Log Reg -piT = 0.500000 - pi = 0.500000  minDCF = 0.113922
+ Quadratic Log Reg -piT = 0.500000 - pi = 0.900000  minDCF = 0.475021
+ Quadratic Log Reg -piT = 0.900000 - pi = 0.100000  minDCF = 0.234220
+ Quadratic Log Reg -piT = 0.900000 - pi = 0.500000  minDCF = 0.122846
+ Quadratic Log Reg -piT = 0.900000 - pi = 0.900000  minDCF = 0.508811
+################################################
+### Quadratic Logistic regression with m = 6 ##
+###############################################
+ Quadratic Log Reg -piT = 0.100000 - pi = 0.100000  minDCF = 0.204701
+ Quadratic Log Reg -piT = 0.100000 - pi = 0.500000  minDCF = 0.115613
+ Quadratic Log Reg -piT = 0.100000 - pi = 0.900000  minDCF = 0.508338
+ Quadratic Log Reg -piT = 0.500000 - pi = 0.100000  minDCF = 0.212761
+ Quadratic Log Reg -piT = 0.500000 - pi = 0.500000  minDCF = 0.114941
+ Quadratic Log Reg -piT = 0.500000 - pi = 0.900000  minDCF = 0.481504
+ Quadratic Log Reg -piT = 0.900000 - pi = 0.100000  minDCF = 0.224189
+ Quadratic Log Reg -piT = 0.900000 - pi = 0.500000  minDCF = 0.123610
+ Quadratic Log Reg -piT = 0.900000 - pi = 0.900000  minDCF = 0.499327
+################################################
+### Quadratic Logistic regression with m = 5 ##
+###############################################
+ Quadratic Log Reg -piT = 0.100000 - pi = 0.100000  minDCF = 0.210683
+ Quadratic Log Reg -piT = 0.100000 - pi = 0.500000  minDCF = 0.115753
+ Quadratic Log Reg -piT = 0.100000 - pi = 0.900000  minDCF = 0.529192
+ Quadratic Log Reg -piT = 0.500000 - pi = 0.100000  minDCF = 0.211042
+ Quadratic Log Reg -piT = 0.500000 - pi = 0.500000  minDCF = 0.112580
+ Quadratic Log Reg -piT = 0.500000 - pi = 0.900000  minDCF = 0.528725
+ Quadratic Log Reg -piT = 0.900000 - pi = 0.100000  minDCF = 0.234328
+ Quadratic Log Reg -piT = 0.900000 - pi = 0.500000  minDCF = 0.117317
+ Quadratic Log Reg -piT = 0.900000 - pi = 0.900000  minDCF = 0.540461
+ 
+ 
+ 
+ 
+ 
+ 
+ 
  
  
 WITH GAUSSIANIZATION

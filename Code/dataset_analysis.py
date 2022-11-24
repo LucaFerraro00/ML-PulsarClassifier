@@ -90,13 +90,15 @@ def compute_std (D):
     sigma = D.std(1) #D is a matrix where each column is a vector, i need the variance for each feature
     return sigma.reshape(sigma.shape[0],1)
 
-def scale_ZNormalization(D): 
-    mu=compute_mean(D)
-    sigma=compute_std(D)
-    scaled_DTR = (D-mu) #TBR: CORRECT OR NOT???????? 
+def scale_ZNormalization(DTR, DEV = None, normalize_ev=False): 
+    mu=compute_mean(DTR)
+    sigma=compute_std(DTR)
+    scaled_DTR = (DTR-mu) 
     scaled_DTR = scaled_DTR / sigma
     print('Z-Normalization done!')
-    return scaled_DTR
+    if normalize_ev:
+        DEV=(DEV-mu)/sigma #normalize evaluation_set with mean and std of training set
+    return scaled_DTR, DEV
     
 def plot_histograms(D, L, gaussianize):
 
@@ -184,7 +186,7 @@ def gaussianize (DTR):
         for j in range(DTR.shape[1]):
             rank_DTR[i][j] = (DTR[i] < DTR[i][j]).sum()
     rank_DTR = (rank_DTR+1) / (DTR.shape[1]+2)
-    return statist.norm.ppf(rank_DTR)
+    return statist.norm.ppf(rank_DTR) 
 """
 
 def gaussianize_training (DTR):
@@ -247,7 +249,7 @@ def pca(m, D):
     #I need to take the first m eigenvectors corresponding to the m largest eigenvalues
     P = U[:, ::-1][:, 0:m] #I invert the columns of U then I take the firsts m
     DProjected = numpy.dot(P.T, D)
-    return DProjected
+    return DProjected, P
 
 
     

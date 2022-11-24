@@ -49,12 +49,7 @@ def train_SVM_linear(DTR, LTR, C, piT, rebalance, K=1):
     def compute_LDual_and_gradient(alpha): #actually we'll minimize L(loss) rather than maxize J
         Ldual, grad = compute_JDual_and_gradient(alpha)
         return -Ldual, -grad
-    
-    def JPrimal(w):
-        S = numpy.dot(mrow(w), DTREXT)
-        loss = numpy.maximum(numpy.zeros(S.shape), 1-Z*S).sum()
-        return 0.5 * numpy.linalg.norm(w)**2+C*loss
-    
+        
     if rebalance:
         DTR0 = DTR[:, LTR==0]
         DTR1 = DTR[:, LTR==1]
@@ -101,7 +96,7 @@ def compute_score_linear(DTE,DTR,LTR, Options):
     score = numpy.dot(w.T,DTE_EXT)
     return score.ravel()
     
-def plot_linear_minDCF_wrt_C(D,L,gaussianize):
+def plot_linear_minDCF_wrt_C(DTR,LTR,gaussianize, DEV=None, LEV=None, evaluation=False):
     print('Linear SVM: computation for plotting min_cdf wrt C started...')
     min_DCFs=[]
     for pi in [0.1, 0.5, 0.9]:
@@ -110,26 +105,60 @@ def plot_linear_minDCF_wrt_C(D,L,gaussianize):
                 Options= {'C': C,
                           'piT':0.5,
                           'rebalance':True}
-                min_dcf_kfold = validate.kfold(D, L, K_fold, pi, compute_score_linear, Options )[0] 
+                min_dcf_kfold = validate.kfold(DTR, LTR, K_fold, pi, compute_score_linear, Options )[0] 
                 min_DCFs.append(min_dcf_kfold)
                 print ("computed min_dcf for pi=%f -C=%f - results min_dcf=%f "%(pi,C,min_dcf_kfold))
     min_DCFs_p0 = min_DCFs[0:8] #min_DCF results with prior = 0.1
     min_DCFs_p1 = min_DCFs[8:16] #min_DCF results with prior = 0.5
     min_DCFs_p2 = min_DCFs[16:24] #min_DCF results with prior = 0.9
 
-    plt.figure()
-    plt.plot(C_array, min_DCFs_p0, label='prior=0.1')
-    plt.plot(C_array, min_DCFs_p1, label='prior=0.5')
-    plt.plot(C_array, min_DCFs_p2, label='prior=0.9')
-    plt.legend()
-    plt.semilogx()
-    plt.xlabel("C")
-    plt.ylabel("min_DCF")
-    if gaussianize:
-        plt.savefig("../Images/min_DCF_C_linearSVM_gaussianized.pdf")
-    else:
-        plt.savefig("../Images/min_DCF_C_linearSVM_raw.pdf")
-    plt.show()
+    if evaluation==False: #plot only result for validation set
+        plt.figure()
+        plt.plot(C_array, min_DCFs_p0, label='prior=0.1')
+        plt.plot(C_array, min_DCFs_p1, label='prior=0.5')
+        plt.plot(C_array, min_DCFs_p2, label='prior=0.9')
+        plt.legend()
+        plt.semilogx()
+        plt.xlabel("C")
+        plt.ylabel("min_DCF")
+        if gaussianize:
+            plt.savefig("../Images/min_DCF_C_linearSVM_gaussianized.pdf")
+        else:
+            plt.savefig("../Images/min_DCF_C_linearSVM_raw.pdf")
+        plt.show()
+    
+    else: #compare plot of validation and evaluation set
+        min_DCFs=[]
+        for pi in [0.1, 0.5, 0.9]:
+            C_array = numpy.logspace(-4,3, num = 8)
+            for C in C_array:
+                    Options= {'C': C,
+                              'piT':0.5,
+                              'rebalance':True}
+                    scores_linear_svm = compute_score_linear(DEV, DTR, LTR, Options)
+                    min_DCFs.append(validate.compute_min_DCF(scores_linear_svm, LEV, pi, 1, 1))
+                    print ("computed min_dcf for pi=%f -C=%f - results min_dcf=%f "%(pi,C,min_dcf_kfold))
+        min_DCFs_p0_ev = min_DCFs[0:8] #min_DCF results with prior = 0.1
+        min_DCFs_p1_ev = min_DCFs[8:16] #min_DCF results with prior = 0.5
+        min_DCFs_p2_ev = min_DCFs[16:24] #min_DCF results with prior = 0.9
+        
+        plt.plot(C_array, min_DCFs_p0, '--b',  label='prior=0.1-val')
+        plt.plot(C_array, min_DCFs_p1, '--r', label='prior=0.5-val')
+        plt.plot(C_array, min_DCFs_p2, '--g', label='prior=0.9-val')
+        plt.plot(C_array, min_DCFs_p0_ev, 'b', label='prior=0.1-eval')
+        plt.plot(C_array, min_DCFs_p1_ev, 'r', label='prior=0.5-eval')
+        plt.plot(C_array, min_DCFs_p2_ev, 'g', label='prior=0.9-eval')
+        plt.semilogx()
+        plt.xlabel("C")
+        plt.ylabel("min_DCF")
+        plt.figure()
+        plt.legend()
+        plt.show()
+        if gaussianize:
+            plt.savefig("../Images/min_DCF_C_linearSVM_evaluation_gaussianized.pdf")
+        else:
+            plt.savefig("../Images/min_DCF_C_linearSVM_evaluation_raw.pdf")
+        
     return min_DCFs
 
 """
@@ -152,9 +181,8 @@ def train_SVM_RBF(DTR, LTR, C, piT, gamma, rebalance, K=1):
     #compute matrix H which is inside the dual formula
     #Hij=zizjxiTxj (xi and xj are vectors)
     Dist= mcol((DTR**2).sum(0)) +mrow((DTR**2).sum(0)) - 2 * numpy.dot(DTR.T,DTR)
-
-    H= numpy.exp(-gamma* Dist) + K #K account for byas term
-    H=mcol(Z) *mrow(Z) * H
+    kernel= numpy.exp(-gamma* Dist) + K #K account for byas term
+    H=mcol(Z) *mrow(Z) * kernel
     
     def compute_JDual_and_gradient(alpha):
         Ha = numpy.dot(H,mcol(alpha))
@@ -168,10 +196,6 @@ def train_SVM_RBF(DTR, LTR, C, piT, gamma, rebalance, K=1):
         Ldual, grad = compute_JDual_and_gradient(alpha)
         return -Ldual, -grad
     
-    def JPrimal(w):
-        S = numpy.dot(mrow(w), DTREXT)
-        loss = numpy.maximum(numpy.zeros(S.shape), 1-Z*S).sum()
-        return 0.5 * numpy.linalg.norm(w)**2+C*loss
     
     if rebalance:
         DTR0 = DTR[:, LTR==0]
@@ -221,7 +245,7 @@ def compute_score_RBF(DTE,DTR,LTR, Options):
     score = numpy.dot(w.T,DTE_EXT)
     return score.ravel()
     
-def plot_RBF_minDCF_wrt_C(D,L,gaussianize):
+def plot_RBF_minDCF_wrt_C(DTR,LTR,gaussianize, DEV=None, LEV=None, evaluation=False):
     print('RBF SVM: computation for plotting min_cdf wrt C started...')
     min_DCFs=[]
     pi=0.5
@@ -233,7 +257,7 @@ def plot_RBF_minDCF_wrt_C(D,L,gaussianize):
                           'piT':0.5,
                           'gamma':gamma,
                           'rebalance':True}
-                min_dcf_kfold = validate.kfold(D, L, K_fold, pi, compute_score_RBF, Options )[0] 
+                min_dcf_kfold = validate.kfold(DTR, LTR, K_fold, pi, compute_score_RBF, Options )[0] 
                 min_DCFs.append(min_dcf_kfold)
                 print ("computed min_dcf for pi=%f -gamma=%f -C=%f - results min_dcf=%f "%(pi, gamma, C,min_dcf_kfold))
     min_DCFs_g0 = min_DCFs[0:8] #min_DCF results with gamma = 0.0001
@@ -241,21 +265,61 @@ def plot_RBF_minDCF_wrt_C(D,L,gaussianize):
     min_DCFs_g2 = min_DCFs[16:24] #min_DCF results with gamma = 0.01
     min_DCFs_g3 = min_DCFs[24:32] #min_DCF results with gamma = 0.1
 
-    plt.figure()
-    plt.plot(C_array, min_DCFs_g0, label='gamma=0.0001')
-    plt.plot(C_array, min_DCFs_g1, label='gamma=0.001')
-    plt.plot(C_array, min_DCFs_g2, label='gamma=0.01')
-    plt.plot(C_array, min_DCFs_g3, label='gamma=0.1')
-    plt.legend()
-    plt.tight_layout() # TBR: Use with non-default font size to keep axis label inside the figure
-    plt.semilogx()
-    plt.xlabel("C")
-    plt.ylabel("min_DCF")
-    if gaussianize:
-        plt.savefig("../Images/min_DCF_C_RBF_SVM_gaussianized.pdf")
-    else:
-        plt.savefig("../Images/min_DCF_C_RBF_SVM_raw.pdf")
-    plt.show()
+    if evaluation == False:
+        plt.figure()
+        plt.plot(C_array, min_DCFs_g0, label='gamma=0.0001')
+        plt.plot(C_array, min_DCFs_g1, label='gamma=0.001')
+        plt.plot(C_array, min_DCFs_g2, label='gamma=0.01')
+        plt.plot(C_array, min_DCFs_g3, label='gamma=0.1')
+        plt.legend()
+        plt.tight_layout() # TBR: Use with non-default font size to keep axis label inside the figure
+        plt.semilogx()
+        plt.xlabel("C")
+        plt.ylabel("min_DCF")
+        if gaussianize:
+            plt.savefig("../Images/min_DCF_C_RBF_SVM_gaussianized.pdf")
+        else:
+            plt.savefig("../Images/min_DCF_C_RBF_SVM_raw.pdf")
+        plt.show()
+        
+    else:#compare validation and evaluation
+        min_DCFs=[]
+        pi=0.5
+        gamma_array= [0.0001, 0.001, 0.01, 0.1]
+        for gamma in gamma_array:
+            C_array = numpy.logspace(-4,3, num = 8)
+            for C in C_array:
+                    Options= {'C': C,
+                              'piT':0.5,
+                              'gamma':gamma,
+                              'rebalance':True}
+                    scores_rbf_svm = compute_score_RBF(DEV, DTR, LTR, Options)
+                    min_DCFs.append(validate.compute_min_DCF(scores_rbf_svm, LEV, pi, 1, 1))
+                    print ("computed min_dcf for pi=%f -gamma=%f -C=%f - results min_dcf=%f "%(pi, gamma, C,min_dcf_kfold))
+        min_DCFs_g0_ev = min_DCFs[0:8] #min_DCF results with gamma = 0.0001
+        min_DCFs_g1_ev = min_DCFs[8:16] #min_DCF results with gamma = 0.001
+        min_DCFs_g2_ev = min_DCFs[16:24] #min_DCF results with gamma = 0.01
+        min_DCFs_g3_ev = min_DCFs[24:32] #min_DCF results with gamma = 0.1
+        plt.figure()
+        plt.plot(C_array, min_DCFs_g0, label='gamma=0.0001-val')
+        plt.plot(C_array, min_DCFs_g1, label='gamma=0.001-val')
+        plt.plot(C_array, min_DCFs_g2, label='gamma=0.01-val')
+        plt.plot(C_array, min_DCFs_g3, label='gamma=0.1-val')
+        plt.plot(C_array, min_DCFs_g0_ev, label='gamma=0.0001-eval')
+        plt.plot(C_array, min_DCFs_g1_ev, label='gamma=0.001-eval')
+        plt.plot(C_array, min_DCFs_g2_ev, label='gamma=0.01-eval')
+        plt.plot(C_array, min_DCFs_g3_ev, label='gamma=0.1-eval')
+        plt.legend()
+        plt.tight_layout() # TBR: Use with non-default font size to keep axis label inside the figure
+        plt.semilogx()
+        plt.xlabel("C")
+        plt.ylabel("min_DCF")
+        if gaussianize:
+            plt.savefig("../Images/min_DCF_C_RBF_SVM_eval_gaussianized.pdf")
+        else:
+            plt.savefig("../Images/min_DCF_C_RBF_SVM__eval_raw.pdf")
+        plt.show()
+    
     return min_DCFs
 
 """
@@ -266,19 +330,17 @@ def plot_RBF_minDCF_wrt_C(D,L,gaussianize):
 
 def train_SVM_Quadratic(DTR, LTR, C, piT, rebalance, d=2, K=1):
     
-    #first we simulate the bias by extending our data with ones, this allow us to simulate the effect of a bias
     DTREXT=numpy.vstack([DTR, numpy.ones((1,DTR.shape[1]))])
-    #DTREXt is the original data matrix  wich contains the original training data x1...xn. Each x has an added feature equals to K=1 appendend
-    
+
     #compute Z to be used to do compute: zi(wTx+b)
     Z=numpy.zeros(LTR.shape)
     Z[LTR==1] = 1
     Z[LTR==0] =-1
     
     #compute matrix H which is inside the dual formula
-    #Hij=zizjxiTxj (xi and xj are vectors)
-    G=numpy.dot(DTREXT.T,DTREXT)**d
-    H=mcol(Z) * mrow(Z) * G #mcol(Z) * mrow(Z) result in a matrix of the same dimension of G?
+    #Hij=zizjk(xiTxj) (xi and xj are vectors)
+    kernel=((numpy.dot(DTREXT.T,DTREXT)+1)**d) + K
+    H=mcol(Z) * mrow(Z) * kernel #mcol(Z) * mrow(Z) result in a matrix of the same dimension of G?
     
     def compute_JDual_and_gradient(alpha):
         Ha = numpy.dot(H,mcol(alpha))
@@ -291,11 +353,7 @@ def train_SVM_Quadratic(DTR, LTR, C, piT, rebalance, d=2, K=1):
     def compute_LDual_and_gradient(alpha): #actually we'll minimize L(loss) rather than maxize J
         Ldual, grad = compute_JDual_and_gradient(alpha)
         return -Ldual, -grad
-    
-    def JPrimal(w):
-        S = numpy.dot(mrow(w), DTREXT)
-        loss = numpy.maximum(numpy.zeros(S.shape), 1-Z*S).sum()
-        return 0.5 * numpy.linalg.norm(w)**2+C*loss
+
     
     if rebalance:
         DTR0 = DTR[:, LTR==0]
@@ -323,7 +381,7 @@ def train_SVM_Quadratic(DTR, LTR, C, piT, rebalance, d=2, K=1):
                                                        maxiter=100000,
                                                        maxfun= 100000, #these last 3 parameters define how good will be the computation  
                                                       )
-    
+
     wStar = numpy.dot(DTREXT, mcol(alphaStar)*mcol(Z))
 
     return wStar, alphaStar
@@ -342,7 +400,7 @@ def compute_score_quadratic(DTE,DTR,LTR, Options):
     score = numpy.dot(w.T,DTE_EXT)
     return score.ravel()
     
-def plot_quadratic_minDCF_wrt_C(D,L,gaussianize):
+def plot_quadratic_minDCF_wrt_C(DTR,LTR,gaussianize, DEV=None, LEV=None, evaluation=False):
     print('Quadratic SVM: computation for plotting min_cdf wrt C started...')
     min_DCFs=[]
     for pi in [0.1, 0.5, 0.9]:
@@ -351,25 +409,60 @@ def plot_quadratic_minDCF_wrt_C(D,L,gaussianize):
                 Options= {'C': C,
                           'piT':0.5,
                           'rebalance':True}
-                min_dcf_kfold = validate.kfold(D, L, K_fold, pi, compute_score_quadratic, Options )[0] 
+                min_dcf_kfold = validate.kfold(DTR, LTR, K_fold, pi, compute_score_quadratic, Options )[0] 
                 min_DCFs.append(min_dcf_kfold)
                 print ("computed min_dcf for pi=%f -C=%f - results min_dcf=%f "%(pi,C,min_dcf_kfold))
     min_DCFs_p0 = min_DCFs[0:8] #min_DCF results with prior = 0.1
     min_DCFs_p1 = min_DCFs[8:16] #min_DCF results with prior = 0.5
     min_DCFs_p2 = min_DCFs[16:24] #min_DCF results with prior = 0.9
 
-    plt.figure()
-    plt.plot(C_array, min_DCFs_p0, label='prior=0.1')
-    plt.plot(C_array, min_DCFs_p1, label='prior=0.5')
-    plt.plot(C_array, min_DCFs_p2, label='prior=0.9')   
-    plt.legend()
-    plt.tight_layout() # Use with non-default font size to keep axis label inside the figure
-    plt.semilogx()
-    plt.xlabel("C")
-    plt.ylabel("min_DCF")
-    if gaussianize:
-        plt.savefig("../Images/min_DCF_C_QuadraticSVM_gaussianized.pdf")
-    else:
-        plt.savefig("../Images/min_DCF_C_QuadraticSVM_raw.pdf")
-    plt.show()
+    if evaluation == False:
+        plt.figure()
+        plt.plot(C_array, min_DCFs_p0, label='prior=0.1')
+        plt.plot(C_array, min_DCFs_p1, label='prior=0.5')
+        plt.plot(C_array, min_DCFs_p2, label='prior=0.9')   
+        plt.legend()
+        plt.tight_layout() # Use with non-default font size to keep axis label inside the figure
+        plt.semilogx()
+        plt.xlabel("C")
+        plt.ylabel("min_DCF")
+        if gaussianize:
+            plt.savefig("../Images/min_DCF_C_QuadraticSVM_gaussianized.pdf")
+        else:
+            plt.savefig("../Images/min_DCF_C_QuadraticSVM_raw.pdf")
+        plt.show()
+        
+    else:#compare evaluation and validation
+        min_DCFs=[]
+        for pi in [0.1, 0.5, 0.9]:
+            C_array = numpy.logspace(-4,3, num = 8)
+            for C in C_array:
+                    Options= {'C': C,
+                              'piT':0.5,
+                              'rebalance':True}
+                    scores_svm_quad = compute_score_quadratic(DEV, DTR, LTR, Options)
+                    min_DCFs.append(validate.compute_min_DCF(scores_svm_quad, LEV, pi, 1, 1))
+                    print ("computed min_dcf for pi=%f -C=%f - results min_dcf=%f "%(pi,C,min_dcf_kfold))
+        min_DCFs_p0_eval = min_DCFs[0:8] #min_DCF results with prior = 0.1
+        min_DCFs_p1_eval = min_DCFs[8:16] #min_DCF results with prior = 0.5
+        min_DCFs_p2_eval = min_DCFs[16:24] #min_DCF results with prior = 0.9
+        
+        plt.figure()
+        plt.plot(C_array, min_DCFs_p0, '--b', label='prior=0.1-val')
+        plt.plot(C_array, min_DCFs_p1, '--r', label='prior=0.5-val')
+        plt.plot(C_array, min_DCFs_p2, '--g', label='prior=0.9-val')   
+        plt.plot(C_array, min_DCFs_p0_eval, 'b', label='prior=0.1-eval')
+        plt.plot(C_array, min_DCFs_p1_eval, 'r', label='prior=0.5-eval')
+        plt.plot(C_array, min_DCFs_p2_eval, 'g', label='prior=0.9-eval')  
+        plt.legend()
+        plt.tight_layout() # Use with non-default font size to keep axis label inside the figure
+        plt.semilogx()
+        plt.xlabel("C")
+        plt.ylabel("min_DCF")
+        if gaussianize:
+            plt.savefig("../Images/min_DCF_C_QuadraticSVM_eval_gaussianized.pdf")
+        else:
+            plt.savefig("../Images/min_DCF_C_QuadraticSVM_eval_raw.pdf")
+        plt.show()
+        
     return min_DCFs
