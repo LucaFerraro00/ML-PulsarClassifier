@@ -60,9 +60,9 @@
  gmm full -components=16 - pi = 0.100000 --> minDCF = 0.232930
  gmm diag -components=32 - pi = 0.100000 --> minDCF = 0.260085
  gmm full-tied -components=64 - pi = 0.100000 --> minDCF = 0.233289
- gmm diag-tied -components=8 - pi = 0.100000 --> minDCF = 0.306406
-   gmm full -components=16 - pi = 0.100000 --> minDCF = 0.232930
- gmm diag -components=32 - pi = 0.100000 --> minDCF = 0.260085
+ gmm diag-tied -components=8 - pi = 0.100000 --> minDCF = 0.306406 
+ gmm full -components=16 - pi = 0.900000 --> minDCF = 0.545447
+ gmm diag -components=32 - pi = 0.900000 --> minDCF = 0.633815
  
  
  
@@ -133,3 +133,7 @@ computed min_dcf for raw features -components=5 -pi=0.500000 --> results min_dcf
 computed min_dcf for gaussianized features -components=5 pi=0.500000 --> results min_dcf=0.178982 
 
 
+VALIDATION WITH GAUSSIANIZATION
+
+ gmm full -components=16 - pi = 0.100000 --> minDCF = 0.229312
+ gmm diag -components=32 - pi = 0.100000 --> minDCF = 0.268181

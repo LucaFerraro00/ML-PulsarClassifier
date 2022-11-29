@@ -26,13 +26,13 @@ def evaluation():
     gaussianize=False
     #evaluation_MVG(DTR, LTR, DEV, LEV)
     #evaluation_log_reg(DTR, LTR, DEV, LEV, gaussianize)
-    #evaluation_SVM(DTR, LTR, DEV, LEV)
+    evaluation_SVM(DTR, LTR, DEV, LEV, gaussianize)
     
     print('-----------EVALUATION ON GAUSSIANIZED FEATURES STARTED...-----------------')
     gaussianize=True
     #evaluation_MVG(DTR_gaussianized, LTR, DEV_gaussianized, LEV)
-    evaluation_log_reg(DTR_gaussianized, LTR, DEV_gaussianized, LEV, gaussianize)
-    #evaluation_SVM(DTR_gaussianized, LTR, DEV_gaussianized, LEV)
+    #evaluation_log_reg(DTR_gaussianized, LTR, DEV_gaussianized, LEV, gaussianize)
+    evaluation_SVM(DTR_gaussianized, LTR, DEV_gaussianized, LEV,gaussianize )
 
 def evaluation_MVG(DTR, LTR, DEV, LEV):
     DTR_copy = DTR
@@ -111,7 +111,10 @@ def evaluation_log_reg(DTR, LTR, DEV, LEV, gaussianize):
         DEV = DEV_copy
         DTR = DTR_copy
         
-def evaluation_SVM(DTR, LTR, DEV, LEV):
+def evaluation_SVM(DTR, LTR, DEV, LEV, gaussianize):
+    #svm.plot_linear_minDCF_wrt_C(DTR,LTR,gaussianize, DEV=DEV, LEV=LEV, evaluation=True)
+    svm.plot_quadratic_minDCF_wrt_C(DTR,LTR,gaussianize, DEV=DEV, LEV=LEV, evaluation=True)
+    svm.plot_RBF_minDCF_wrt_C(DTR,LTR,gaussianize, DEV=DEV, LEV=LEV, evaluation=True)
     Options={
         'C' : None,
         'piT': None,
