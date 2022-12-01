@@ -8,10 +8,9 @@ Created on Tue Oct 25 19:38:12 2022
 import numpy
 import matplotlib.pyplot as plt
 import pylab
-import gaussian_classifiers as gauss
 import logistic_regression as log_reg
 import dataset_analysis as analys
-
+import svm
 
 
 def assign_labels(scores, pi, Cfn, Cfp, th=None):
@@ -88,24 +87,36 @@ def ROC(scores, Labels):
 
 
 def two_bests_roc(D,L):
-    Options = {}
-    _ , scores1, labels1 = kfold(D, L, 5, 0.5, gauss.compute_score_tied_full, Options)
+    print('Compuutation to plot ROC started..')
+    
+    Options={
+    'lambdaa' : 1e-06,
+    'piT': 0.1,
+    }    
+    _ , scores1, labels1 = kfold(D, L, 5, 1, log_reg.compute_score_quadratic, Options) #pi(set to random value 1) actually not used to compute scores
     FPR1, TPR1 =ROC (scores1, labels1)
-    
-    D = analys.pca(7, D)
-    Options = {'lambdaa':1e-06 ,
-               'piT': 0.1 }
-    _ , scores2, labels2 = kfold(D, L, 5, 0.5, log_reg.compute_score, Options)
+    print ('log reg OK')
+   
+    Options={
+        'C' : 10,
+        'piT': 0.5,
+        'gamma':0.01,
+        'rebalance':True
+        }  
+    _ , scores2, labels2 = kfold(D, L, 5, 1, svm.compute_score_RBF, Options) #pi(set to random value 1) actually not used to compute scores
+    print('RBF SVM scores computed')
     FPR2, TPR2 =ROC (scores2, labels2)
-    
+
     plt.figure()
-    plt.plot(FPR1,TPR1, 'r', label = 'full tied-cov MVG', )
-    plt.plot(FPR2,TPR2, 'b', label = 'linear logistic regression')
+    plt.plot(FPR1,TPR1, 'r', label = 'Quadratic Log Reg', )
+    plt.plot(FPR2,TPR2, 'b', label = 'RBF SVM')
     plt.xlabel('False Positive Rate')
     plt.ylabel('True Negative Rate')
     plt.legend()
     plt.savefig("../Images/best_two_models_ROC.pdf" )
     pylab.show()
+    
+    print('ROC plotted')
     
     
 

@@ -258,11 +258,13 @@ def plot_RBF_minDCF_wrt_C(DTR,LTR,gaussianize, DEV=None, LEV=None, evaluation=Fa
     # min_DCFs_g2 = min_DCFs[16:24] #min_DCF results with gamma = 0.01
     # min_DCFs_g3 = min_DCFs[24:32] #min_DCF results with gamma = 0.1
 
+    #remove frome here to ..
     C_array = numpy.logspace(-4,3, num = 8)
     min_DCFs_g0 = [0.179731 , 0.179731 , 0.179731 , 0.178378 , 0.165919 , 0.134799 , 0.115972 , 0.126934]
     min_DCFs_g1 = [0.180348 , 0.180348 , 0.179102 , 0.167013 , 0.134123 , 0.114690 , 0.109694 , 0.110096]
     min_DCFs_g2 = [0.190439 , 0.189065, 0.170174, 0.134493, 0.111959, 0.108122, 0.110833, 0.110869  ]
     min_DCFs_g3 = [0.221216 , 0.211372, 0.163427, 0.122989, 0.112333, 0.112795, 0.122121, 0.135647]
+    #..here
 
     if evaluation == False:
         plt.figure()
@@ -292,23 +294,31 @@ def plot_RBF_minDCF_wrt_C(DTR,LTR,gaussianize, DEV=None, LEV=None, evaluation=Fa
                               'piT':0.5,
                               'gamma':gamma,
                               'rebalance':True}
-                    scores_rbf_svm = compute_score_RBF(DEV, DTR, LTR, Options)
-                    min_DCF_ev =validate.compute_min_DCF(scores_rbf_svm, LEV, pi, 1, 1)
-                    min_DCFs.append(min_DCF_ev)
-                    print ("computed min_dcf for pi=%f -gamma=%f -C=%f - results min_dcf=%f "%(pi, gamma, C,min_DCF_ev))
-        min_DCFs_g0_ev = min_DCFs[0:8] #min_DCF results with gamma = 0.0001
-        min_DCFs_g1_ev = min_DCFs[8:16] #min_DCF results with gamma = 0.001
-        min_DCFs_g2_ev = min_DCFs[16:24] #min_DCF results with gamma = 0.01
-        min_DCFs_g3_ev = min_DCFs[24:32] #min_DCF results with gamma = 0.1
+        #             scores_rbf_svm = compute_score_RBF(DEV, DTR, LTR, Options)
+        #             min_DCF_ev =validate.compute_min_DCF(scores_rbf_svm, LEV, pi, 1, 1)
+        #             min_DCFs.append(min_DCF_ev)
+        #             print ("computed min_dcf for pi=%f -gamma=%f -C=%f - results min_dcf=%f "%(pi, gamma, C,min_DCF_ev))
+        # min_DCFs_g0_ev = min_DCFs[0:8] #min_DCF results with gamma = 0.0001
+        # min_DCFs_g1_ev = min_DCFs[8:16] #min_DCF results with gamma = 0.001
+        # min_DCFs_g2_ev = min_DCFs[16:24] #min_DCF results with gamma = 0.01
+        # min_DCFs_g3_ev = min_DCFs[24:32] #min_DCF results with gamma = 0.1
+        
+        #delete from here...
+        min_DCFs_g0_ev = [0.170202,  0.170202, 0.170202, 0.169474, 0.158327, 0.126643, 0.110111, 0.106948] 
+        min_DCFs_g1_ev = [0.171919, 0.171919, 0.170333, 0.158327, 0.127130,0.109126, 0.102299, 0.102649  ] 
+        min_DCFs_g2_ev = [0.180647, 0.179175, 0.161745, 0.128703, 0.108631, 0.097878, 0.097282, 0.105200 ] 
+        min_DCFs_g3_ev = [0.212448, 0.200929, 0.146348, 0.115211, 0.100713, 0.100213, 0.116973, 0.141563] 
+        #..to here
+        
         plt.figure()
-        plt.plot(C_array, min_DCFs_g0, label='gamma=0.0001-val')
-        plt.plot(C_array, min_DCFs_g1, label='gamma=0.001-val')
-        plt.plot(C_array, min_DCFs_g2, label='gamma=0.01-val')
-        plt.plot(C_array, min_DCFs_g3, label='gamma=0.1-val')
-        plt.plot(C_array, min_DCFs_g0_ev, label='gamma=0.0001-eval')
-        plt.plot(C_array, min_DCFs_g1_ev, label='gamma=0.001-eval')
-        plt.plot(C_array, min_DCFs_g2_ev, label='gamma=0.01-eval')
-        plt.plot(C_array, min_DCFs_g3_ev, label='gamma=0.1-eval')
+        plt.plot(C_array, min_DCFs_g0, '--b', label='γ=0.0001-val')
+        plt.plot(C_array, min_DCFs_g1, '--g', label='γ=0.001-val')
+        plt.plot(C_array, min_DCFs_g2, '--r', label='γ=0.01-val')
+        plt.plot(C_array, min_DCFs_g3, '--y', label='γ=0.1-val')
+        plt.plot(C_array, min_DCFs_g0_ev, 'b', label='γ=0.0001-eval')
+        plt.plot(C_array, min_DCFs_g1_ev, 'g', label='γ=0.001-eval')
+        plt.plot(C_array, min_DCFs_g2_ev, 'r', label='γ=0.01-eval')
+        plt.plot(C_array, min_DCFs_g3_ev, 'y', label='γ=0.1-eval')
         plt.legend()
         plt.tight_layout() # TBR: Use with non-default font size to keep axis label inside the figure
         plt.semilogx()
@@ -402,46 +412,55 @@ def plot_quadratic_minDCF_wrt_C(DTR,LTR,gaussianize, DEV=None, LEV=None, evaluat
     #             min_dcf_kfold = validate.kfold(DTR, LTR, K_fold, pi, compute_score_quadratic, Options )[0] 
     #             min_DCFs.append(min_dcf_kfold)
     #             print ("computed min_dcf for pi=%f -C=%f - results min_dcf=%f "%(pi,C,min_dcf_kfold))
-    min_DCFs_p0 = min_DCFs[0:8] #min_DCF results with prior = 0.1
-    min_DCFs_p1 = min_DCFs[8:16] #min_DCF results with prior = 0.5
-    min_DCFs_p2 = min_DCFs[16:24] #min_DCF results with prior = 0.9
+    # min_DCFs_p0 = min_DCFs[0:8] #min_DCF results with prior = 0.1
+    # min_DCFs_p1 = min_DCFs[8:16] #min_DCF results with prior = 0.5
+    # min_DCFs_p2 = min_DCFs[16:24] #min_DCF results with prior = 0.9
+    
+    #To be removed from here..
+    C_array = numpy.logspace(-4,3, num = 8)
+    min_DCFs_p0 = [0.250341, 0.239952, 0.224655, 0.217992 , 0.219245 , 0.220571 , 0.229384 , 0.525472]
+    min_DCFs_p1 = [0.142820, 0.124159, 0.112512, 0.109786 , 0.114674 , 0.114093 , 0.113739 , 0.292876]
+    min_DCFs_p2 = [0.605927, 0.577650, 0.521541, 0.497416 , 0.509209 , 0.523129 , 0.544483 , 0.999506]
+    #... to here
     
     if evaluation == False:
-        pass
-    #     #setup visualization font
-    #     plt.rc('font', size=16)
-    #     plt.rc('xtick', labelsize=16)
-    #     plt.rc('ytick', labelsize=16)
-    #     plt.figure()
-    #     plt.plot(C_array, min_DCFs_p0, label='prior=0.1')
-    #     plt.plot(C_array, min_DCFs_p1, label='prior=0.5')
-    #     plt.plot(C_array, min_DCFs_p2, label='prior=0.9')   
-    #     plt.legend()
-    #     plt.tight_layout() # Use with non-default font size to keep axis label inside the figure
-    #     plt.semilogx()
-    #     plt.xlabel("C")
-    #     plt.ylabel("min_DCF")
-    #     if gaussianize:
-    #         plt.savefig("../Images/min_DCF_C_QuadraticSVM_gaussianized.pdf")
-    #     else:
-    #         plt.savefig("../Images/min_DCF_C_QuadraticSVM_raw.pdf")
-    #     plt.show()
+        #setup visualization font
+        plt.rc('font', size=16)
+        plt.rc('xtick', labelsize=16)
+        plt.rc('ytick', labelsize=16)
+        plt.figure()
+        plt.plot(C_array, min_DCFs_p0, label='prior=0.1')
+        plt.plot(C_array, min_DCFs_p1, label='prior=0.5')
+        plt.plot(C_array, min_DCFs_p2, label='prior=0.9')   
+        plt.legend()
+        plt.tight_layout() # Use with non-default font size to keep axis label inside the figure
+        plt.semilogx()
+        plt.xlabel("C")
+        plt.ylabel("min_DCF")
+        if gaussianize:
+            plt.savefig("../Images/min_DCF_C_QuadraticSVM_gaussianized.pdf")
+        else:
+            plt.savefig("../Images/min_DCF_C_QuadraticSVM_raw.pdf")
+        plt.show()
         
     else:#compare evaluation and validation
-        min_DCFs=[]
-        for pi in [0.1, 0.5, 0.9]:
-            C_array = numpy.logspace(-4,3, num = 8)
-            for C in C_array:
-                    Options= {'C': C,
-                              'piT':0.5,
-                              'rebalance':True}
-                    scores_svm_quad = compute_score_quadratic(DEV, DTR, LTR, Options)
-                    min_DCF_ev = validate.compute_min_DCF(scores_svm_quad, LEV, pi, 1, 1)
-                    min_DCFs.append(min_DCF_ev)
-                    print ("computed min_dcf for pi=%f -C=%f - results min_dcf=%f "%(pi,C,min_DCF_ev))
-        min_DCFs_p0_eval = min_DCFs[0:8] #min_DCF results with prior = 0.1
-        min_DCFs_p1_eval = min_DCFs[8:16] #min_DCF results with prior = 0.5
-        min_DCFs_p2_eval = min_DCFs[16:24] #min_DCF results with prior = 0.9
+        # min_DCFs=[]
+        # for pi in [0.1, 0.5, 0.9]:
+        #     C_array = numpy.logspace(-4,3, num = 8)
+        #     for C in C_array:
+        #             Options= {'C': C,
+        #                       'piT':0.5,
+        #                       'rebalance':True}
+        #             scores_svm_quad = compute_score_quadratic(DEV, DTR, LTR, Options)
+        #             min_DCF_ev = validate.compute_min_DCF(scores_svm_quad, LEV, pi, 1, 1)
+        #             min_DCFs.append(min_DCF_ev)
+        #             print ("computed min_dcf for pi=%f -C=%f - results min_dcf=%f "%(pi,C,min_DCF_ev))
+        # min_DCFs_p0_eval = min_DCFs[0:8] #min_DCF results with prior = 0.1
+        # min_DCFs_p1_eval = min_DCFs[8:16] #min_DCF results with prior = 0.5
+        # min_DCFs_p2_eval = min_DCFs[16:24] #min_DCF results with prior = 0.9
+        min_DCFs_p0_eval = [0.256959, 0.228170, 0.203602, 0.204589, 0.205930, 0.202656, 0.205930, 0.598901 ]
+        min_DCFs_p1_eval = [0.140831, 0.117880, 0.101952, 0.098110, 0.104726, 0.105331, 0.108420, 0.413630 ]
+        min_DCFs_p2_eval = [0.555818, 0.534270, 0.460638, 0.450735, 0.421001, 0.430815, 0.459161, 0.999264]
         
         plt.figure()
         plt.plot(C_array, min_DCFs_p0, '--b', label='prior=0.1-val')

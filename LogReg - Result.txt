@@ -190,7 +190,7 @@ computed min_dcf for pi=0.500000 -lambda=1000.000000 - results min_dcf=0.214210
 ###################################################
 #### Quadratic Logistic regression with NO PCA ####
 ##################################################
- Quadratic Log Reg -piT = 0.100000 - pi = 0.100000  minDCF = 0.214194
+ Quadratic Log Reg -piT = 0.100000 - pi = 0.100000  minDCF = 0	.214194
  Quadratic Log Reg -piT = 0.100000 - pi = 0.500000  minDCF = 0.131153
  Quadratic Log Reg -piT = 0.100000 - pi = 0.900000  minDCF = 0.524096
  Quadratic Log Reg -piT = 0.500000 - pi = 0.100000  minDCF = 0.233575

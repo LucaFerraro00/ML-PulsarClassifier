@@ -26,13 +26,16 @@ def evaluation():
     gaussianize=False
     #evaluation_MVG(DTR, LTR, DEV, LEV)
     #evaluation_log_reg(DTR, LTR, DEV, LEV, gaussianize)
-    evaluation_SVM(DTR, LTR, DEV, LEV, gaussianize)
+    #evaluation_SVM(DTR, LTR, DEV, LEV, gaussianize)
     
     print('-----------EVALUATION ON GAUSSIANIZED FEATURES STARTED...-----------------')
     gaussianize=True
     #evaluation_MVG(DTR_gaussianized, LTR, DEV_gaussianized, LEV)
     #evaluation_log_reg(DTR_gaussianized, LTR, DEV_gaussianized, LEV, gaussianize)
-    evaluation_SVM(DTR_gaussianized, LTR, DEV_gaussianized, LEV,gaussianize )
+    #evaluation_SVM(DTR_gaussianized, LTR, DEV_gaussianized, LEV,gaussianize )
+    
+    evaluation_gmm(DTR, DTR_gaussianized, LTR, DEV, DEV_gaussianized, LEV)
+
 
 def evaluation_MVG(DTR, LTR, DEV, LEV):
     DTR_copy = DTR
@@ -113,8 +116,8 @@ def evaluation_log_reg(DTR, LTR, DEV, LEV, gaussianize):
         
 def evaluation_SVM(DTR, LTR, DEV, LEV, gaussianize):
     #svm.plot_linear_minDCF_wrt_C(DTR,LTR,gaussianize, DEV=DEV, LEV=LEV, evaluation=True)
-    svm.plot_quadratic_minDCF_wrt_C(DTR,LTR,gaussianize, DEV=DEV, LEV=LEV, evaluation=True)
-    svm.plot_RBF_minDCF_wrt_C(DTR,LTR,gaussianize, DEV=DEV, LEV=LEV, evaluation=True)
+    #svm.plot_quadratic_minDCF_wrt_C(DTR,LTR,gaussianize, DEV=DEV, LEV=LEV, evaluation=True)
+    #svm.plot_RBF_minDCF_wrt_C(DTR,LTR,gaussianize, DEV=DEV, LEV=LEV, evaluation=True)
     Options={
         'C' : None,
         'piT': None,
@@ -128,29 +131,84 @@ def evaluation_SVM(DTR, LTR, DEV, LEV, gaussianize):
         if m < 8:
             DTR, P = analys.pca(m, DTR)
             DEV = numpy.dot(P.T, DEV)
+        #     print ("##########################################")
+        #     print ("##### SVM with m = %d ####" %m)
+        #     print ("##########################################")
+        # else:
+        #     print ("##########################################")
+        #     print ("#### SVM with NO PCA ####")
+        #     print ("##########################################")
+            
+        # for piT in [0.1, 0.5, 0.9]:
+        #     Options['C']=1
+        #     Options['piT']=piT
+        #     Options['rebalance']=True
+        #     scores_linear_svm = svm.compute_score_linear(DEV, DTR, LTR, Options)
+        #     for pi in [0.1, 0.5, 0.9]:
+        #         min_DCF = validate.compute_min_DCF(scores_linear_svm, LEV, pi, 1, 1)
+        #         print("linear SVM -C =1 -piT=%f - pi = %f --> min_DCF= %f" %(piT, pi,min_DCF))
+        
+        # Options['C']=1
+        # Options['rebalance']=False
+        # scores_linear_svm = svm.compute_score_linear(DEV, DTR, LTR, Options)
+        # for pi in [0.1, 0.5, 0.9]:
+        #     min_DCF = validate.compute_min_DCF(scores_linear_svm, LEV, pi, 1, 1)
+        #     print("linear SVM -C =1 -No rebalancing - pi = %f --> min_DCF= %f" %(pi,min_DCF))
+            
+        if m < 8:
+            DTR, P = analys.pca(m, DTR)
+            DEV = numpy.dot(P.T, DEV)
             print ("##########################################")
-            print ("##### SVM with m = %d ####" %m)
+            print ("##### SVM Quadratci with m = %d ####" %m)
             print ("##########################################")
         else:
             print ("##########################################")
-            print ("#### SVM with NO PCA ####")
+            print ("#### SVM Quadratic with NO PCA ####")
+            print ("##########################################")
+            
+        # for piT in [0.1, 0.5, 0.9]:
+        #     Options['C']=0.1
+        #     Options['piT']=piT
+        #     Options['rebalance']=True
+        #     scores_linear_svm = svm.compute_score_quadratic(DEV, DTR, LTR, Options)
+        #     for pi in [0.1, 0.5, 0.9]:
+        #         min_DCF = validate.compute_min_DCF(scores_linear_svm, LEV, pi, 1, 1)
+        #         print("linear SVM -C =1 -piT=%f - pi = %f --> min_DCF= %f" %(piT, pi,min_DCF))
+        
+        Options['C']=0.1
+        Options['rebalance']=False
+        scores_linear_svm = svm.compute_score_quadratic(DEV, DTR, LTR, Options)
+        for pi in [0.1, 0.5, 0.9]:
+            min_DCF = validate.compute_min_DCF(scores_linear_svm, LEV, pi, 1, 1)
+            print("linear SVM -C =1 -No rebalancing - pi = %f --> min_DCF= %f" %(pi,min_DCF))
+            
+        if m < 8:
+            DTR, P = analys.pca(m, DTR)
+            DEV = numpy.dot(P.T, DEV)
+            print ("##########################################")
+            print ("##### SVM RBF with m = %d ####" %m)
+            print ("##########################################")
+        else:
+            print ("##########################################")
+            print ("#### SVM RBF with NO PCA ####")
             print ("##########################################")
             
         for piT in [0.1, 0.5, 0.9]:
-            Options['C']=1
+            Options['C']=10
             Options['piT']=piT
+            Options['gamma']=0.01
             Options['rebalance']=True
-            scores_linear_svm = svm.compute_score_linear(DEV, DTR, LTR, Options)
+            scores_linear_svm = svm.compute_score_quadratic(DEV, DTR, LTR, Options)
             for pi in [0.1, 0.5, 0.9]:
                 min_DCF = validate.compute_min_DCF(scores_linear_svm, LEV, pi, 1, 1)
                 print("linear SVM -C =1 -piT=%f - pi = %f --> min_DCF= %f" %(piT, pi,min_DCF))
         
-        Options['C']=1
+        Options['C']=10
         Options['rebalance']=False
-        scores_linear_svm = svm.compute_score_linear(DEV, DTR, LTR, Options)
+        scores_linear_svm = svm.compute_score_quadratic(DEV, DTR, LTR, Options)
         for pi in [0.1, 0.5, 0.9]:
             min_DCF = validate.compute_min_DCF(scores_linear_svm, LEV, pi, 1, 1)
-            print("linear SVM -C =1 -No rebalancing - pi = %f --> min_DCF= %f" %(pi,min_DCF))
+            print("linear SVM -C =1 -No rebalancing - pi = %f --> min_DCF= %f" %(pi,min_DCF))    
         
         m=m-1
         DEV = DEV_copy

@@ -63,7 +63,21 @@
  gmm diag-tied -components=8 - pi = 0.100000 --> minDCF = 0.306406 
  gmm full -components=16 - pi = 0.900000 --> minDCF = 0.545447
  gmm diag -components=32 - pi = 0.900000 --> minDCF = 0.633815
- 
+##########################################
+############# GMM with m = 7 ##############
+##########################################
+ gmm full -components=16 - pi = 0.100000 --> minDCF = 0.219245
+ gmm diag -components=32 - pi = 0.100000 --> minDCF = 0.237516
+ gmm full-tied -components=64 - pi = 0.100000 --> minDCF = 0.255930
+ gmm diag-tied -components=8 - pi = 0.100000 --> minDCF = 0.268647
+ gmm full -components=16 - pi = 0.500000 --> minDCF = 0.116497
+ gmm diag -components=32 - pi = 0.500000 --> minDCF = 0.132375
+         gmm full-tied -components=64 - pi = 0.500000 --> minDCF = 0.132717
+ gmm diag-tied -components=8 - pi = 0.500000 --> minDCF = 0.141017
+ gmm full -components=16 - pi = 0.900000 --> minDCF = 0.536109
+ gmm diag -components=32 - pi = 0.900000 --> minDCF = 0.646911
+ gmm full-tied -components=64 - pi = 0.900000 --> minDCF = 0.638157
+ gmm diag-tied -components=8 - pi = 0.900000 --> minDCF = 0.594989
  
  
  full gmm: computation for plotting min_cdf wrt C started...
@@ -81,8 +95,8 @@ computed min_dcf for raw features -components=5 -pi=0.500000 --> results min_dcf
 computed min_dcf for gaussianized features -components=5 pi=0.500000 --> results min_dcf=0.156592 
 computed min_dcf for raw features -components=6 -pi=0.500000 --> results min_dcf=0.156994 
 computed min_dcf for gaussianized features -components=6 pi=0.500000 --> results min_dcf=0.165178
-min_dcf_raw=[0.140774, 0.148019, 0.134998, 0.123160, 0.116545, 0.134071, 0.156994] 
-min_dcf_gauss = [0.152990, 0.147147 , 0.133884 , 0.134978 , 0.142251 , 0.156592 , 0.165178 ]
+min_DCFs_raw=[0.140774, 0.148019, 0.134998, 0.123160, 0.116545, 0.134071, 0.156994] 
+min_DCFs_gauss = [0.152990, 0.147147 , 0.133884 , 0.134978 , 0.142251 , 0.156592 , 0.165178 ]
 
 
 diag gmm: computation for plotting min_cdf wrt C started...
@@ -99,6 +113,9 @@ computed min_dcf for gaussianized features -components=4 pi=0.500000 --> results
 computed min_dcf for raw features -components=5 -pi=0.500000 --> results min_dcf=0.141395 
 computed min_dcf for gaussianized features -components=5 pi=0.500000 --> results min_dcf=0.157635 
 computed min_dcf for raw features -components=6 -pi=0.500000 --> results min_dcf=0.155573
+min_DCFs_raw=[0.140774, 0.169676, 0.193329, 0.167284, 0.141753, 0.141395, 0.155573] 
+min_DCFs_gauss = [0.152990, 0.159709 , 0.177088 , 0.168108 , 0.160728 , 0.157635 , 0.151344]
+
 
 full-tied gmm: computation for plotting min_cdf wrt C started...
 computed min_dcf for raw features -components=0 -pi=0.500000 --> results min_dcf=0.140774 
@@ -115,8 +132,8 @@ computed min_dcf for raw features -components=5 -pi=0.500000 --> results min_dcf
 computed min_dcf for gaussianized features -components=5 pi=0.500000 --> results min_dcf=0.144078 
 computed min_dcf for raw features -components=6 -pi=0.500000 --> results min_dcf=0.124466  
 computed min_dcf for gaussianized features -components=6 pi=0.500000 --> results min_dcf=0.152122 
-min_dcf_raw=[0.140774, 0.141112, 0.145507, 0.155410, 0.144082, 0.132948, 0.124466] 
-min_dcf_gauss = [0.152990, 0.152914 , 0.165218 , 0.147103 , 0.146315 , 0.144078 , 152122 ]
+min_DCFs_raw=	 [0.140774, 0.141112, 0.145507, 0.155410, 0.144082, 0.132948, 0.124466] 
+min_DCFs_gauss = [0.152990, 0.152914 , 0.165218 , 0.147103 , 0.146315 , 0.144078 , 0.152122 ]
 
 diag-tied gmm: computation for plotting min_cdf wrt C started...
 computed min_dcf for raw features -components=0 -pi=0.500000 --> results min_dcf=0.140774 

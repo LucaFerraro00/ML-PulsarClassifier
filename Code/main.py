@@ -20,7 +20,7 @@ k=5 #kfold
 def main():
     D,L = analys.loda_training_set('../Data/Train.txt')
     D= analys.scale_ZNormalization(D)[0]
-    D_gaussianized= analys.gaussianize_training(D)
+    # D_gaussianized= analys.gaussianize_training(D)
 
     # gaussianize= False 
     # plot(D, L, gaussianize) #plot raw features before gaussianization
@@ -29,7 +29,7 @@ def main():
     # #plot(D_gaussianized, L, gaussianize) #plot gaussianized features    
     
     # #evaluate models on raw data
-    # print("VALIDATION WITHOUT GAUSSIANIZATION")
+    print("VALIDATION WITHOUT GAUSSIANIZATION")
     gaussianize=False
     # #train_evaluate_gaussian_models(D, L)
     
@@ -40,7 +40,7 @@ def main():
     # svm.plot_linear_minDCF_wrt_C(D, L, gaussianize)
     # svm.plot_quadratic_minDCF_wrt_C(D, L, gaussianize)
     # svm.plot_RBF_minDCF_wrt_C(D, L, gaussianize)
-    # train_evaluate_svm(D,L)
+    #train_evaluate_svm(D,L)
     
     # gmm.plot_minDCF_wrt_components(D, D_gaussianized, L)
     # train_evaluate_gmm(D, L)
@@ -64,11 +64,11 @@ def main():
     
     # validate.two_bests_roc(D, L) #model selection
     
-    # #calibration(D, L) #score calibration
+    # calibration(D, L) #score calibration
     
-    # fusion.validate_fused_scores(D, L)
+    # validate_fusion(D,L)
     
-    evaluation.evaluation()
+    # evaluation.evaluation()
     
     
 
@@ -83,7 +83,7 @@ def plot(DTR, LTR, gaussianize):
 
 def train_evaluate_gaussian_models(D,L):
     Options={ }  
-    m = 8
+    m = 5
     while m>=5:
         if m < 8:
             D = analys.pca(m, D)[0]
@@ -126,12 +126,12 @@ def train_evaluate_log_reg(D,L):
             print ("#### Linear Logistic regression with NO PCA ####")
             print ("###############################################")
             
-        for piT in [0.1, 0.5, 0.9]:
-            Options['lambdaa']=1e-06
-            Options['piT']=piT
-            for pi in [0.1, 0.5, 0.9]:
-                min_dcf_kfold = validate.kfold(D, L, k, pi, log_reg.compute_score, Options)[0]
-                print(" Logistic reggression -piT = %f - pi = %f  minDCF = %f" %(Options['piT'], pi,min_dcf_kfold))
+        # for piT in [0.1, 0.5, 0.9]:
+        #     Options['lambdaa']=1e-06
+        #     Options['piT']=piT
+        #     for pi in [0.1, 0.5, 0.9]:
+                # min_dcf_kfold = validate.kfold(D, L, k, pi, log_reg.compute_score, Options)[0]
+                # print(" Logistic reggression -piT = %f - pi = %f  minDCF = %f" %(Options['piT'], pi,min_dcf_kfold))
              
         if m < 8:
             D = analys.pca(m, D)[0]
@@ -162,7 +162,7 @@ def train_evaluate_svm(D,L):
         'gamma':None,
         'rebalance':None
         }  
-    m = 6
+    m = 7
     while m>=5:
         
         # if m < 8:
@@ -188,51 +188,52 @@ def train_evaluate_svm(D,L):
         #         min_dcf_kfold = validate.kfold(D, L, k, pi, svm.compute_score_linear, Options)[0]
         #         print("Linear SVM without rebalancing -C=%f - pi = %f - minDCF = %f" %(Options['C'], pi,min_dcf_kfold)) 
           
-        # if m < 8:
-        #     D = analys.pca(m, D)[0]
-        #     print ("##########################################")
-        #     print ("########## SVM QUADRATIC with m = %d ######" %m)
-        #     print ("##########################################")
-        # else:
-        #     print ("##########################################")
-        #     print ("########SVM QUADRATIC with NO PCA ########")
-        #     print ("##########################################")
+        if m < 8:
+            D = analys.pca(m, D)[0]
+            print ("##########################################")
+            print ("########## SVM QUADRATIC with m = %d ######" %m)
+            print ("##########################################")
+        else:
+            print ("##########################################")
+            print ("########SVM QUADRATIC with NO PCA ########")
+            print ("##########################################")
         # for piT in [0.5, 0.9]:
         #     for pi in [0.1, 0.5, 0.9]:
         #         Options['C']=0.1
         #         Options['piT']=piT
         #         Options['rebalance']=True
-        #         #min_dcf_kfold = validate.kfold(D, L, k, pi, svm.compute_score_quadratic, Options)[0]
-        #        # print("Quadratric SVM -piT = %f -C=%f - pi = %f - minDCF = %f" %(piT,Options['C'], pi,min_dcf_kfold))
+                #min_dcf_kfold = validate.kfold(D, L, k, pi, svm.compute_score_quadratic, Options)[0]
+                # print("Quadratric SVM -piT = %f -C=%f - pi = %f - minDCF = %f" %(piT,Options['C'], pi,min_dcf_kfold))
                 
-        # Options['rebalance']=False
-        # for pi in [0.5, 0.9]:
-        #     min_dcf_kfold = validate.kfold(D, L, k, pi, svm.compute_score_quadratic, Options)[0]
-        #     print("Quadratic SVM without rebalancing -C=%f - pi = %f - minDCF = %f" %(Options['C'], pi,min_dcf_kfold))
-           
-        if m < 8:
-            D = analys.pca(m, D)[0]
-            print ("##########################################")
-            print ("######### SVM RBF with m = %d #############" %m)
-            print ("##########################################")
-        else:
-            print ("##########################################")
-            print ("##########SVM RBF with NO PCA ############")
-            print ("##########################################")
-        for piT in [0.1, 0.5, 0.9]:
-            for pi in [0.1, 0.5, 0.9]:
-                Options['C']=10
-                Options['piT']=piT
-                Options['gamma']=0.01
-                Options['rebalance']=True
-                min_dcf_kfold = validate.kfold(D, L, k, pi, svm.compute_score_RBF, Options)[0]
-                print("RBF SVM -piT = %f -gamma =%f -C=%f - pi = %f -> minDCF = %f" %(piT, Options['gamma'], Options['C'], pi,min_dcf_kfold))      
-            
         Options['rebalance']=False
-        for pi in [0.1, 0.5, 0.9]:
-            pass
-            min_dcf_kfold = validate.kfold(D, L, k, pi, svm.compute_score_RBF, Options)[0]
-            print("RBF SVM without rebalancing -gamma =%f -C=%f - pi = %f -> minDCF = %f" %(Options['gamma'], Options['C'], pi,min_dcf_kfold))
+        Options['C']=0.1
+        for pi in [0.1]:
+            min_dcf_kfold = validate.kfold(D, L, k, pi, svm.compute_score_quadratic, Options)[0]
+            print("Quadratic SVM without rebalancing -C=%f - pi = %f - minDCF = %f" %(Options['C'], pi,min_dcf_kfold))
+           
+        # if m < 8:
+        #     D = analys.pca(m, D)[0]
+        #     print ("##########################################")
+        #     print ("######### SVM RBF with m = %d #############" %m)
+        #     print ("##########################################")
+        # else:
+        #     print ("##########################################")
+        #     print ("##########SVM RBF with NO PCA ############")
+        #     print ("##########################################")
+        # for piT in [0.1, 0.5, 0.9]:
+        #     for pi in [0.1, 0.5, 0.9]:
+        #         Options['C']=10
+        #         Options['piT']=piT
+        #         Options['gamma']=0.01
+        #         Options['rebalance']=True
+        #         min_dcf_kfold = validate.kfold(D, L, k, pi, svm.compute_score_RBF, Options)[0]
+        #         print("RBF SVM -piT = %f -gamma =%f -C=%f - pi = %f -> minDCF = %f" %(piT, Options['gamma'], Options['C'], pi,min_dcf_kfold))      
+            
+        # Options['rebalance']=False
+        # for pi in [0.1, 0.5, 0.9]:
+        #     pass
+        #     min_dcf_kfold = validate.kfold(D, L, k, pi, svm.compute_score_RBF, Options)[0]
+        #     print("RBF SVM without rebalancing -gamma =%f -C=%f - pi = %f -> minDCF = %f" %(Options['gamma'], Options['C'], pi,min_dcf_kfold))
               
         m = m-1
         D=D_copy
@@ -281,6 +282,9 @@ def calibration(D,L):
     score_calibration.validate_score_trasformation(D, L)
     score_calibration.min_vs_act_after_calibration(D, L)
         
-         
+def validate_fusion(D,L):
+    fusion.validate_fused_scores(D,L)
+    fusion.ROC_with_fusion(D,L)
+    fusion.bayes_plot_with_fusion(D,L)
 
 main()
