@@ -67,3 +67,5 @@ computed min_dcf for raw features -components=5 -pi=0.500000 --> results min_dcf
 computed min_dcf for gaussianized features -components=5 pi=0.500000 --> results min_dcf=0.175955 
 computed min_dcf for raw features -components=6 -pi=0.500000 --> results min_dcf=0.142676 
 computed min_dcf for gaussianized features -components=6 pi=0.500000 --> results min_dcf=0.174360 
+[0.14049800840432677, 0.18198796013749044, 0.15098361939180366, 0.1499890963923907, 0.1552819204987523, 0.1478112245066305, 0.14267588029008696]
+[0.15055467416810872, 0.15569346794414352, 0.19936219144815207, 0.1823960580233904, 0.17258131136653848, 0.175954680587289, 0.17435978425555054]

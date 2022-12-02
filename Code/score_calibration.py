@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 """
 Created on Sat Nov 19 19:33:19 2022
-
 @author: lucaf
 """
 
@@ -19,17 +18,25 @@ def mcol(x):
     return numpy.reshape(x, (x.shape[0],1))
 
 
-def min_vs_act(D,L):
+def min_vs_act(DTR,LTR, DEV=None, LEV=None, evaluation=False):
     pi_array = numpy.linspace(-4, 4, 20)
 
     Options={
     'lambdaa' : 1e-06,
     'piT': 0.1,
     }     
-    _ , scores1, labels1 = validate.kfold(D, L, 5, 1, log_reg.compute_score_quadratic, Options) #pi(set to random value 1) actually not used to compute scores
-    y_min1, y_act1 = validate.bayes_error(pi_array, scores1, labels1)
+    if evaluation:
+        scores1 = log_reg.compute_score_quadratic(DEV, DTR, LTR, Options)
+        y_min1, y_act1 = validate.bayes_error(pi_array, scores1, LEV)
+    else:
+        _ , scores1, labels1 = validate.kfold(DTR, LTR, 5, 1, log_reg.compute_score_quadratic, Options) #pi(set to random value 1) actually not used to compute scores
+        y_min1, y_act1 = validate.bayes_error(pi_array, scores1, labels1)
+        
     for pi in [0.1, 0.5, 0.9]:
-        act_dcf= validate.compute_act_DCF(scores1, labels1, pi, 1, 1)
+        if evaluation:
+            act_dcf = validate.compute_act_DCF(scores1, LEV, pi, 1, 1)
+        else:
+            act_dcf= validate.compute_act_DCF(scores1, labels1, pi, 1, 1)
         print ('Quad Log Reg: pi = %f --> act_DCF = %f'%(pi,act_dcf))
     
     Options={
@@ -38,10 +45,17 @@ def min_vs_act(D,L):
         'gamma':0.01,
         'rebalance':True
         }  
-    _ , scores2, labels2 = validate.kfold(D, L, 5, 1, svm.compute_score_RBF, Options) #pi(set to random value 1) actually not used to compute scores
-    y_min2, y_act2= validate.bayes_error(pi_array, scores2, labels2)
+    if evaluation:
+        scores2 = svm.compute_score_quadratic(DEV, DTR, LTR, Options)
+        y_min2, y_act2= validate.bayes_error(pi_array, scores2, LEV)
+    else:
+        _ , scores2, labels2 = validate.kfold(DTR, LTR, 5, 1, svm.compute_score_RBF, Options) #pi(set to random value 1) actually not used to compute scores
+        y_min2, y_act2= validate.bayes_error(pi_array, scores2, labels2)
     for pi in [0.1, 0.5, 0.9]:
-        act_dcf= validate.compute_act_DCF(scores2, labels2, pi, 1, 1)
+        if evaluation:
+            act_dcf = validate.compute_act_DCF(scores2, LEV, pi, 1, 1)
+        else:
+            act_dcf= validate.compute_act_DCF(scores2, labels2, pi, 1, 1)
         print ('RBF SVM: pi = %f --> act_DCF = %f'%(pi,act_dcf))
     
     plt.figure()
@@ -56,28 +70,35 @@ def min_vs_act(D,L):
     plt.ylabel("cost")
     plt.tight_layout() # Use with non-default font size to keep axis label inside the figure
     plt.show()
-    plt.savefig("../Images/ScoreCalibration/actVSmin.pdf")
+    if evaluation:
+        plt.savefig("../Images/ScoreCalibration/actVSmin_EVALUATION.pdf")
+    else:
+        plt.savefig("../Images/ScoreCalibration/actVSmin.pdf")
     
 #first approach to calibrate the score: find optimal threshold on training scores samples, evaluate actual dcf with optimal threshold on evaluation scores samples
-def optimal_threshold (D,L):
+def optimal_threshold (DTR,LTR, DEV=None, LEV=None, evaluation=False):
     #best model 1
     
     Options={
     'lambdaa' : 1e-06,
     'piT': 0.1,
     }     
-    _ , scores, labels = validate.kfold(D, L, 5, 1, log_reg.compute_score_quadratic, Options) #pi(set to random value 1) actually not used to compute scores
-    scores_TR, LTR, scores_TE, LTE = split_scores(scores, labels) #split and shuffle scores
+    if evaluation:
+        scores = log_reg.compute_score_quadratic(DEV, DTR, LTR, Options)
+        scores_TR1, LTR1, scores_TE1, LTE = split_scores(scores, LEV) #split and shuffle scores
+    else:
+        _ , scores, labels = validate.kfold(DTR, LTR, 5, 1, log_reg.compute_score_quadratic, Options) #pi(set to random value 1) actually not used to compute scores
+        scores_TR1, LTR1, scores_TE1, LTE = split_scores(scores, labels) #split and shuffle scores
     t_array = numpy.arange (-10, 10, 0.1) #To be changed ??
     for pi in [0.1, 0.5, 0.9]:
         threshold_act_DCF = {}
         for t in t_array:
-            act_dcf= validate.compute_act_DCF(scores_TR, LTR, pi, 1, 1, th=t)
+            act_dcf= validate.compute_act_DCF(scores_TR1, LTR1, pi, 1, 1, th=t)
             threshold_act_DCF[t]=act_dcf
         best_t = min(threshold_act_DCF, key=threshold_act_DCF.get)
-        best_cost_validation = validate.compute_act_DCF(scores_TE, LTE, pi, 1, 1, th=best_t)
-        theoretical_cost_validation = validate.compute_act_DCF(scores_TE, LTE, pi, 1, 1, th=None) #if th=None, computed_act_DCF function will use theoretical threshold
-        min_DCF_validation = validate.compute_min_DCF(scores_TE, LTE, pi, 1, 1)
+        best_cost_validation = validate.compute_act_DCF(scores_TE1, LTE, pi, 1, 1, th=best_t)
+        theoretical_cost_validation = validate.compute_act_DCF(scores_TE1, LTE, pi, 1, 1, th=None) #if th=None, computed_act_DCF function will use theoretical threshold
+        min_DCF_validation = validate.compute_min_DCF(scores_TE1, LTE, pi, 1, 1)
         print('Quad Log Reg: prior pi= % f - act_dcf computed on evaluation scores set for best threshold = %f' %(pi,best_cost_validation))
         print('Quad Log Reg: prior pi= % f - act_dcf computed on evaluation scores set for theoretical threshold = %f' %(pi,theoretical_cost_validation))
         print('Quad Log Reg: prior pi= % f - min_DCF computed on evaluation scores set = %f' %(pi,min_DCF_validation))
@@ -89,18 +110,22 @@ def optimal_threshold (D,L):
         'gamma':0.01,
         'rebalance':True
         }  
-    _ , scores, labels = validate.kfold(D, L, 5, 1, svm.compute_score_RBF, Options) #pi(set to random value 1) actually not used to compute scores
-    scores_TR, LTR, scores_TE, LTE = split_scores(scores, labels) #split and shuffle scores
+    if evaluation:
+        scores = svm.compute_score_RBF(DEV, DTR, LTR, Options)
+        scores_TR2, LTR2, scores_TE2, LTE = split_scores(scores, LEV) #split and shuffle scores
+    else:
+        _ , scores, labels = validate.kfold(DTR, LTR, 5, 1, svm.compute_score_RBF, Options) #pi(set to random value 1) actually not used to compute scores
+        scores_TR2, LTR2, scores_TE2, LTE = split_scores(scores, labels) #split and shuffle scores
     t_array = numpy.arange (-100, 100, 0.1) #To be changed ??
     for pi in [0.1, 0.5, 0.9]:
         threshold_act_DCF = {}
         for t in t_array:
-            act_dcf= validate.compute_act_DCF(scores_TR, LTR, pi, 1, 1, th=t)
+            act_dcf= validate.compute_act_DCF(scores_TR2, LTR2, pi, 1, 1, th=t)
             threshold_act_DCF[t]=act_dcf
         best_t = min(threshold_act_DCF, key=threshold_act_DCF.get)
-        best_cost_validation = validate.compute_act_DCF(scores_TE, LTE, pi, 1, 1, th=best_t)
-        theoretical_cost_validation = validate.compute_act_DCF(scores_TE, LTE, pi, 1, 1, th=None) #if th=None, compute_act_DCF function will use theoretical threshold
-        min_DCF_validation = validate.compute_min_DCF(scores_TE, LTE, pi, 1, 1)
+        best_cost_validation = validate.compute_act_DCF(scores_TE2, LTE, pi, 1, 1, th=best_t)
+        theoretical_cost_validation = validate.compute_act_DCF(scores_TE2, LTE, pi, 1, 1, th=None) #if th=None, compute_act_DCF function will use theoretical threshold
+        min_DCF_validation = validate.compute_min_DCF(scores_TE2, LTE, pi, 1, 1)
         print('RBF SVM: prior pi= % f - act_dcf computed on validation scores set for best threshold = %f' %(pi,best_cost_validation))
         print('RBF SVM: prior pi= % f - act_dcf computed on validation scores set for theoretical threshold = %f' %(pi,theoretical_cost_validation))
         print('RBF SVM: prior pi= % f - min_dcf computed on validation scores = %f' %(pi,min_DCF_validation))
@@ -113,25 +138,30 @@ def score_trasformation(scores_TR, LTR, scores_TE,pi):
     return new_scores
     
 #second approach to calibrate score: trasform score so that theoretical threshold provide close to optimal values over different applications
-def validate_score_trasformation(D,L):
+def validate_score_trasformation(DTR,LTR, DEV=None, LEV=None, evaluation=False):
     #best model 1
     Options={
     'lambdaa' : 1e-06,
     'piT': 0.1,
     }     
     for pi in [0.1, 0.5, 0.9]:
-        _ , scores, labels = validate.kfold(D, L, 5, 1, log_reg.compute_score_quadratic, Options) #pi(set to random value 1) actually not used to compute scores
-        scores_TR, LTR, scores_TE, LTE = split_scores(scores, labels) #split and shuffle scores
-        calibrated_scores = score_trasformation(scores_TR, LTR, scores_TE, pi)
+        if evaluation:
+            scores1 = log_reg.compute_score_quadratic(DEV, DTR, LTR, Options)
+            scores_TR1, LTR1, scores_TE1, LTE1 = split_scores(scores1, LEV) #split and shuffle scores
+            calibrated_scores1 = score_trasformation(scores_TR1, LTR1, scores_TE1, pi)
+        else:
+            _ , scores1, labels1 = validate.kfold(DTR, LTR, 5, 1, log_reg.compute_score_quadratic, Options) #pi(set to random value 1) actually not used to compute scores
+            scores_TR1, LTR1, scores_TE1, LTE1 = split_scores(scores1, labels1) #split and shuffle scores
+            calibrated_scores1 = score_trasformation(scores_TR1, LTR1, scores_TE1, pi)
 
-        min_DCF_validation = validate.compute_min_DCF(scores_TE, LTE, pi, 1, 1)
+        min_DCF_validation = validate.compute_min_DCF(scores_TE1, LTE1, pi, 1, 1)
         print('Quad Log-Reg: prior pi= % f - min_dcf computed on validation scores = %f' %(pi,min_DCF_validation))
-        act_DCF_non_calibrated= validate.compute_act_DCF(scores_TE, LTE, pi, 1, 1, th=None) #if th=None, compute_act_DCF function will use theoretical threshold
+        act_DCF_non_calibrated= validate.compute_act_DCF(scores_TE1, LTE1, pi, 1, 1, th=None) #if th=None, compute_act_DCF function will use theoretical threshold
         print('Quad Log-Reg: act DCF computed on theoretical threshold (pi=%f) without calibration = %f'%(pi,act_DCF_non_calibrated))
     
         print('Quad Log-Reg: result of act_DCF computed on trasformed scores with log reg pi = %f reported below:'%pi)
         for pi in [0.1, 0.5, 0.9]:
-            act_DCF= validate.compute_act_DCF(calibrated_scores, LTE, pi, 1, 1, th=None) #if th=None, compute_act_DCF function will use theoretical threshold
+            act_DCF= validate.compute_act_DCF(calibrated_scores1, LTE1, pi, 1, 1, th=None) #if th=None, compute_act_DCF function will use theoretical threshold
             print('Quad Log-Reg: act DCF computed on theoretical threshold (pi=%f) but with trasformed scores = %f'%(pi,act_DCF))
         print('')
     
@@ -143,18 +173,23 @@ def validate_score_trasformation(D,L):
         'rebalance':True
         }  
     for pi in [0.1, 0.5, 0.9]:
-        _ , scores, labels = validate.kfold(D, L, 5, 1, svm.compute_score_RBF, Options) #pi(set to random value 1) actually not used to compute scores
-        scores_TR, LTR, scores_TE, LTE = split_scores(scores, labels) #split and shuffle scores
-        calibrated_scores = score_trasformation(scores_TR, LTR, scores_TE, pi)
+        if evaluation:
+            scores2 = svm.compute_score_RBF(DEV, DTR, LTR, Options)
+            scores_TR2, LTR2, scores_TE2, LTE2 = split_scores(scores2, LEV) #split and shuffle scores. Acually LTE1==LTE2
+            calibrated_scores2 = score_trasformation(scores_TR2, LTR2, scores_TE2, pi)
+        else:
+            _ , scores2, labels2 = validate.kfold(DTR, LTR, 5, 1, svm.compute_score_RBF, Options) #pi(set to random value 1) actually not used to compute scores
+            scores_TR2, LTR2, scores_TE2, LTE2 = split_scores(scores2, labels2) #split and shuffle scores
+            calibrated_scores2 = score_trasformation(scores_TR2, LTR2, scores_TE2, pi)
 
-        min_DCF_validation = validate.compute_min_DCF(scores_TE, LTE, pi, 1, 1)
+        min_DCF_validation = validate.compute_min_DCF(scores_TE2, LTE2, pi, 1, 1)
         print('RBF SVM: prior pi= % f - min_dcf computed on validation scores = %f' %(pi,min_DCF_validation))
-        act_DCF_non_calibrated= validate.compute_act_DCF(scores_TE, LTE, pi, 1, 1, th=None) #if th=None, compute_act_DCF function will use theoretical threshold
+        act_DCF_non_calibrated= validate.compute_act_DCF(scores_TE2, LTE2, pi, 1, 1, th=None) #if th=None, compute_act_DCF function will use theoretical threshold
         print('RBF SVM: act DCF computed on theoretical threshold (pi=%f) without calibration = %f'%(pi,act_DCF_non_calibrated))
     
         print('RBF SVM: result of act_DCF computed on trasformed scores with svm pi = %f reported below:'%pi)
         for pi in [0.1, 0.5, 0.9]:
-            act_DCF= validate.compute_act_DCF(calibrated_scores, LTE, pi, 1, 1, th=None) #if th=None, compute_act_DCF function will use theoretical threshold
+            act_DCF= validate.compute_act_DCF(calibrated_scores2, LTE2, pi, 1, 1, th=None) #if th=None, compute_act_DCF function will use theoretical threshold
             print('RBF SVM: act DCF computed on theoretical threshold (pi=%f) but with trasformed scores = %f'%(pi,act_DCF))
         
 

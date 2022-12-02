@@ -68,7 +68,7 @@ def main():
     
     # validate_fusion(D,L)
     
-    # evaluation.evaluation()
+    evaluation.evaluation()
     
     
 

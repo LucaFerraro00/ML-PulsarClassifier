@@ -16,6 +16,9 @@ import scipy.stats as statist
 def mcol(v):
     return v.reshape((v.size, 1))
 
+def mrow(v):
+    return v.reshape((1, v.size))
+
 
 def loda_training_set(fname):
     #setup visualization font
