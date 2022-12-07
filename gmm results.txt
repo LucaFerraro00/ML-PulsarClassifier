@@ -61,6 +61,8 @@
  gmm diag -components=32 - pi = 0.100000 --> minDCF = 0.260085
  gmm full-tied -components=64 - pi = 0.100000 --> minDCF = 0.233289
  gmm diag-tied -components=8 - pi = 0.100000 --> minDCF = 0.306406 
+  gmm full -components=16 - pi = 0.500000 --> minDCF = 0.116545
+
  gmm full -components=16 - pi = 0.900000 --> minDCF = 0.545447
  gmm diag -components=32 - pi = 0.900000 --> minDCF = 0.633815
 ##########################################
@@ -72,7 +74,7 @@
  gmm diag-tied -components=8 - pi = 0.100000 --> minDCF = 0.268647
  gmm full -components=16 - pi = 0.500000 --> minDCF = 0.116497
  gmm diag -components=32 - pi = 0.500000 --> minDCF = 0.132375
-         gmm full-tied -components=64 - pi = 0.500000 --> minDCF = 0.132717
+ gmm full-tied -components=64 - pi = 0.500000 --> minDCF = 0.132717
  gmm diag-tied -components=8 - pi = 0.500000 --> minDCF = 0.141017
  gmm full -components=16 - pi = 0.900000 --> minDCF = 0.536109
  gmm diag -components=32 - pi = 0.900000 --> minDCF = 0.646911
@@ -150,7 +152,37 @@ computed min_dcf for raw features -components=5 -pi=0.500000 --> results min_dcf
 computed min_dcf for gaussianized features -components=5 pi=0.500000 --> results min_dcf=0.178982 
 
 
+
 VALIDATION WITH GAUSSIANIZATION
 
+##########################################
+########## GMM LINEAR with NO PCA ########
+##########################################
  gmm full -components=16 - pi = 0.100000 --> minDCF = 0.229312
  gmm diag -components=32 - pi = 0.100000 --> minDCF = 0.268181
+ gmm full-tied -components=64 - pi = 0.100000 --> minDCF = 0.229240
+ gmm diag-tied -components=8 - pi = 0.100000 --> minDCF = 0.299600
+ gmm full -components=16 - pi = 0.500000 --> minDCF = 0.142251
+ gmm diag -components=32 - pi = 0.500000 --> minDCF = 0.157635
+ gmm full-tied -components=64 - pi = 0.500000 --> minDCF = 0.152122
+ gmm diag-tied -components=8 - pi = 0.500000 --> minDCF = 0.187811
+ gmm full -components=16 - pi = 0.900000 --> minDCF = 0.675009
+ gmm diag -components=32 - pi = 0.900000 --> minDCF = 0.608719
+ gmm full-tied -components=64 - pi = 0.900000 --> minDCF = 0.681736
+ gmm diag-tied -components=8 - pi = 0.900000 --> minDCF = 0.652484
+ 
+ ##########################################
+############# GMM with m = 7 ##############
+##########################################
+ gmm full -components=16 - pi = 0.100000 --> minDCF = 0.213657
+ gmm diag -components=32 - pi = 0.100000 --> minDCF = 0.231461
+ gmm full-tied -components=64 - pi = 0.100000 --> minDCF = 0.227915
+ gmm diag-tied -components=8 - pi = 0.100000 --> minDCF = 0.257971
+ gmm full -components=16 - pi = 0.500000 --> minDCF = 0.132140
+ gmm diag -components=32 - pi = 0.500000 --> minDCF = 0.136925
+ gmm full-tied -components=64 - pi = 0.500000 --> minDCF = 0.153436
+ gmm diag-tied -components=8 - pi = 0.500000 --> minDCF = 0.161640
+ 
+ gmm full-tied -components=64 - pi = 0.900000 --> minDCF = 0.655979
+ gmm diag-tied -components=8 - pi = 0.900000 --> minDCF = 0.717484
+ 

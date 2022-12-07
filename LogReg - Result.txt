@@ -231,3 +231,8 @@ computed min_dcf for pi=0.500000 -lambda=1000.000000 - results min_dcf=0.214210
  Quadratic Log Reg -piT = 0.100000 - pi = 0.900000  minDCF = 0.555255
  Quadratic Log Reg -piT = 0.500000 - pi = 0.100000  minDCF = 0.232035
  Quadratic Log Reg -piT = 0.500000 - pi = 0.500000  minDCF = 0.126950
+ Quadratic Log Reg -piT = 0.500000 - pi = 0.900000  minDCF = 0.555379
+ Quadratic Log Reg -piT = 0.900000 - pi = 0.100000  minDCF = 0.244359
+ Quadratic Log Reg -piT = 0.900000 - pi = 0.500000  minDCF = 0.130349
+ Quadratic Log Reg -piT = 0.900000 - pi = 0.900000  minDCF = 0.553321
+ 

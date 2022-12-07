@@ -197,15 +197,15 @@ min_DCFs_p2_eval = [0.555818, 0.534270, 0.460638, 0.450735, 0.421001, 0.430815, 
 ##########################################
 #### SVM Quadratic with NO PCA ####
 ##########################################
-linear SVM -C =1 -piT=0.100000 - pi = 0.100000 --> min_DCF= 0.200685
-linear SVM -C =1 -piT=0.100000 - pi = 0.500000 --> min_DCF= 0.102649
-linear SVM -C =1 -piT=0.100000 - pi = 0.900000 --> min_DCF= 0.516308
-linear SVM -C =1 -piT=0.500000 - pi = 0.100000 --> min_DCF= 0.204589
-linear SVM -C =1 -piT=0.500000 - pi = 0.500000 --> min_DCF= 0.098110
-linear SVM -C =1 -piT=0.500000 - pi = 0.900000 --> min_DCF= 0.450735
-linear SVM -C =1 -piT=0.900000 - pi = 0.100000 --> min_DCF= 0.258733
-linear SVM -C =1 -piT=0.900000 - pi = 0.500000 --> min_DCF= 0.122617
-linear SVM -C =1 -piT=0.900000 - pi = 0.900000 --> min_DCF= 0.474574
+Quadratic SVM -C =1 -piT=0.100000 - pi = 0.100000 --> min_DCF= 0.200685
+Quadratic SVM -C =1 -piT=0.100000 - pi = 0.500000 --> min_DCF= 0.102649
+Quadratic SVM -C =1 -piT=0.100000 - pi = 0.900000 --> min_DCF= 0.516308
+Quadratic SVM -C =1 -piT=0.500000 - pi = 0.100000 --> min_DCF= 0.204589
+Quadratic SVM -C =1 -piT=0.500000 - pi = 0.500000 --> min_DCF= 0.098110
+Quadratic SVM -C =1 -piT=0.500000 - pi = 0.900000 --> min_DCF= 0.450735
+Quadratic SVM -C =1 -piT=0.900000 - pi = 0.100000 --> min_DCF= 0.258733
+Quadratic SVM -C =1 -piT=0.900000 - pi = 0.500000 --> min_DCF= 0.122617
+Quadratic SVM -C =1 -piT=0.900000 - pi = 0.900000 --> min_DCF= 0.474574
 linear SVM -C =1 -No rebalancing - pi = 0.100000 --> min_DCF= 0.203997
 linear SVM -C =1 -No rebalancing - pi = 0.500000 --> min_DCF= 0.101913
 linear SVM -C =1 -No rebalancing - pi = 0.900000 --> min_DCF= 0.521544
@@ -406,54 +406,147 @@ computed min_dcf for pi=0.500000 -gamma=0.100000 -C=1000.000000 - results min_dc
 
 
 
-##########################################
 #### SVM Quadratic with NO PCA ####
 ##########################################
-linear SVM -C =1 -piT=0.100000 - pi = 0.100000 --> min_DCF= 0.208453
-linear SVM -C =1 -piT=0.100000 - pi = 0.500000 --> min_DCF= 0.125119
-linear SVM -C =1 -piT=0.100000 - pi = 0.900000 --> min_DCF= 0.548598
-linear SVM -C =1 -piT=0.500000 - pi = 0.100000 --> min_DCF= 0.223477
-linear SVM -C =1 -piT=0.500000 - pi = 0.500000 --> min_DCF= 0.114283
-linear SVM -C =1 -piT=0.500000 - pi = 0.900000 --> min_DCF= 0.486397
-linear SVM -C =1 -piT=0.900000 - pi = 0.100000 --> min_DCF= 0.296156
-linear SVM -C =1 -piT=0.900000 - pi = 0.500000 --> min_DCF= 0.143824
-linear SVM -C =1 -piT=0.900000 - pi = 0.900000 --> min_DCF= 0.491338
-
+##########################################
+#### SVM RBF with NO PCA ####
+##########################################
+RBF SVM -C =1 -piT=0.100000 - pi = 0.100000 --> min_DCF= 0.201158
+RBF SVM -C =1 -piT=0.100000 - pi = 0.500000 --> min_DCF= 0.104976
+RBF SVM -C =1 -piT=0.100000 - pi = 0.900000 --> min_DCF= 0.451917
+RBF SVM -C =1 -piT=0.500000 - pi = 0.100000 --> min_DCF= 0.200093
+RBF SVM -C =1 -piT=0.500000 - pi = 0.500000 --> min_DCF= 0.097878
+RBF SVM -C =1 -piT=0.500000 - pi = 0.900000 --> min_DCF= 0.477937
+RBF SVM -C =1 -piT=0.900000 - pi = 0.100000 --> min_DCF= 0.297733
+RBF SVM -C =1 -piT=0.900000 - pi = 0.500000 --> min_DCF= 0.130836
+RBF SVM -C =1 -piT=0.900000 - pi = 0.900000 --> min_DCF= 0.457561
+RBF SVM -C =1 -No rebalancing - pi = 0.100000 --> min_DCF= 0.201040
+RBF SVM -C =1 -No rebalancing - pi = 0.500000 --> min_DCF= 0.105344
+RBF SVM -C =1 -No rebalancing - pi = 0.900000 --> min_DCF= 0.458135
 ##########################################
 ##### SVM Quadratci with m = 7 ####
 ##########################################
-linear SVM -C =1 -piT=0.100000 - pi = 0.100000 --> min_DCF= 0.206087
-linear SVM -C =1 -piT=0.100000 - pi = 0.500000 --> min_DCF= 0.124628
-linear SVM -C =1 -piT=0.100000 - pi = 0.900000 --> min_DCF= 0.547788
-linear SVM -C =1 -piT=0.500000 - pi = 0.100000 --> min_DCF= 0.224700
-linear SVM -C =1 -piT=0.500000 - pi = 0.500000 --> min_DCF= 0.112079
-linear SVM -C =1 -piT=0.500000 - pi = 0.900000 --> min_DCF= 0.494047
-linear SVM -C =1 -piT=0.900000 - pi = 0.100000 --> min_DCF= 0.269813
-linear SVM -C =1 -piT=0.900000 - pi = 0.500000 --> min_DCF= 0.145791
-linear SVM -C =1 -piT=0.900000 - pi = 0.900000 --> min_DCF= 0.489224
-
+##########################################
+##### SVM RBF with m = 7 ####
+##########################################
+RBF SVM -C =1 -piT=0.100000 - pi = 0.100000 --> min_DCF= 0.200842
+RBF SVM -C =1 -piT=0.100000 - pi = 0.500000 --> min_DCF= 0.105712
+RBF SVM -C =1 -piT=0.100000 - pi = 0.900000 --> min_DCF= 0.479605
+RBF SVM -C =1 -piT=0.500000 - pi = 0.100000 --> min_DCF= 0.201946
+RBF SVM -C =1 -piT=0.500000 - pi = 0.500000 --> min_DCF= 0.098614
+RBF SVM -C =1 -piT=0.500000 - pi = 0.900000 --> min_DCF= 0.485901
+RBF SVM -C =1 -piT=0.900000 - pi = 0.100000 --> min_DCF= 0.275532
+RBF SVM -C =1 -piT=0.900000 - pi = 0.500000 --> min_DCF= 0.124956
+RBF SVM -C =1 -piT=0.900000 - pi = 0.900000 --> min_DCF= 0.480174
+RBF SVM -C =1 -No rebalancing - pi = 0.100000 --> min_DCF= 0.202144
+RBF SVM -C =1 -No rebalancing - pi = 0.500000 --> min_DCF= 0.107425
+RBF SVM -C =1 -No rebalancing - pi = 0.900000 --> min_DCF= 0.477848
 ##########################################
 ##### SVM Quadratci with m = 6 ####
 ##########################################
-linear SVM -C =1 -piT=0.100000 - pi = 0.100000 --> min_DCF= 0.217326
-linear SVM -C =1 -piT=0.100000 - pi = 0.500000 --> min_DCF= 0.127104
-linear SVM -C =1 -piT=0.100000 - pi = 0.900000 --> min_DCF= 0.550895
-linear SVM -C =1 -piT=0.500000 - pi = 0.100000 --> min_DCF= 0.228762
-linear SVM -C =1 -piT=0.500000 - pi = 0.500000 --> min_DCF= 0.111939
-linear SVM -C =1 -piT=0.500000 - pi = 0.900000 --> min_DCF= 0.493836
-linear SVM -C =1 -piT=0.900000 - pi = 0.100000 --> min_DCF= 0.294894
-linear SVM -C =1 -piT=0.900000 - pi = 0.500000 --> min_DCF= 0.148389
-linear SVM -C =1 -piT=0.900000 - pi = 0.900000 --> min_DCF= 0.483870
-
+##########################################
+##### SVM RBF with m = 6 ####
+##########################################
+RBF SVM -C =1 -piT=0.100000 - pi = 0.100000 --> min_DCF= 0.199936
+RBF SVM -C =1 -piT=0.100000 - pi = 0.500000 --> min_DCF= 0.104244
+RBF SVM -C =1 -piT=0.100000 - pi = 0.900000 --> min_DCF= 0.474206
+RBF SVM -C =1 -piT=0.500000 - pi = 0.100000 --> min_DCF= 0.199856
+RBF SVM -C =1 -piT=0.500000 - pi = 0.500000 --> min_DCF= 0.102040
+RBF SVM -C =1 -piT=0.500000 - pi = 0.900000 --> min_DCF= 0.442559
+RBF SVM -C =1 -piT=0.900000 - pi = 0.100000 --> min_DCF= 0.241105
+RBF SVM -C =1 -piT=0.900000 - pi = 0.500000 --> min_DCF= 0.119164
+RBF SVM -C =1 -piT=0.900000 - pi = 0.900000 --> min_DCF= 0.488192
+RBF SVM -C =1 -No rebalancing - pi = 0.100000 --> min_DCF= 0.198831
+RBF SVM -C =1 -No rebalancing - pi = 0.500000 --> min_DCF= 0.103758
+RBF SVM -C =1 -No rebalancing - pi = 0.900000 --> min_DCF= 0.476130
 ##########################################
 ##### SVM Quadratci with m = 5 ####
 ##########################################
-linear SVM -C =1 -piT=0.100000 - pi = 0.100000 --> min_DCF= 0.219219
-linear SVM -C =1 -piT=0.100000 - pi = 0.500000 --> min_DCF= 0.127095
-linear SVM -C =1 -piT=0.100000 - pi = 0.900000 --> min_DCF= 0.561323
-linear SVM -C =1 -piT=0.500000 - pi = 0.100000 --> min_DCF= 0.238659
-linear SVM -C =1 -piT=0.500000 - pi = 0.500000 --> min_DCF= 0.114134
-linear SVM -C =1 -piT=0.500000 - pi = 0.900000 --> min_DCF= 0.519516
-linear SVM -C =1 -piT=0.900000 - pi = 0.100000 --> min_DCF= 0.319106
-linear SVM -C =1 -piT=0.900000 - pi = 0.500000 --> min_DCF= 0.152736
-linear SVM -C =1 -piT=0.900000 - pi = 0.900000 --> min_DCF= 0.500868
+##########################################
+##### SVM RBF with m = 5 ####
+##########################################
+RBF SVM -C =1 -piT=0.100000 - pi = 0.100000 --> min_DCF= 0.200921
+RBF SVM -C =1 -piT=0.100000 - pi = 0.500000 --> min_DCF= 0.108429
+RBF SVM -C =1 -piT=0.100000 - pi = 0.900000 --> min_DCF= 0.505246
+RBF SVM -C =1 -piT=0.500000 - pi = 0.100000 --> min_DCF= 0.209320
+RBF SVM -C =1 -piT=0.500000 - pi = 0.500000 --> min_DCF= 0.104638
+RBF SVM -C =1 -piT=0.500000 - pi = 0.900000 --> min_DCF= 0.469260
+RBF SVM -C =1 -piT=0.900000 - pi = 0.100000 --> min_DCF= 0.235505
+RBF SVM -C =1 -piT=0.900000 - pi = 0.500000 --> min_DCF= 0.121372
+RBF SVM -C =1 -piT=0.900000 - pi = 0.900000 --> min_DCF= 0.526018
+RBF SVM -C =1 -No rebalancing - pi = 0.100000 --> min_DCF= 0.200921
+RBF SVM -C =1 -No rebalancing - pi = 0.500000 --> min_DCF= 0.108289
+RBF SVM -C =1 -No rebalancing - pi = 0.900000 --> min_DCF= 0.500461
+-----------EVALUATION ON GAUSSIANIZED FEATURES STARTED...-----------------
+##########################################
+#### SVM Quadratic with NO PCA ####
+##########################################
+##########################################
+#### SVM RBF with NO PCA ####
+##########################################
+RBF SVM -C =1 -piT=0.100000 - pi = 0.100000 --> min_DCF= 0.219061
+RBF SVM -C =1 -piT=0.100000 - pi = 0.500000 --> min_DCF= 0.123414
+RBF SVM -C =1 -piT=0.100000 - pi = 0.900000 --> min_DCF= 0.567162
+RBF SVM -C =1 -piT=0.500000 - pi = 0.100000 --> min_DCF= 0.217720
+RBF SVM -C =1 -piT=0.500000 - pi = 0.500000 --> min_DCF= 0.108779
+RBF SVM -C =1 -piT=0.500000 - pi = 0.900000 --> min_DCF= 0.469461
+RBF SVM -C =1 -piT=0.900000 - pi = 0.100000 --> min_DCF= 0.307276
+RBF SVM -C =1 -piT=0.900000 - pi = 0.500000 --> min_DCF= 0.129237
+RBF SVM -C =1 -piT=0.900000 - pi = 0.900000 --> min_DCF= 0.468151
+RBF SVM -C =1 -No rebalancing - pi = 0.100000 --> min_DCF= 0.220244
+RBF SVM -C =1 -No rebalancing - pi = 0.500000 --> min_DCF= 0.123287
+RBF SVM -C =1 -No rebalancing - pi = 0.900000 --> min_DCF= 0.578940
+##########################################
+##### SVM Quadratci with m = 7 ####
+##########################################
+##########################################
+##### SVM RBF with m = 7 ####
+##########################################
+RBF SVM -C =1 -piT=0.100000 - pi = 0.100000 --> min_DCF= 0.219298
+RBF SVM -C =1 -piT=0.100000 - pi = 0.500000 --> min_DCF= 0.123414
+RBF SVM -C =1 -piT=0.100000 - pi = 0.900000 --> min_DCF= 0.566181
+RBF SVM -C =1 -piT=0.500000 - pi = 0.100000 --> min_DCF= 0.217957
+RBF SVM -C =1 -piT=0.500000 - pi = 0.500000 --> min_DCF= 0.107548
+RBF SVM -C =1 -piT=0.500000 - pi = 0.900000 --> min_DCF= 0.465167
+RBF SVM -C =1 -piT=0.900000 - pi = 0.100000 --> min_DCF= 0.302032
+RBF SVM -C =1 -piT=0.900000 - pi = 0.500000 --> min_DCF= 0.127537
+RBF SVM -C =1 -piT=0.900000 - pi = 0.900000 --> min_DCF= 0.463371
+RBF SVM -C =1 -No rebalancing - pi = 0.100000 --> min_DCF= 0.219180
+RBF SVM -C =1 -No rebalancing - pi = 0.500000 --> min_DCF= 0.123287
+RBF SVM -C =1 -No rebalancing - pi = 0.900000 --> min_DCF= 0.579062
+##########################################
+##### SVM Quadratci with m = 6 ####
+##########################################
+##########################################
+##### SVM RBF with m = 6 ####
+##########################################
+RBF SVM -C =1 -piT=0.100000 - pi = 0.100000 --> min_DCF= 0.222531
+RBF SVM -C =1 -piT=0.100000 - pi = 0.500000 --> min_DCF= 0.126148
+RBF SVM -C =1 -piT=0.100000 - pi = 0.900000 --> min_DCF= 0.554620
+RBF SVM -C =1 -piT=0.500000 - pi = 0.100000 --> min_DCF= 0.219258
+RBF SVM -C =1 -piT=0.500000 - pi = 0.500000 --> min_DCF= 0.108162
+RBF SVM -C =1 -piT=0.500000 - pi = 0.900000 --> min_DCF= 0.476582
+RBF SVM -C =1 -piT=0.900000 - pi = 0.100000 --> min_DCF= 0.337562
+RBF SVM -C =1 -piT=0.900000 - pi = 0.500000 --> min_DCF= 0.147614
+RBF SVM -C =1 -piT=0.900000 - pi = 0.900000 --> min_DCF= 0.464760
+RBF SVM -C =1 -No rebalancing - pi = 0.100000 --> min_DCF= 0.222650
+RBF SVM -C =1 -No rebalancing - pi = 0.500000 --> min_DCF= 0.126508
+RBF SVM -C =1 -No rebalancing - pi = 0.900000 --> min_DCF= 0.561657
+##########################################
+##### SVM Quadratci with m = 5 ####
+##########################################
+##########################################
+##### SVM RBF with m = 5 ####
+##########################################
+RBF SVM -C =1 -piT=0.100000 - pi = 0.100000 --> min_DCF= 0.224227
+RBF SVM -C =1 -piT=0.100000 - pi = 0.500000 --> min_DCF= 0.125075
+RBF SVM -C =1 -piT=0.100000 - pi = 0.900000 --> min_DCF= 0.601490
+RBF SVM -C =1 -piT=0.500000 - pi = 0.100000 --> min_DCF= 0.218825
+RBF SVM -C =1 -piT=0.500000 - pi = 0.500000 --> min_DCF= 0.109511
+RBF SVM -C =1 -piT=0.500000 - pi = 0.900000 --> min_DCF= 0.514972
+RBF SVM -C =1 -piT=0.900000 - pi = 0.100000 --> min_DCF= 0.356255
+RBF SVM -C =1 -piT=0.900000 - pi = 0.500000 --> min_DCF= 0.141142
+RBF SVM -C =1 -piT=0.900000 - pi = 0.900000 --> min_DCF= 0.500210
+RBF SVM -C =1 -No rebalancing - pi = 0.100000 --> min_DCF= 0.225568
+RBF SVM -C =1 -No rebalancing - pi = 0.500000 --> min_DCF= 0.125333
+RBF SVM -C =1 -No rebalancing - pi = 0.900000 --> min_DCF= 0.603576

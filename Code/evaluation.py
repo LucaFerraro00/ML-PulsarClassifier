@@ -37,13 +37,13 @@ def evaluation():
     #evaluation_log_reg(DTR_gaussianized, LTR, DEV_gaussianized, LEV, gaussianize)
     #evaluation_SVM(DTR_gaussianized, LTR, DEV_gaussianized, LEV,gaussianize )
     
-    #evaluation_gmm(DTR, DTR_gaussianized, LTR, DEV, DEV_gaussianized, LEV)
+    evaluation_gmm(DTR, DTR_gaussianized, LTR, DEV, DEV_gaussianized, LEV)
     
-    calibration.min_vs_act(DTR,LTR, DEV=DEV, LEV=LEV, evaluation=True)
-    calibration.optimal_threshold(DTR, LTR, DEV=DEV, LEV=LEV, evaluation=True)
-    calibration.validate_score_trasformation(DTR,LTR, DEV=DEV, LEV=LEV, evaluation=True)
+    # calibration.min_vs_act(DTR,LTR, DEV=DEV, LEV=LEV, evaluation=True)
+    # calibration.optimal_threshold(DTR, LTR, DEV=DEV, LEV=LEV, evaluation=True)
+    # calibration.validate_score_trasformation(DTR,LTR, DEV=DEV, LEV=LEV, evaluation=True)
     
-    evaluation_fusion(DTR, LTR, DEV, LEV)
+    # evaluation_fusion(DTR, LTR, DEV, LEV)
 
 
 def evaluation_MVG(DTR, LTR, DEV, LEV):

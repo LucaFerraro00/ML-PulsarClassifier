@@ -33,17 +33,17 @@ def main():
     gaussianize=False
     # #train_evaluate_gaussian_models(D, L)
     
-    # log_reg.plot_minDCF_wrt_lamda(D, L, gaussianize)
+    #log_reg.plot_minDCF_wrt_lamda(D, L, gaussianize)
     # log_reg.quadratic_plot_minDCF_wrt_lamda(D, L, gaussianize)
     # train_evaluate_log_reg(D, L)
     
     # svm.plot_linear_minDCF_wrt_C(D, L, gaussianize)
     # svm.plot_quadratic_minDCF_wrt_C(D, L, gaussianize)
     # svm.plot_RBF_minDCF_wrt_C(D, L, gaussianize)
-    #train_evaluate_svm(D,L)
+    train_evaluate_svm(D,L)
     
     # gmm.plot_minDCF_wrt_components(D, D_gaussianized, L)
-    # train_evaluate_gmm(D, L)
+    #train_evaluate_gmm(D, L)
     
     # evaluate models on gaussianized data  
     # print('\n')
@@ -51,8 +51,8 @@ def main():
     gaussianize=True
     # train_evaluate_gaussian_models(D_gaussianized, L)
     
-    # log_reg.plot_minDCF_wrt_lamda(D_gaussianized, L, gaussianize)
-    # log_reg.quadratic_plot_minDCF_wrt_lamda(D_gaussianized, L, gaussianize)
+    #log_reg.plot_minDCF_wrt_lamda(D_gaussianized, L, gaussianize)
+    #log_reg.quadratic_plot_minDCF_wrt_lamda(D_gaussianized, L, gaussianize)
     # train_evaluate_log_reg(D_gaussianized, L)
     
     # svm.plot_linear_minDCF_wrt_C(D_gaussianized, L, gaussianize)
@@ -68,7 +68,7 @@ def main():
     
     # validate_fusion(D,L)
     
-    evaluation.evaluation()
+    # evaluation.evaluation()
     
     
 
@@ -113,7 +113,7 @@ def train_evaluate_log_reg(D,L):
     'lambdaa' : None,
     'piT': None,
     }  
-    m = 8
+    m = 5
     while m>=5:
         
         if m < 8:
@@ -143,7 +143,7 @@ def train_evaluate_log_reg(D,L):
             print ("#### Quadratic Logistic regression with NO PCA ####")
             print ("##################################################")
             
-        for piT in [0.1, 0.5, 0.9]:
+        for piT in [ 0.5, 0.9]:
             Options['lambdaa']=1e-06
             Options['piT']=piT
             for pi in [0.1, 0.5, 0.9]:
@@ -197,13 +197,13 @@ def train_evaluate_svm(D,L):
             print ("##########################################")
             print ("########SVM QUADRATIC with NO PCA ########")
             print ("##########################################")
-        # for piT in [0.5, 0.9]:
-        #     for pi in [0.1, 0.5, 0.9]:
-        #         Options['C']=0.1
-        #         Options['piT']=piT
-        #         Options['rebalance']=True
-                #min_dcf_kfold = validate.kfold(D, L, k, pi, svm.compute_score_quadratic, Options)[0]
-                # print("Quadratric SVM -piT = %f -C=%f - pi = %f - minDCF = %f" %(piT,Options['C'], pi,min_dcf_kfold))
+        for piT in [0.1]:
+            for pi in [0.1, 0.5, 0.9]:
+                Options['C']=0.1
+                Options['piT']=piT
+                Options['rebalance']=True
+                min_dcf_kfold = validate.kfold(D, L, k, pi, svm.compute_score_quadratic, Options)[0]
+                print("Quadratric SVM -piT = %f -C=%f - pi = %f - minDCF = %f" %(piT,Options['C'], pi,min_dcf_kfold))
                 
         Options['rebalance']=False
         Options['C']=0.1
@@ -239,11 +239,12 @@ def train_evaluate_svm(D,L):
         D=D_copy
         
 def train_evaluate_gmm(D,L):
+    D_copy = D
     Options={ 
         'Type':None,
         'iterations':None #components will be 2^iterations
         }  
-    m = 8
+    m = 7
     while m>=5:
         if m < 8:
             D = analys.pca(m, D)[0]
@@ -254,26 +255,30 @@ def train_evaluate_gmm(D,L):
             print ("##########################################")
             print ("########## GMM LINEAR with NO PCA ########")
             print ("##########################################")
-            for pi in [0.1, 0.5, 0.9]:
-                Options['Type']='full'
-                Options['iterations']= 4
-                min_dcf_kfold = validate.kfold(D, L, k, pi, gmm.compute_score, Options)[0]
-                print(" gmm %s -components=%d - pi = %f --> minDCF = %f" %(Options['Type'], 2**Options['iterations'], pi,min_dcf_kfold))
+            
+        for pi in [0.1, 0.5, 0.9]:
+            Options['Type']='full'
+            Options['iterations']= 4
+            min_dcf_kfold = validate.kfold(D, L, k, pi, gmm.compute_score, Options)[0]
+            print(" gmm %s -components=%d - pi = %f --> minDCF = %f" %(Options['Type'], 2**Options['iterations'], pi,min_dcf_kfold))
+            
+            Options['Type']='diag'
+            Options['iterations']= 5
+            min_dcf_kfold = validate.kfold(D, L, k, pi, gmm.compute_score, Options)[0]
+            print(" gmm %s -components=%d - pi = %f --> minDCF = %f" %(Options['Type'], 2**Options['iterations'], pi,min_dcf_kfold))
+            
+            Options['Type']='full-tied'
+            Options['iterations']= 6
+            min_dcf_kfold = validate.kfold(D, L, k, pi, gmm.compute_score, Options)[0]
+            print(" gmm %s -components=%d - pi = %f --> minDCF = %f" %(Options['Type'], 2**Options['iterations'], pi,min_dcf_kfold))
+            
+            Options['Type']='diag-tied'
+            Options['iterations']= 3
+            min_dcf_kfold = validate.kfold(D, L, k, pi, gmm.compute_score, Options)[0]
+            print(" gmm %s -components=%d - pi = %f --> minDCF = %f" %(Options['Type'], 2**Options['iterations'], pi,min_dcf_kfold))
                 
-                Options['Type']='diag'
-                Options['iterations']= 5
-                min_dcf_kfold = validate.kfold(D, L, k, pi, gmm.compute_score, Options)[0]
-                print(" gmm %s -components=%d - pi = %f --> minDCF = %f" %(Options['Type'], 2**Options['iterations'], pi,min_dcf_kfold))
-                
-                Options['Type']='full-tied'
-                Options['iterations']= 6
-                min_dcf_kfold = validate.kfold(D, L, k, pi, gmm.compute_score, Options)[0]
-                print(" gmm %s -components=%d - pi = %f --> minDCF = %f" %(Options['Type'], 2**Options['iterations'], pi,min_dcf_kfold))
-                
-                Options['Type']='diag-tied'
-                Options['iterations']= 3
-                min_dcf_kfold = validate.kfold(D, L, k, pi, gmm.compute_score, Options)[0]
-                print(" gmm %s -components=%d - pi = %f --> minDCF = %f" %(Options['Type'], 2**Options['iterations'], pi,min_dcf_kfold))
+        m = m-1
+        D=D_copy
             
             
 def calibration(D,L):

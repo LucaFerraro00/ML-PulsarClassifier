@@ -70,6 +70,7 @@ def compute_score(DTE,DTR,LTR, Options):
     return scores
 
 def plot_minDCF_wrt_lamda(DTR,LTR, gaussianize, DEV=None, LEV=None, evaluation=False):
+    print("plot of min_DCF wrt Lambda Linear Log Reg started...")
     min_DCFs=[]
     for pi in [0.1, 0.5, 0.9]:
         lambdas = numpy.logspace(-6,3, num = 10)
@@ -92,10 +93,11 @@ def plot_minDCF_wrt_lamda(DTR,LTR, gaussianize, DEV=None, LEV=None, evaluation=F
         plt.semilogx()
         plt.xlabel("λ")
         plt.ylabel("min_DCF")
+        plt.show()
         if gaussianize:
-            plt.savefig("../Images/min_DCF_lamda_log_reg_gaussianized.jpg")
+            plt.savefig("../Images/min_DCF_lamda_log_reg_gaussianized.pdf")
         else:
-            plt.savefig("../Images/min_DCF_lamda_log_reg_raw.jpg")
+            plt.savefig("../Images/min_DCF_lamda_log_reg_raw.pdf")
     
     else: #compare plot of validation and evaluation set
         min_DCFs=[]

@@ -118,6 +118,9 @@ Quadratic SVM without rebalancing -C=0.100000 - pi = 0.900000 - minDCF = 0.55213
 ##########################################
 ########## SVM QUADRATIC with m = 7 ######
 ##########################################
+Quadratric SVM -piT = 0.100000 -C=0.100000 - pi = 0.100000 - minDCF = 0.203053
+Quadratric SVM -piT = 0.100000 -C=0.100000 - pi = 0.500000 - minDCF = 0.112071
+Quadratric SVM -piT = 0.100000 -C=0.100000 - pi = 0.900000 - minDCF = 0.573438
 Quadratric SVM -piT = 0.500000 -C=0.100000 - pi = 0.100000 - minDCF = 0.216165
 Quadratric SVM -piT = 0.500000 -C=0.100000 - pi = 0.500000 - minDCF = 0.110773
 Quadratric SVM -piT = 0.500000 -C=0.100000 - pi = 0.900000 - minDCF = 0.503115
@@ -126,6 +129,7 @@ Quadratric SVM -piT = 0.900000 -C=0.100000 - pi = 0.500000 - minDCF = 0.145965
 Quadratric SVM -piT = 0.900000 -C=0.100000 - pi = 0.900000 - minDCF = 0.509859
 Quadratic SVM without rebalancing -C=0.100000 - pi = 0.500000 - minDCF = 0.112409
 Quadratic SVM without rebalancing -C=0.100000 - pi = 0.900000 - minDCF = 0.578497
+Quadratic SVM without rebalancing -C=0.100000 - pi = 0.100000 - minDCF = 0.205274
 ##########################################
 ########## SVM QUADRATIC with m = 6 ######
 ##########################################
@@ -141,7 +145,7 @@ Quadratic SVM without rebalancing -C=0.100000 - pi = 0.900000 - minDCF = 0.56868
 ########## SVM QUADRATIC with m = 5 ######
 ##########################################
 Quadratric SVM -piT = 0.500000 -C=0.100000 - pi = 0.100000 - minDCF = 0.219245
-Quadratric SVM -piT = 0.500000 -C=0.100000 - pi = 0.500000 - minDCF = 0.107827
+Quadratric SVM -piT = 0.500000 -C=0.100000 - pi = 0.500000 - minDCF = 0.107827?
 Quadratric SVM -piT = 0.500000 -C=0.100000 - pi = 0.900000 - minDCF = 0.520971
 Quadratric SVM -piT = 0.900000 -C=0.100000 - pi = 0.100000 - minDCF = 0.283049
 Quadratric SVM -piT = 0.900000 -C=0.100000 - pi = 0.500000 - minDCF = 0.143294
