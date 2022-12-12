@@ -35,9 +35,9 @@ def evaluation():
     gaussianize=True
     #evaluation_MVG(DTR_gaussianized, LTR, DEV_gaussianized, LEV)
     #evaluation_log_reg(DTR_gaussianized, LTR, DEV_gaussianized, LEV, gaussianize)
-    #evaluation_SVM(DTR_gaussianized, LTR, DEV_gaussianized, LEV,gaussianize )
+    evaluation_SVM(DTR_gaussianized, LTR, DEV_gaussianized, LEV,gaussianize )
     
-    evaluation_gmm(DTR, DTR_gaussianized, LTR, DEV, DEV_gaussianized, LEV)
+    # evaluation_gmm(DTR, DTR_gaussianized, LTR, DEV, DEV_gaussianized, LEV)
     
     # calibration.min_vs_act(DTR,LTR, DEV=DEV, LEV=LEV, evaluation=True)
     # calibration.optimal_threshold(DTR, LTR, DEV=DEV, LEV=LEV, evaluation=True)
@@ -125,7 +125,7 @@ def evaluation_log_reg(DTR, LTR, DEV, LEV, gaussianize):
         
 def evaluation_SVM(DTR, LTR, DEV, LEV, gaussianize):
     #svm.plot_linear_minDCF_wrt_C(DTR,LTR,gaussianize, DEV=DEV, LEV=LEV, evaluation=True)
-    #svm.plot_quadratic_minDCF_wrt_C(DTR,LTR,gaussianize, DEV=DEV, LEV=LEV, evaluation=True)
+    svm.plot_quadratic_minDCF_wrt_C(DTR,LTR,gaussianize, DEV=DEV, LEV=LEV, evaluation=True)
     #svm.plot_RBF_minDCF_wrt_C(DTR,LTR,gaussianize, DEV=DEV, LEV=LEV, evaluation=True)
     Options={
         'C' : None,

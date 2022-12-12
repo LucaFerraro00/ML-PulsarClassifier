@@ -61,8 +61,11 @@
  gmm diag -components=32 - pi = 0.100000 --> minDCF = 0.260085
  gmm full-tied -components=64 - pi = 0.100000 --> minDCF = 0.233289
  gmm diag-tied -components=8 - pi = 0.100000 --> minDCF = 0.306406 
-  gmm full -components=16 - pi = 0.500000 --> minDCF = 0.116545
-
+ gmm full -components=16 - pi = 0.500000 --> minDCF = 0.116545
+ gmm diag -components=32 - pi = 0.500000 --> minDCF = 0.141395
+ gmm full-tied -components=64 - pi = 0.50000 --> minDCF =0.124466
+gmm full-tied -components=64 - pi = 0.900000 --> minDCF = 0.673015
+ gmm diag-tied -components=8 - pi = 0.900000 --> minDCF = 0.770325
  gmm full -components=16 - pi = 0.900000 --> minDCF = 0.545447
  gmm diag -components=32 - pi = 0.900000 --> minDCF = 0.633815
 ##########################################
@@ -80,6 +83,14 @@
  gmm diag -components=32 - pi = 0.900000 --> minDCF = 0.646911
  gmm full-tied -components=64 - pi = 0.900000 --> minDCF = 0.638157
  gmm diag-tied -components=8 - pi = 0.900000 --> minDCF = 0.594989
+ ##########################################
+############# GMM with m = 6 ##############
+##########################################
+ gmm full-tied -components=64 - pi = 0.900000 --> minDCF = 0.646314
+  gmm full -components=16 - pi = 0.100000 --> minDCF = 0.212152
+ gmm full-tied -components=64 - pi = 0.100000 --> minDCF = 0.246149
+ gmm full -components=16 - pi = 0.500000 --> minDCF = 0.124327
+ gmm full-tied -components=64 - pi = 0.500000 --> minDCF = 0.139194
  
  
  full gmm: computation for plotting min_cdf wrt C started...
@@ -182,7 +193,8 @@ VALIDATION WITH GAUSSIANIZATION
  gmm diag -components=32 - pi = 0.500000 --> minDCF = 0.136925
  gmm full-tied -components=64 - pi = 0.500000 --> minDCF = 0.153436
  gmm diag-tied -components=8 - pi = 0.500000 --> minDCF = 0.161640
- 
+  gmm full -components=16 - pi = 0.900000 --> minDCF = 0.647945
+ gmm diag -components=32 - pi = 0.900000 --> minDCF = 0.647905
  gmm full-tied -components=64 - pi = 0.900000 --> minDCF = 0.655979
  gmm diag-tied -components=8 - pi = 0.900000 --> minDCF = 0.717484
  

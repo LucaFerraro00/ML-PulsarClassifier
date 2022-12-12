@@ -20,7 +20,7 @@ k=5 #kfold
 def main():
     D,L = analys.loda_training_set('../Data/Train.txt')
     D= analys.scale_ZNormalization(D)[0]
-    # D_gaussianized= analys.gaussianize_training(D)
+    D_gaussianized= analys.gaussianize_training(D)
 
     # gaussianize= False 
     # plot(D, L, gaussianize) #plot raw features before gaussianization
@@ -40,10 +40,10 @@ def main():
     # svm.plot_linear_minDCF_wrt_C(D, L, gaussianize)
     # svm.plot_quadratic_minDCF_wrt_C(D, L, gaussianize)
     # svm.plot_RBF_minDCF_wrt_C(D, L, gaussianize)
-    train_evaluate_svm(D,L)
+    # train_evaluate_svm(D,L)
     
-    # gmm.plot_minDCF_wrt_components(D, D_gaussianized, L)
-    #train_evaluate_gmm(D, L)
+    gmm.plot_minDCF_wrt_components(D, D_gaussianized, L)
+    # train_evaluate_gmm(D, L)
     
     # evaluate models on gaussianized data  
     # print('\n')
@@ -162,7 +162,7 @@ def train_evaluate_svm(D,L):
         'gamma':None,
         'rebalance':None
         }  
-    m = 7
+    m = 5
     while m>=5:
         
         # if m < 8:
@@ -188,52 +188,52 @@ def train_evaluate_svm(D,L):
         #         min_dcf_kfold = validate.kfold(D, L, k, pi, svm.compute_score_linear, Options)[0]
         #         print("Linear SVM without rebalancing -C=%f - pi = %f - minDCF = %f" %(Options['C'], pi,min_dcf_kfold)) 
           
-        if m < 8:
-            D = analys.pca(m, D)[0]
-            print ("##########################################")
-            print ("########## SVM QUADRATIC with m = %d ######" %m)
-            print ("##########################################")
-        else:
-            print ("##########################################")
-            print ("########SVM QUADRATIC with NO PCA ########")
-            print ("##########################################")
-        for piT in [0.1]:
-            for pi in [0.1, 0.5, 0.9]:
-                Options['C']=0.1
-                Options['piT']=piT
-                Options['rebalance']=True
-                min_dcf_kfold = validate.kfold(D, L, k, pi, svm.compute_score_quadratic, Options)[0]
-                print("Quadratric SVM -piT = %f -C=%f - pi = %f - minDCF = %f" %(piT,Options['C'], pi,min_dcf_kfold))
-                
-        Options['rebalance']=False
-        Options['C']=0.1
-        for pi in [0.1]:
-            min_dcf_kfold = validate.kfold(D, L, k, pi, svm.compute_score_quadratic, Options)[0]
-            print("Quadratic SVM without rebalancing -C=%f - pi = %f - minDCF = %f" %(Options['C'], pi,min_dcf_kfold))
-           
         # if m < 8:
         #     D = analys.pca(m, D)[0]
         #     print ("##########################################")
-        #     print ("######### SVM RBF with m = %d #############" %m)
+        #     print ("########## SVM QUADRATIC with m = %d ######" %m)
         #     print ("##########################################")
         # else:
         #     print ("##########################################")
-        #     print ("##########SVM RBF with NO PCA ############")
+        #     print ("########SVM QUADRATIC with NO PCA ########")
         #     print ("##########################################")
-        # for piT in [0.1, 0.5, 0.9]:
-        #     for pi in [0.1, 0.5, 0.9]:
-        #         Options['C']=10
+        # for piT in [0.5]:
+        #     for pi in [0.5, 0.9]:
+        #         Options['C']=0.1
         #         Options['piT']=piT
-        #         Options['gamma']=0.01
         #         Options['rebalance']=True
-        #         min_dcf_kfold = validate.kfold(D, L, k, pi, svm.compute_score_RBF, Options)[0]
-        #         print("RBF SVM -piT = %f -gamma =%f -C=%f - pi = %f -> minDCF = %f" %(piT, Options['gamma'], Options['C'], pi,min_dcf_kfold))      
-            
+        #         min_dcf_kfold = validate.kfold(D, L, k, pi, svm.compute_score_quadratic, Options)[0]
+        #         print("Quadratric SVM -piT = %f -C=%f - pi = %f - minDCF = %f" %(piT,Options['C'], pi,min_dcf_kfold))
+                
         # Options['rebalance']=False
-        # for pi in [0.1, 0.5, 0.9]:
-        #     pass
-        #     min_dcf_kfold = validate.kfold(D, L, k, pi, svm.compute_score_RBF, Options)[0]
-        #     print("RBF SVM without rebalancing -gamma =%f -C=%f - pi = %f -> minDCF = %f" %(Options['gamma'], Options['C'], pi,min_dcf_kfold))
+        # Options['C']=0.1
+        # for pi in [0.1]:
+        #     min_dcf_kfold = validate.kfold(D, L, k, pi, svm.compute_score_quadratic, Options)[0]
+        #     print("Quadratic SVM without rebalancing -C=%f - pi = %f - minDCF = %f" %(Options['C'], pi,min_dcf_kfold))
+           
+        if m < 8:
+            D = analys.pca(m, D)[0]
+            print ("##########################################")
+            print ("######### SVM RBF with m = %d #############" %m)
+            print ("##########################################")
+        else:
+            print ("##########################################")
+            print ("##########SVM RBF with NO PCA ############")
+            print ("##########################################")
+        for piT in [0.5]:
+            for pi in [0.9]:
+                Options['C']=10
+                Options['piT']=piT
+                Options['gamma']=0.01
+                Options['rebalance']=True
+                min_dcf_kfold = validate.kfold(D, L, k, pi, svm.compute_score_RBF, Options)[0]
+                print("RBF SVM -piT = %f -gamma =%f -C=%f - pi = %f -> minDCF = %f" %(piT, Options['gamma'], Options['C'], pi,min_dcf_kfold))      
+            
+        Options['rebalance']=False
+        for pi in [0.1, 0.5, 0.9]:
+            pass
+            # min_dcf_kfold = validate.kfold(D, L, k, pi, svm.compute_score_RBF, Options)[0]
+            # print("RBF SVM without rebalancing -gamma =%f -C=%f - pi = %f -> minDCF = %f" %(Options['gamma'], Options['C'], pi,min_dcf_kfold))
               
         m = m-1
         D=D_copy

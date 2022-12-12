@@ -265,27 +265,25 @@ def EM_diag_tied(X, gmm):
 
 K_fold=5
 def plot_minDCF_wrt_components(DTR, DTR_gaussianized,LTR, DEV=None, DEV_gaussianized=None, LEV=None, evaluation=False ):
+    #for Type in ['full','diag','full-tied','diag-tied']:
     for Type in ['full','diag','full-tied','diag-tied']:
         print('%s gmm: computation for plotting min_cdf wrt C started...' %Type)
         min_DCFs_raw=[]
         min_DCFs_gauss=[]
         pi = 0.5
-        iterations_array = [0,1,2,3,4,5,6]
-        # for n in iterations_array:
-        #         Options= {'iterations': n,
-        #                   'Type':Type}
+        iterations_array = [6]
+        for n in iterations_array:
+                Options= {'iterations': n,
+                          'Type':Type}
                 
-        #         min_dcf_raw= validate.kfold(DTR, LTR, K_fold, pi, compute_score, Options ) [0]
-        #         min_DCFs_raw.append(min_dcf_raw)
-        #         print ("computed min_dcf for raw features -components=%d -pi=%f --> results min_dcf=%f "%(n, pi,  min_dcf_raw))
+                min_dcf_raw= validate.kfold(DTR, LTR, K_fold, pi, compute_score, Options ) [0]
+                min_DCFs_raw.append(min_dcf_raw)
+                print ("computed min_dcf for raw features -components=%d -pi=%f --> results min_dcf=%f "%(n, pi,  min_dcf_raw))
                 
-        #         min_dcf_gauss= validate.kfold(DTR_gaussianized, LTR, K_fold, pi, compute_score, Options ) [0]
-        #         min_DCFs_gauss.append(min_dcf_gauss)
-        #         print ("computed min_dcf for gaussianized features -components=%d pi=%f --> results min_dcf=%f "%(n, pi,  min_dcf_gauss))
+                min_dcf_gauss= validate.kfold(DTR_gaussianized, LTR, K_fold, pi, compute_score, Options ) [0]
+                min_DCFs_gauss.append(min_dcf_gauss)
+                print ("computed min_dcf for gaussianized features -components=%d pi=%f --> results min_dcf=%f "%(n, pi,  min_dcf_gauss))
         print('')
-        #!!
-        min_DCFs_raw= [0.140774, 0.141112, 0.145507, 0.155410, 0.144082, 0.132948, 0.124466] 
-        min_DCFs_gauss = [0.152990, 0.152914 , 0.165218 , 0.147103 , 0.146315 , 0.144078 , 0.152122 ] #!!
         
         if evaluation==False:
             plt.figure()

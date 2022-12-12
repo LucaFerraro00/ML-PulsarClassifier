@@ -1,4 +1,8 @@
 -----------EVALUATION WITH RAW FEATURES STARTED...-----------------
+
+
+
+
 ##########################################
 #### SVM with NO PCA ####
 ##########################################
@@ -120,48 +124,7 @@ linear SVM -C =1 -piT=0.900000 - pi = 0.900000 --> min_DCF= 0.497874
 linear SVM -C =1 -No rebalancing - pi = 0.100000 --> min_DCF= 0.219337
 linear SVM -C =1 -No rebalancing - pi = 0.500000 --> min_DCF= 0.127046
 linear SVM -C =1 -No rebalancing - pi = 0.900000 --> min_DCF= 0.496658
-
-
-Linear SVM: computation for plotting min_cdf wrt C started...
-computed min_dcf for pi=0.100000 -C=0.000100 - results min_dcf=0.318658 
-computed min_dcf for pi=0.100000 -C=0.001000 - results min_dcf=0.268898 
-computed min_dcf for pi=0.100000 -C=0.010000 - results min_dcf=0.222219 
-computed min_dcf for pi=0.100000 -C=0.100000 - results min_dcf=0.221431 
-computed min_dcf for pi=0.100000 -C=1.000000 - results min_dcf=0.221108 
-computed min_dcf for pi=0.100000 -C=10.000000 - results min_dcf=0.219783 
-computed min_dcf for pi=0.100000 -C=100.000000 - results min_dcf=0.221001 
-computed min_dcf for pi=0.100000 -C=1000.000000 - results min_dcf=0.259261 
-computed min_dcf for pi=0.500000 -C=0.000100 - results min_dcf=0.176590 
-computed min_dcf for pi=0.500000 -C=0.001000 - results min_dcf=0.147728 
-computed min_dcf for pi=0.500000 -C=0.010000 - results min_dcf=0.121353 
-computed min_dcf for pi=0.500000 -C=0.100000 - results min_dcf=0.114781 
-computed min_dcf for pi=0.500000 -C=1.000000 - results min_dcf=0.112365 
-computed min_dcf for pi=0.500000 -C=10.000000 - results min_dcf=0.111840 
-computed min_dcf for pi=0.500000 -C=100.000000 - results min_dcf=0.111223 
-computed min_dcf for pi=0.500000 -C=1000.000000 - results min_dcf=0.134493 
-computed min_dcf for pi=0.900000 -C=0.000100 - results min_dcf=0.636940 
-computed min_dcf for pi=0.900000 -C=0.001000 - results min_dcf=0.558803 
-computed min_dcf for pi=0.900000 -C=0.010000 - results min_dcf=0.565167 
-computed min_dcf for pi=0.900000 -C=0.100000 - results min_dcf=0.562049 
-computed min_dcf for pi=0.900000 -C=1.000000 - results min_dcf=0.552704 
-computed min_dcf for pi=0.900000 -C=10.000000 - results min_dcf=0.540651 
-computed min_dcf for pi=0.900000 -C=100.000000 - results min_dcf=0.533247 
-computed min_dcf for pi=0.900000 -C=1000.000000 - results min_dcf=0.580365 
-computed min_dcf for pi=0.100000 -C=0.000100 - results min_dcf=0.580365 
-computed min_dcf for pi=0.100000 -C=0.001000 - results min_dcf=0.580365 
-computed min_dcf for pi=0.100000 -C=0.010000 - results min_dcf=0.580365 
-computed min_dcf for pi=0.100000 -C=0.100000 - results min_dcf=0.580365 
-computed min_dcf for pi=0.100000 -C=1.000000 - results min_dcf=0.580365 
-computed min_dcf for pi=0.100000 -C=10.000000 - results min_dcf=0.580365 
-computed min_dcf for pi=0.100000 -C=100.000000 - results min_dcf=0.580365 
-computed min_dcf for pi=0.100000 -C=1000.000000 - results min_dcf=0.580365 
-computed min_dcf for pi=0.500000 -C=0.000100 - results min_dcf=0.580365 
-computed min_dcf for pi=0.500000 -C=0.001000 - results min_dcf=0.580365 
-computed min_dcf for pi=0.500000 -C=0.010000 - results min_dcf=0.580365 
-computed min_dcf for pi=0.500000 -C=0.100000 - results min_dcf=0.580365 
-computed min_dcf for pi=0.500000 -C=1.000000 - results min_dcf=0.580365 
-computed min_dcf for pi=0.500000 -C=10.000000 - results min_dcf=0.580365 
-computed min_dcf for pi=0.500000 -C=100.000000 - results min_dcf=0.580365 
+ 
 
 
 
@@ -290,36 +253,7 @@ min_DCFs_g1_ev = min_DCFs[0.171919, 0.171919, 0.170333, 0.158327, 0.127130,0.109
 min_DCFs_g2_ev = min_DCFs[0.180647, 0.179175, 0.161745, 0.128703, 0.108631, 0.097878, 0.097282, 0.105200 ] 
 min_DCFs_g3_ev = min_DCFs[0.212448, 0.200929, 0.146348, 0.115211, 0.100713, 0.100213, 0.116973, 0.141563] 
 
-##########################################
-#### SVM RBF with NO PCA ####
-##########################################
-linear SVM -C =1 -piT=0.100000 - pi = 0.100000 --> min_DCF= 0.202104
-linear SVM -C =1 -piT=0.100000 - pi = 0.500000 --> min_DCF= 0.105471
-linear SVM -C =1 -piT=0.100000 - pi = 0.900000 --> min_DCF= 0.505796
-linear SVM -C =1 -piT=0.500000 - pi = 0.100000 --> min_DCF= 0.202656
-linear SVM -C =1 -piT=0.500000 - pi = 0.500000 --> min_DCF= 0.105331
-linear SVM -C =1 -piT=0.500000 - pi = 0.900000 --> min_DCF= 0.430815
-linear SVM -C =1 -piT=0.900000 - pi = 0.100000 --> min_DCF= 0.266698
-linear SVM -C =1 -piT=0.900000 - pi = 0.500000 --> min_DCF= 0.140730
-linear SVM -C =1 -piT=0.900000 - pi = 0.900000 --> min_DCF= 0.504220
-linear SVM -C =1 -No rebalancing - pi = 0.100000 --> min_DCF= 0.202577
-linear SVM -C =1 -No rebalancing - pi = 0.500000 --> min_DCF= 0.107066
-linear SVM -C =1 -No rebalancing - pi = 0.900000 --> min_DCF= 0.492056
-##########################################
-##### SVM RBF with m = 7 ####
-##########################################
-linear SVM -C =1 -piT=0.100000 - pi = 0.100000 --> min_DCF= 0.206442
-linear SVM -C =1 -piT=0.100000 - pi = 0.500000 --> min_DCF= 0.106203
-linear SVM -C =1 -piT=0.100000 - pi = 0.900000 --> min_DCF= 0.494789
-linear SVM -C =1 -piT=0.500000 - pi = 0.100000 --> min_DCF= 0.198989
-linear SVM -C =1 -piT=0.500000 - pi = 0.500000 --> min_DCF= 0.102036
-linear SVM -C =1 -piT=0.500000 - pi = 0.900000 --> min_DCF= 0.441165
-linear SVM -C =1 -piT=0.900000 - pi = 0.100000 --> min_DCF= 0.268670
-linear SVM -C =1 -piT=0.900000 - pi = 0.500000 --> min_DCF= 0.139644
-linear SVM -C =1 -piT=0.900000 - pi = 0.900000 --> min_DCF= 0.474334
-linear SVM -C =1 -No rebalancing - pi = 0.100000 --> min_DCF= 0.204036
-linear SVM -C =1 -No rebalancing - pi = 0.500000 --> min_DCF= 0.107294
-linear SVM -C =1 -No rebalancing - pi = 0.900000 --> min_DCF= 0.502445
+
 
 
 
@@ -405,6 +339,42 @@ computed min_dcf for pi=0.500000 -gamma=0.100000 -C=100.000000 - results min_dcf
 computed min_dcf for pi=0.500000 -gamma=0.100000 -C=1000.000000 - results min_dcf=0.135788 
 
 
+Quadratic SVM: computation for plotting min_cdf wrt C started...
+Evaluation samples
+computed min_dcf for pi=0.100000 -C=0.000100 - results min_dcf=0.256249 
+computed min_dcf for pi=0.100000 -C=0.001000 - results min_dcf=0.228920 
+computed min_dcf for pi=0.100000 -C=0.010000 - results min_dcf=0.221032 
+computed min_dcf for pi=0.100000 -C=0.100000 - results min_dcf=0.223477 
+computed min_dcf for pi=0.100000 -C=1.000000 - results min_dcf=0.229234 
+computed min_dcf for pi=0.100000 -C=10.000000 - results min_dcf=0.225922 
+computed min_dcf for pi=0.100000 -C=100.000000 - results min_dcf=0.640581 
+computed min_dcf for pi=0.100000 -C=1000.000000 - results min_dcf=0.586635 
+computed min_dcf for pi=0.500000 -C=0.000100 - results min_dcf=0.151505 
+computed min_dcf for pi=0.500000 -C=0.001000 - results min_dcf=0.123103 
+computed min_dcf for pi=0.500000 -C=0.010000 - results min_dcf=0.111579 
+computed min_dcf for pi=0.500000 -C=0.100000 - results min_dcf=0.114283 
+computed min_dcf for pi=0.500000 -C=1.000000 - results min_dcf=0.115619 
+computed min_dcf for pi=0.500000 -C=10.000000 - results min_dcf=0.114892 
+computed min_dcf for pi=0.500000 -C=100.000000 - results min_dcf=0.276017 
+computed min_dcf for pi=0.500000 -C=1000.000000 - results min_dcf=0.332420 
+computed min_dcf for pi=0.900000 -C=0.000100 - results min_dcf=0.625920 
+computed min_dcf for pi=0.900000 -C=0.001000 - results min_dcf=0.523061 
+computed min_dcf for pi=0.900000 -C=0.010000 - results min_dcf=0.508529 
+computed min_dcf for pi=0.900000 -C=0.10000 - results min_dcf=0.501529 
+computed min_dcf for pi=0.900000 -C=1.000000 - results min_dcf=0.492575 
+computed min_dcf for pi=0.900000 -C=10.000000 - results min_dcf=0.494935 
+computed min_dcf for pi=0.900000 -C=100.000000 - results min_dcf=0.832338 
+computed min_dcf for pi=0.900000 -C=1000.000000 - results min_dcf=0.997301 
+
+min_DCFs_p0_eval = [0.25624857705670984, 0.22891951697768198, 0.2210320242105083, 0.22347701198556946, 0.2292344767573181, 0.22592199976063057, 0.6405813977555066, 0.5866350866994285]
+min_DCFs_p1_eval = [ 0.15150480283667778, 0.12310292975587017, 0.11157930132322103, 0.11428270609843123, 0.11561918543002059, 0.11489177831990854, 0.2760172525968434, 0.33241994997238855]
+min_DCFs_p2_eval = [0.625920, 0.523061, 0.508529, 0.501529, 0.49257519814719664, 0.49493484682006117, 0.8323377604679882, 0.9973009446693657]
+
+
+
+
+
+
 
 #### SVM Quadratic with NO PCA ####
 ##########################################
@@ -478,6 +448,7 @@ RBF SVM -C =1 -No rebalancing - pi = 0.100000 --> min_DCF= 0.200921
 RBF SVM -C =1 -No rebalancing - pi = 0.500000 --> min_DCF= 0.108289
 RBF SVM -C =1 -No rebalancing - pi = 0.900000 --> min_DCF= 0.500461
 -----------EVALUATION ON GAUSSIANIZED FEATURES STARTED...-----------------
+
 ##########################################
 #### SVM Quadratic with NO PCA ####
 ##########################################
