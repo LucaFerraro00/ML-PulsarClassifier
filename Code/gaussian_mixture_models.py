@@ -271,35 +271,38 @@ def plot_minDCF_wrt_components(DTR, DTR_gaussianized,LTR, DEV=None, DEV_gaussian
         min_DCFs_raw=[]
         min_DCFs_gauss=[]
         pi = 0.5
-        iterations_array = [6]
-        for n in iterations_array:
-                Options= {'iterations': n,
-                          'Type':Type}
+        iterations_array = [0,1,2,3,4,5,6]
+        # for n in iterations_array:
+        #         Options= {'iterations': n,
+        #                   'Type':Type}
                 
-                min_dcf_raw= validate.kfold(DTR, LTR, K_fold, pi, compute_score, Options ) [0]
-                min_DCFs_raw.append(min_dcf_raw)
-                print ("computed min_dcf for raw features -components=%d -pi=%f --> results min_dcf=%f "%(n, pi,  min_dcf_raw))
+        #         min_dcf_raw= validate.kfold(DTR, LTR, K_fold, pi, compute_score, Options ) [0]
+        #         min_DCFs_raw.append(min_dcf_raw)
+        #         print ("computed min_dcf for raw features -components=%d -pi=%f --> results min_dcf=%f "%(n, pi,  min_dcf_raw))
                 
-                min_dcf_gauss= validate.kfold(DTR_gaussianized, LTR, K_fold, pi, compute_score, Options ) [0]
-                min_DCFs_gauss.append(min_dcf_gauss)
-                print ("computed min_dcf for gaussianized features -components=%d pi=%f --> results min_dcf=%f "%(n, pi,  min_dcf_gauss))
-        print('')
+        #         min_dcf_gauss= validate.kfold(DTR_gaussianized, LTR, K_fold, pi, compute_score, Options ) [0]
+        #         min_DCFs_gauss.append(min_dcf_gauss)
+        #         print ("computed min_dcf for gaussianized features -components=%d pi=%f --> results min_dcf=%f "%(n, pi,  min_dcf_gauss))
+        # print('')
+       
         
         if evaluation==False:
+            iterations_array = numpy.arange (len(iterations_array))
             plt.figure()
-            plt.plot(iterations_array, min_DCFs_raw, 'o', label='raw features')
-            plt.plot(iterations_array, min_DCFs_gauss, 'o', label='gaussianized features')
+            plt.bar(iterations_array - 0.2, min_DCFs_raw, 0.4, label = 'raw')
+            plt.bar(iterations_array + 0.2, min_DCFs_gauss, 0.4, label = 'gaussianized')
+            X_label = ['1','2','4','8','16','32','64']
+            plt.xticks(iterations_array, X_label)
             plt.legend()
-            plt.ylim([0.1,0.21])
-            plt.xlabel("log_2(components)")
+            plt.xlabel("GMM components")
             plt.ylabel("min_DCF")
             plt.savefig("../Images/%s_gmm_minDCF_wrt_components.pdf" %Type)
             plt.show()
         
         else:
                 print('%s gmm: computation for plotting min_cdf wrt C started evaluation...' %Type)
-                # min_DCFs_raw_eval=[]
-                # min_DCFs_gauss_eval=[]
+                min_DCFs_raw_eval=[]
+                min_DCFs_gauss_eval=[]
                 # pi = 0.5
                 # iterations_array = [0,1,2,3,4,5,6]
                 # for n in iterations_array:
@@ -315,19 +318,21 @@ def plot_minDCF_wrt_components(DTR, DTR_gaussianized,LTR, DEV=None, DEV_gaussian
                 #         min_DCF = validate.compute_min_DCF(scores, LEV, pi, 1, 1)
                 #         min_DCFs_gauss_eval.append(min_DCF)
                 #         print ("computed min_dcf for gaussianized features -components=%d pi=%f --> results min_dcf=%f "%(n, pi,  min_DCF))
-                # print('')
-                
-                min_DCFs_raw_eval=[0.14049800840432677, 0.13866209285074296, 0.14010820818181519, 0.1455628616225708, 0.13400878707789016, 0.12857153141543826, 0.13030216041411513]
-                min_DCFs_gauss_eval=[0.15055467416810872, 0.14591876617355964, 0.1466148272865555, 0.14281161295702538, 0.13992028217996563, 0.14608494495252955, 0.13885526818225313]
-
+                print('')
+        
+                iterations_array = numpy.arange (len(iterations_array))
                 plt.figure()
-                plt.plot(iterations_array, min_DCFs_raw, 'og', label='raw-val')
-                plt.plot(iterations_array, min_DCFs_gauss, 'ob', label='gaussianized-val')
-                plt.plot(iterations_array, min_DCFs_raw_eval, 'or', label='raw-eval')
-                plt.plot(iterations_array, min_DCFs_gauss_eval, 'ok', label='gaussianized-eval')
+                plt.bar(iterations_array - 0.1, min_DCFs_raw, 0.2, label = 'raw-val')
+                iterations_array = numpy.arange (len(iterations_array))
+                plt.bar(iterations_array - 0.3, min_DCFs_raw_eval, 0.2, label = 'raw-ev')
+                iterations_array = numpy.arange (len(iterations_array))
+                plt.bar(iterations_array + 0.1, min_DCFs_gauss, 0.2, label = 'gaussianized-val')
+                iterations_array = numpy.arange (len(iterations_array))
+                plt.bar(iterations_array + 0.3, min_DCFs_gauss_eval, 0.2, label = 'gaussianized-ev')
+                X_label = ['1','2','4','8','16','32','64']
+                plt.xticks(iterations_array, X_label)
                 plt.legend()
-                plt.ylim([0.1,0.21])
-                plt.xlabel("log_2(components)") 
+                plt.xlabel("GMM components")
                 plt.ylabel("min_DCF")
                 plt.show()
                 plt.savefig("../Images/%s_gmm_minDCF_wrt_evaluation_components.pdf" %Type)

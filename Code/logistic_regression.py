@@ -149,8 +149,8 @@ def compute_score_quadratic(DTE,DTR,LTR, Options):
     for i in range(DTR.shape[1]):
         x = DTR [:,i]
         x = mcol(x)
-        vec = numpy.hstack(x * x.T)
-        vec = mcol(vec)
+        product = numpy.dot(x,x.T) 
+        vec = product.reshape((-1, 1), order="F")
         phi_col = numpy.concatenate((vec,x)).ravel()
         phi [:,i] = phi_col
     DTR = phi
@@ -159,8 +159,8 @@ def compute_score_quadratic(DTE,DTR,LTR, Options):
     for i in range(DTE.shape[1]):
         x = DTE [:,i]
         x = mcol(x)
-        vec = numpy.hstack(x * x.T)
-        vec = mcol(vec)
+        product = numpy.dot(x,x.T)
+        vec = product.reshape((-1, 1), order="F")
         phi_col = numpy.concatenate((vec,x)).ravel()
         phi [:,i] = phi_col
     DTE = phi

@@ -20,7 +20,7 @@ k=5 #kfold
 def main():
     D,L = analys.loda_training_set('../Data/Train.txt')
     D= analys.scale_ZNormalization(D)[0]
-    D_gaussianized= analys.gaussianize_training(D)
+    # D_gaussianized= analys.gaussianize_training(D)
 
     # gaussianize= False 
     # plot(D, L, gaussianize) #plot raw features before gaussianization
@@ -35,14 +35,14 @@ def main():
     
     #log_reg.plot_minDCF_wrt_lamda(D, L, gaussianize)
     # log_reg.quadratic_plot_minDCF_wrt_lamda(D, L, gaussianize)
-    # train_evaluate_log_reg(D, L)
+    train_evaluate_log_reg(D, L)
     
     # svm.plot_linear_minDCF_wrt_C(D, L, gaussianize)
     # svm.plot_quadratic_minDCF_wrt_C(D, L, gaussianize)
     # svm.plot_RBF_minDCF_wrt_C(D, L, gaussianize)
     # train_evaluate_svm(D,L)
     
-    gmm.plot_minDCF_wrt_components(D, D_gaussianized, L)
+    #gmm.plot_minDCF_wrt_components(D, D_gaussianized, L)
     # train_evaluate_gmm(D, L)
     
     # evaluate models on gaussianized data  
@@ -109,11 +109,12 @@ def train_evaluate_gaussian_models(D,L):
 
         
 def train_evaluate_log_reg(D,L):
+    D_copy = D
     Options={
     'lambdaa' : None,
     'piT': None,
     }  
-    m = 5
+    m = 8
     while m>=5:
         
         if m < 8:
@@ -143,15 +144,15 @@ def train_evaluate_log_reg(D,L):
             print ("#### Quadratic Logistic regression with NO PCA ####")
             print ("##################################################")
             
-        for piT in [ 0.5, 0.9]:
+        for piT in [0.1, 0.5, 0.9]:
             Options['lambdaa']=1e-06
             Options['piT']=piT
             for pi in [0.1, 0.5, 0.9]:
                 min_dcf_kfold = validate.kfold(D, L, k, pi, log_reg.compute_score_quadratic, Options)[0]
                 print(" Quadratic Log Reg -piT = %f - pi = %f  minDCF = %f" %(Options['piT'], pi,min_dcf_kfold))  
         
-        
         m = m-1
+        D=D_copy
     
 
 def train_evaluate_svm(D,L):
