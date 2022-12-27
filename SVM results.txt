@@ -347,34 +347,37 @@ Linear SVM without rebalancing -C=1.000000 - pi = 0.900000 - minDCF = 0.531767
 
 
 Linear SVM: computation for plotting min_cdf wrt C started...
-computed min_dcf for pi=0.100000 -C=0.000100 - results min_dcf=0.281795 
-computed min_dcf for pi=0.100000 -C=0.001000 - results min_dcf=0.262378 
-computed min_dcf for pi=0.100000 -C=0.010000 - results min_dcf=0.242030 
-computed min_dcf for pi=0.100000 -C=0.100000 - results min_dcf=0.252025 
-computed min_dcf for pi=0.100000 -C=1.000000 - results min_dcf=0.251559 
-computed min_dcf for pi=0.100000 -C=10.000000 - results min_dcf=0.249123 
-computed min_dcf for pi=0.100000 -C=100.000000 - results min_dcf=0.253350 
-computed min_dcf for pi=0.100000 -C=1000.000000 - results min_dcf=0.633304 
-computed min_dcf for pi=0.500000 -C=0.000100 - results min_dcf=0.156318 
-computed min_dcf for pi=0.500000 -C=0.001000 - results min_dcf=0.145005 
-computed min_dcf for pi=0.500000 -C=0.010000 - results min_dcf=0.125764 
-computed min_dcf for pi=0.500000 -C=0.100000 - results min_dcf=0.119765 
-computed min_dcf for pi=0.500000 -C=1.000000 - results min_dcf=0.120251 
-computed min_dcf for pi=0.500000 -C=10.000000 - results min_dcf=0.119550 
-computed min_dcf for pi=0.500000 -C=100.000000 - results min_dcf=0.119148 
-computed min_dcf for pi=0.500000 -C=1000.000000 - results min_dcf=0.333382 
-computed min_dcf for pi=0.900000 -C=0.000100 - results min_dcf=0.599547 
-computed min_dcf for pi=0.900000 -C=0.001000 - results min_dcf=0.556009 
-computed min_dcf for pi=0.900000 -C=0.010000 - results min_dcf=0.550126 
-computed min_dcf for pi=0.900000 -C=0.100000 - results min_dcf=0.521895 
-computed min_dcf for pi=0.900000 -C=1.000000 - results min_dcf=0.515885 
-computed min_dcf for pi=0.900000 -C=10.000000 - results min_dcf=0.518970 
-computed min_dcf for pi=0.900000 -C=100.000000 - results min_dcf=0.522185 
-computed min_dcf for pi=0.900000 -C=1000.000000 - results min_dcf=? 
+Linear SVM min_dcf for pi=0.100000 -C=0.000100 - results min_dcf=0.281795 
+Linear SVM min_dcf for pi=0.100000 -C=0.001000 - results min_dcf=0.262378 
+Linear SVM min_dcf for pi=0.100000 -C=0.010000 - results min_dcf=0.242030 
+Linear SVM min_dcf for pi=0.100000 -C=0.100000 - results min_dcf=0.252025 
+Linear SVM min_dcf for pi=0.100000 -C=1.000000 - results min_dcf=0.251882 
+Linear SVM min_dcf for pi=0.100000 -C=10.000000 - results min_dcf=0.249123 
+Linear SVM min_dcf for pi=0.100000 -C=100.000000 - results min_dcf=0.244108 
+Linear SVM min_dcf for pi=0.100000 -C=1000.000000 - results min_dcf=0.329299 
+[0.28179464765598977, 0.2623780620508301, 0.24202992041343174, 0.25202498457927575, 0.25188159889764367, 0.24912315296997736, 0.2441076601019872, 0.3292985945197211]
+Linear SVM min_dcf for pi=0.500000 -C=0.000100 - results min_dcf=0.156195 
+Linear SVM min_dcf for pi=0.500000 -C=0.001000 - results min_dcf=0.145005 
+Linear SVM min_dcf for pi=0.500000 -C=0.010000 - results min_dcf=0.125764 
+Linear SVM min_dcf for pi=0.500000 -C=0.100000 - results min_dcf=0.119765 
+Linear SVM min_dcf for pi=0.500000 -C=1.000000 - results min_dcf=0.120497 
+Linear SVM min_dcf for pi=0.500000 -C=10.000000 - results min_dcf=0.119550 
+Linear SVM min_dcf for pi=0.500000 -C=100.000000 - results min_dcf=0.118670 
+Linear SVM min_dcf for pi=0.500000 -C=1000.000000 - results min_dcf=0.134182 
+Linear SVM: computation for plotting min_cdf wrt C started...
+Linear SVM min_dcf for pi=0.900000 -C=0.000100 - results min_dcf=0.599424 
+Linear SVM min_dcf for pi=0.900000 -C=0.001000 - results min_dcf=0.555885 
+Linear SVM min_dcf for pi=0.900000 -C=0.010000 - results min_dcf=0.550126 
+Linear SVM min_dcf for pi=0.900000 -C=0.100000 - results min_dcf=0.521895 
+Linear SVM min_dcf for pi=0.900000 -C=1.000000 - results min_dcf=0.516008 
+Linear SVM min_dcf for pi=0.900000 -C=10.000000 - results min_dcf=0.517736 
+Linear SVM min_dcf for pi=0.900000 -C=100.000000 - results min_dcf=0.518623 
+Linear SVM min_dcf for pi=0.900000 -C=1000.000000 - results min_dcf=0.572097 
+[0.5994239923623829, 0.5558852457636595, 0.5501256202858575, 0.521894873345654, 0.5160083951264499, 0.5177359370810403, 0.5186231547735709, 0.5720969960549399]
+min_DCFs_p0 = [0.28179464765598977, 0.2623780620508301, 0.24202992041343174, 0.25202498457927575, 0.25188159889764367, 0.24912315296997736, 0.2441076601019872, 0.3292985945197211]
+min_DCFs_p1 = [0.156195, 0.145005, 0.125764, 0.119765, 0.120497, 0.119550, 0.118670, 0.134182]
+min_DCFs_p2=[0.5994239923623829, 0.5558852457636595, 0.5501256202858575, 0.521894873345654, 0.5160083951264499, 0.5177359370810403, 0.5186231547735709, 0.5720969960549399]
 
-min_DCFs_p0 = [0.281795, 0.262378, 0.242030, 0.252025, 0.251559, 0.249123, 0.253350, 0.633304]
-min_DCFs_p1 = [0.156318, 0.145005, 0.125764, 0.119765, 0.120251, 0.119550, 0.119148, 0.333382]
-min_DCFs_p2 = [0.599547, 0.556009, 0.550126, 0.521895, 0.515885, 0.518970, 0.522185, 0.?]
 
 
 RBF SVM: computation for plotting min_cdf wrt C started...

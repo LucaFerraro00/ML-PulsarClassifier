@@ -214,29 +214,39 @@ def gaussianize_evaluation (DTE, DTR):
 def pearce_correlation_map (D, L, gaussianize):
     D0 = D[:, L==0]
     D1 = D[:, L==1]
-    plt.figure()
-    plt.imshow(numpy.absolute(numpy.corrcoef(D0)), cmap='Oranges')
-    if gaussianize:
-        plt.savefig('../Images/DatasetAnalysis/correlation_class_zero_afterGauss.jpg')
-    else:
-        plt.savefig('../Images/DatasetAnalysis/correlation_class_zero_beforeGauss.jpg')
-    plt.figure()
-    plt.imshow(numpy.absolute(numpy.corrcoef(D1)), cmap='Greens')
-    if gaussianize:
-        plt.savefig('../Images/DatasetAnalysis/correlation_class_one_afterGauss.jpg')
-    else:
-        plt.savefig('../Images/DatasetAnalysis/correlation_class_one_beforeGauss.jpg')
-    plt.figure()
-    plt.imshow(numpy.absolute(numpy.corrcoef(D)), cmap='Greys')
-    if gaussianize:
-        plt.savefig('../Images/DatasetAnalysis/correlation_all_training_set_afterGauss.jpg')
-    else:
-        plt.savefig('../Images/DatasetAnalysis/correlation_all_training_set_beforeGauss.jpg')
-    plt.show()
 
-def plot_heatmap(correlations):  
+    P0 = numpy.absolute(numpy.corrcoef(D0))
+    P0 = numpy.round(P0, 1)
+    plot_heatmap(P0, "class 0", '../Images/DatasetAnalysis/correlation_class_zero', gaussianize, 'Oranges')
+    P1 = numpy.absolute(numpy.corrcoef(D1))
+    P1 = numpy.round(P1, 1)
+    plot_heatmap(P1, "class 1", '../Images/DatasetAnalysis/correlation_class_one', gaussianize, 'Greens')
+    P = numpy.absolute(numpy.corrcoef(D))
+    P = numpy.round(P, 1)
+    plot_heatmap(P, "Whole training set", '../Images/DatasetAnalysis/correlation_whole_training_set', gaussianize, 'Purples')
+
+
+def plot_heatmap(P, title, path, gaussianize, color):  
+    plt.rcParams.update({'font.size': 10})
     plt.figure()
-    plt.imshow(correlations)
+    axes = ["1","2","3","4","5","6","7","8"]
+    fig, ax = plt.subplots()
+    ax.imshow(P, cmap=color)
+    ax.set_xticks(numpy.arange(len(axes)))
+    ax.set_yticks(numpy.arange(len(axes)))
+    ax.set_xticklabels(axes)
+    ax.set_yticklabels(axes)
+    # Loop over data dimensions and create text annotations.
+    for i in range(len(axes)):
+        for j in range(len(axes)):
+            ax.text(j, i, P[i, j],ha="center", va="center")
+    plt.rcParams.update({'font.size': 14})
+    ax.set_title(title)
+    fig.tight_layout()    
+    if gaussianize:
+        plt.savefig(path + '.pdf')
+    else:
+        plt.savefig(path + 'gaussianized.pdf')
     plt.show()
     
     

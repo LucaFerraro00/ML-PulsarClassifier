@@ -20,13 +20,12 @@ k=5 #kfold
 def main():
     D,L = analys.loda_training_set('../Data/Train.txt')
     D= analys.scale_ZNormalization(D)[0]
-    # D_gaussianized= analys.gaussianize_training(D)
-
-    # gaussianize= False 
-    # plot(D, L, gaussianize) #plot raw features before gaussianization
-    # #D_gaussianized= analys.gaussianize_training(D)
-    # gaussianize= True
-    # #plot(D_gaussianized, L, gaussianize) #plot gaussianized features    
+    
+    gaussianize= False 
+    plot(D, L, gaussianize) #plot raw features before gaussianization
+    D_gaussianized= analys.gaussianize_training(D)
+    gaussianize= True
+    plot(D_gaussianized, L, gaussianize) #plot gaussianized features    
     
     # #evaluate models on raw data
     print("VALIDATION WITHOUT GAUSSIANIZATION")
