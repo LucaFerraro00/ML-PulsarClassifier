@@ -77,18 +77,19 @@ def min_vs_act(DTR,LTR, DEV=None, LEV=None, evaluation=False):
     
 #first approach to calibrate the score: find optimal threshold on training scores samples, evaluate actual dcf with optimal threshold on evaluation scores samples
 def optimal_threshold (DTR,LTR, DEV=None, LEV=None, evaluation=False):
-    #best model 1
+    print('##############OPTIMAL THRESHOLD ESTIMATION #########################')
     
+    #best model 1
     Options={
     'lambdaa' : 1e-06,
     'piT': 0.1,
     }     
     if evaluation:
         scores = log_reg.compute_score_quadratic(DEV, DTR, LTR, Options)
-        scores_TR1, LTR1, scores_TE1, LTE = split_scores(scores, LEV) #split and shuffle scores
+        scores_TR1, LTR1, scores_TE1, LTE1 = split_scores(scores, LEV) #split and shuffle scores
     else:
         _ , scores, labels = validate.kfold(DTR, LTR, 5, 1, log_reg.compute_score_quadratic, Options) #pi(set to random value 1) actually not used to compute scores
-        scores_TR1, LTR1, scores_TE1, LTE = split_scores(scores, labels) #split and shuffle scores
+        scores_TR1, LTR1, scores_TE1, LTE1 = split_scores(scores, labels) #split and shuffle scores
     t_array = numpy.arange (-10, 10, 0.1) #To be changed ??
     for pi in [0.1, 0.5, 0.9]:
         threshold_act_DCF = {}
@@ -96,9 +97,9 @@ def optimal_threshold (DTR,LTR, DEV=None, LEV=None, evaluation=False):
             act_dcf= validate.compute_act_DCF(scores_TR1, LTR1, pi, 1, 1, th=t)
             threshold_act_DCF[t]=act_dcf
         best_t = min(threshold_act_DCF, key=threshold_act_DCF.get)
-        best_cost_validation = validate.compute_act_DCF(scores_TE1, LTE, pi, 1, 1, th=best_t)
-        theoretical_cost_validation = validate.compute_act_DCF(scores_TE1, LTE, pi, 1, 1, th=None) #if th=None, computed_act_DCF function will use theoretical threshold
-        min_DCF_validation = validate.compute_min_DCF(scores_TE1, LTE, pi, 1, 1)
+        best_cost_validation = validate.compute_act_DCF(scores_TE1, LTE1, pi, 1, 1, th=best_t)
+        theoretical_cost_validation = validate.compute_act_DCF(scores_TE1, LTE1, pi, 1, 1, th=None) #if th=None, computed_act_DCF function will use theoretical threshold
+        min_DCF_validation = validate.compute_min_DCF(scores_TE1, LTE1, pi, 1, 1)
         print('Quad Log Reg: prior pi= % f - act_dcf computed on evaluation scores set for best threshold = %f' %(pi,best_cost_validation))
         print('Quad Log Reg: prior pi= % f - act_dcf computed on evaluation scores set for theoretical threshold = %f' %(pi,theoretical_cost_validation))
         print('Quad Log Reg: prior pi= % f - min_DCF computed on evaluation scores set = %f' %(pi,min_DCF_validation))
@@ -112,10 +113,11 @@ def optimal_threshold (DTR,LTR, DEV=None, LEV=None, evaluation=False):
         }  
     if evaluation:
         scores = svm.compute_score_RBF(DEV, DTR, LTR, Options)
-        scores_TR2, LTR2, scores_TE2, LTE = split_scores(scores, LEV) #split and shuffle scores
+        scores_TR2, LTR2, scores_TE2, LTE2 = split_scores(scores, LEV) #split and shuffle scores
+        #
     else:
         _ , scores, labels = validate.kfold(DTR, LTR, 5, 1, svm.compute_score_RBF, Options) #pi(set to random value 1) actually not used to compute scores
-        scores_TR2, LTR2, scores_TE2, LTE = split_scores(scores, labels) #split and shuffle scores
+        scores_TR2, LTR2, scores_TE2, LTE2 = split_scores(scores, labels) #split and shuffle scores
     t_array = numpy.arange (-100, 100, 0.1) #To be changed ??
     for pi in [0.1, 0.5, 0.9]:
         threshold_act_DCF = {}
@@ -123,9 +125,9 @@ def optimal_threshold (DTR,LTR, DEV=None, LEV=None, evaluation=False):
             act_dcf= validate.compute_act_DCF(scores_TR2, LTR2, pi, 1, 1, th=t)
             threshold_act_DCF[t]=act_dcf
         best_t = min(threshold_act_DCF, key=threshold_act_DCF.get)
-        best_cost_validation = validate.compute_act_DCF(scores_TE2, LTE, pi, 1, 1, th=best_t)
-        theoretical_cost_validation = validate.compute_act_DCF(scores_TE2, LTE, pi, 1, 1, th=None) #if th=None, compute_act_DCF function will use theoretical threshold
-        min_DCF_validation = validate.compute_min_DCF(scores_TE2, LTE, pi, 1, 1)
+        best_cost_validation = validate.compute_act_DCF(scores_TE2, LTE2, pi, 1, 1, th=best_t)
+        theoretical_cost_validation = validate.compute_act_DCF(scores_TE2, LTE2, pi, 1, 1, th=None) #if th=None, compute_act_DCF function will use theoretical threshold
+        min_DCF_validation = validate.compute_min_DCF(scores_TE2, LTE2, pi, 1, 1)
         print('RBF SVM: prior pi= % f - act_dcf computed on validation scores set for best threshold = %f' %(pi,best_cost_validation))
         print('RBF SVM: prior pi= % f - act_dcf computed on validation scores set for theoretical threshold = %f' %(pi,theoretical_cost_validation))
         print('RBF SVM: prior pi= % f - min_dcf computed on validation scores = %f' %(pi,min_DCF_validation))
@@ -133,12 +135,13 @@ def optimal_threshold (DTR,LTR, DEV=None, LEV=None, evaluation=False):
 def score_trasformation(scores_TR, LTR, scores_TE,pi):
     scores_TR= mrow(scores_TR)
     scores_TE= mrow(scores_TE)
-    alfa, beta_prime = log_reg.train_log_reg(scores_TR, LTR, 1e-06, pi) #??this pi should be fixed or not????
+    alfa, beta_prime = log_reg.train_log_reg(scores_TR, LTR, 1e-06, 0.5) #piT fixed to 0.5
     new_scores= numpy.dot(alfa.T,scores_TE)+beta_prime - numpy.log(pi/(1-pi))
     return new_scores
     
 #second approach to calibrate score: trasform score so that theoretical threshold provide close to optimal values over different applications
 def validate_score_trasformation(DTR,LTR, DEV=None, LEV=None, evaluation=False):
+    print ('\n\n############SCORE TRASFORMATION###################')
     #best model 1
     Options={
     'lambdaa' : 1e-06,

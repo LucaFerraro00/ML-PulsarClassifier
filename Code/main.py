@@ -20,12 +20,12 @@ k=5 #kfold
 def main():
     D,L = analys.loda_training_set('../Data/Train.txt')
     D= analys.scale_ZNormalization(D)[0]
+    D_gaussianized= analys.gaussianize_training(D)
     
     gaussianize= False 
-    plot(D, L, gaussianize) #plot raw features before gaussianization
-    D_gaussianized= analys.gaussianize_training(D)
+    # plot(D, L, gaussianize) #plot raw features before gaussianization
     gaussianize= True
-    plot(D_gaussianized, L, gaussianize) #plot gaussianized features    
+    # plot(D_gaussianized, L, gaussianize) #plot gaussianized features    
     
     # #evaluate models on raw data
     print("VALIDATION WITHOUT GAUSSIANIZATION")
@@ -34,7 +34,7 @@ def main():
     
     #log_reg.plot_minDCF_wrt_lamda(D, L, gaussianize)
     # log_reg.quadratic_plot_minDCF_wrt_lamda(D, L, gaussianize)
-    train_evaluate_log_reg(D, L)
+    # train_evaluate_log_reg(D, L)
     
     # svm.plot_linear_minDCF_wrt_C(D, L, gaussianize)
     # svm.plot_quadratic_minDCF_wrt_C(D, L, gaussianize)
@@ -63,7 +63,7 @@ def main():
     
     # validate.two_bests_roc(D, L) #model selection
     
-    # calibration(D, L) #score calibration
+    calibration(D, L) #score calibration
     
     # validate_fusion(D,L)
     
@@ -282,8 +282,8 @@ def train_evaluate_gmm(D,L):
             
             
 def calibration(D,L):
-    score_calibration.min_vs_act(D, L)
-    score_calibration.optimal_threshold(D,L)
+    # score_calibration.min_vs_act(D, L)
+    # score_calibration.optimal_threshold(D,L)
     score_calibration.validate_score_trasformation(D, L)
     score_calibration.min_vs_act_after_calibration(D, L)
         
