@@ -63,11 +63,11 @@ def main():
     
     # validate.two_bests_roc(D, L) #model selection
     
-    calibration(D, L) #score calibration
+    #calibration(D, L) #score calibration
     
     # validate_fusion(D,L)
     
-    # evaluation.evaluation()
+    evaluation.evaluation()
     
     
 
@@ -273,7 +273,7 @@ def train_evaluate_gmm(D,L):
             print(" gmm %s -components=%d - pi = %f --> minDCF = %f" %(Options['Type'], 2**Options['iterations'], pi,min_dcf_kfold))
             
             Options['Type']='diag-tied'
-            Options['iterations']= 3
+            Options['iterations']= 6
             min_dcf_kfold = validate.kfold(D, L, k, pi, gmm.compute_score, Options)[0]
             print(" gmm %s -components=%d - pi = %f --> minDCF = %f" %(Options['Type'], 2**Options['iterations'], pi,min_dcf_kfold))
                 

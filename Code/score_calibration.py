@@ -196,18 +196,25 @@ def validate_score_trasformation(DTR,LTR, DEV=None, LEV=None, evaluation=False):
             print('RBF SVM: act DCF computed on theoretical threshold (pi=%f) but with trasformed scores = %f'%(pi,act_DCF))
         
 
-def min_vs_act_after_calibration(D,L):
-    pi_array = numpy.linspace(-4, 4, 20)
+def min_vs_act_after_calibration(DTR,LTR, DEV=None, LEV=None, evaluation=False):
+    print('\n\n########## Bayes Erro Plot after calibration START#################')
     
+    pi_array = numpy.linspace(-4, 4, 20)
     
     Options={
     'lambdaa' : 1e-06,
     'piT': 0.1,
     }     
-    _ , scores, labels = validate.kfold(D, L, 5, 0.5, log_reg.compute_score_quadratic , Options)
-    scores_TR, LTR, scores_TE, LTE = split_scores(scores, labels) #split and shuffle scores
-    calibrated_scores = score_trasformation(scores_TR, LTR, scores_TE, 0.5)
-    y_min1, y_act1= validate.bayes_error(pi_array, calibrated_scores, LTE)
+    if evaluation:
+        scores1 = log_reg.compute_score_quadratic(DEV, DTR, LTR, Options)
+        scores_TR1, LTR1, scores_TE1, LTE1 = split_scores(scores1, LEV) #split and shuffle scores
+        calibrated_scores1 = score_trasformation(scores_TR1, LTR1, scores_TE1, 0.5)
+        y_min1, y_act1= validate.bayes_error(pi_array, calibrated_scores1, LTE1)
+    else:
+        _ , scores1, labels1 = validate.kfold(DTR, LTR, 5, 0.5, log_reg.compute_score_quadratic , Options)
+        scores_TR1, LTR1, scores_TE1, LTE1 = split_scores(scores1, labels1) #split and shuffle scores
+        calibrated_scores1 = score_trasformation(scores_TR1, LTR1, scores_TE1, 0.5)
+        y_min1, y_act1= validate.bayes_error(pi_array, calibrated_scores1, LTE1)
     
     Options={
         'C' : 10,
@@ -215,10 +222,16 @@ def min_vs_act_after_calibration(D,L):
         'gamma':0.01,
         'rebalance':True
         }  
-    _ , scores, labels = validate.kfold(D, L, 5, 1, svm.compute_score_RBF, Options) #pi(set to random value 1) actually not used to compute scores
-    scores_TR, LTR, scores_TE, LTE = split_scores(scores, labels) #split and shuffle scores
-    calibrated_scores = score_trasformation(scores_TR, LTR, scores_TE, 0.5)
-    y_min2, y_act2= validate.bayes_error(pi_array, calibrated_scores, LTE)
+    if evaluation:
+        scores2 = svm.compute_score_RBF(DEV, DTR, LTR, Options)
+        scores_TR2, LTR2, scores_TE2, LTE2 = split_scores(scores2, LEV) #split and shuffle scores
+        calibrated_scores2 = score_trasformation(scores_TR2, LTR2, scores_TE2, 0.5)
+        y_min2, y_act2= validate.bayes_error(pi_array, calibrated_scores2, LTE2)
+    else:
+        _ , scores2, labels2 = validate.kfold(DTR, LTR, 5, 1, svm.compute_score_RBF, Options) #pi(set to random value 1) actually not used to compute scores
+        scores_TR2, LTR2, scores_TE2, LTE2 = split_scores(scores2, labels2) #split and shuffle scores
+        calibrated_scores2 = score_trasformation(scores_TR2, LTR2, scores_TE2, 0.5)
+        y_min2, y_act2= validate.bayes_error(pi_array, calibrated_scores2, LTE2)
     
     plt.figure()
     plt.plot(pi_array, y_min1, 'r--',  label='Quad Log Reg min_DCF')
@@ -232,6 +245,8 @@ def min_vs_act_after_calibration(D,L):
     plt.ylabel("cost")
     plt.tight_layout() # Use with non-default font size to keep axis label inside the figure
     plt.savefig("../Images/ScoreCalibration/actVSmin_after_calibration.pdf")
+    print('########## Bayes Erro Plot after calibration END #################')
+
     
 
 def split_scores(D,L, seed=0):

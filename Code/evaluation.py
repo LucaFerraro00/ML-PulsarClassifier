@@ -16,7 +16,6 @@ import score_calibration as calibration
 import matplotlib.pyplot as plt
 
 
-
 def evaluation():
 
     DTR,LTR = analys.loda_training_set('../Data/Train.txt')
@@ -29,21 +28,24 @@ def evaluation():
     gaussianize=False
     #evaluation_MVG(DTR, LTR, DEV, LEV)
     #evaluation_log_reg(DTR, LTR, DEV, LEV, gaussianize)
-    evaluation_SVM(DTR, LTR, DEV, LEV, gaussianize)
+    # evaluation_SVM(DTR, LTR, DEV, LEV, gaussianize)
+    # evaluation_gmm(DTR, DTR_gaussianized, LTR, DEV, DEV_gaussianized, LEV, gaussianize)
+
     
     print('-----------EVALUATION ON GAUSSIANIZED FEATURES STARTED...-----------------')
     gaussianize=True
     #evaluation_MVG(DTR_gaussianized, LTR, DEV_gaussianized, LEV)
     #evaluation_log_reg(DTR_gaussianized, LTR, DEV_gaussianized, LEV, gaussianize)
     #evaluation_SVM(DTR_gaussianized, LTR, DEV_gaussianized, LEV,gaussianize )
-    
-    # evaluation_gmm(DTR, DTR_gaussianized, LTR, DEV, DEV_gaussianized, LEV)
+    # evaluation_gmm(DTR, DTR_gaussianized, LTR, DEV, DEV_gaussianized, LEV, gaussianize)
+
     
     # calibration.min_vs_act(DTR,LTR, DEV=DEV, LEV=LEV, evaluation=True)
     # calibration.optimal_threshold(DTR, LTR, DEV=DEV, LEV=LEV, evaluation=True)
     # calibration.validate_score_trasformation(DTR,LTR, DEV=DEV, LEV=LEV, evaluation=True)
+    # calibration.min_vs_act_after_calibration(DTR, LTR, DEV=DEV, LEV=LEV, evaluation=True)
     
-    # evaluation_fusion(DTR, LTR, DEV, LEV)
+    evaluation_fusion(DTR, LTR, DEV, LEV)
 
 
 def evaluation_MVG(DTR, LTR, DEV, LEV):
@@ -122,6 +124,7 @@ def evaluation_log_reg(DTR, LTR, DEV, LEV, gaussianize):
         m=m-1
         DEV = DEV_copy
         DTR = DTR_copy
+        
         
 def evaluation_SVM(DTR, LTR, DEV, LEV, gaussianize):
     svm.plot_linear_minDCF_wrt_C(DTR,LTR,gaussianize, DEV=DEV, LEV=LEV, evaluation=True)
@@ -224,8 +227,60 @@ def evaluation_SVM(DTR, LTR, DEV, LEV, gaussianize):
         DTR = DTR_copy
 
 
-def evaluation_gmm(DTR, DTR_gaussianized, LTR, DEV, DEV_gaussianized, LEV):
-    gmm.plot_minDCF_wrt_components(DTR, DTR_gaussianized, LTR, DEV=DEV, DEV_gaussianized=DEV_gaussianized, LEV=LEV, evaluation=True  )
+def evaluation_gmm(DTR, DTR_gaussianized, LTR, DEV, DEV_gaussianized, LEV, gaussianize):
+    # gmm.plot_minDCF_wrt_components(DTR, DTR_gaussianized, LTR, DEV=DEV, DEV_gaussianized=DEV_gaussianized, LEV=LEV, evaluation=True  )
+    DTR_copy = DTR
+    DEV_copy = DEV
+    Options={ 
+        'Type':None,
+        'iterations':None #components will be 2^iterations
+        }  
+    m = 8
+    if gaussianize:
+        DTR = DTR_gaussianized
+        DEV = DEV_gaussianized
+    while m>=5:
+        if m < 8:
+            DTR, P = analys.pca(m, DTR)
+            DEV = numpy.dot(P.T, DEV)
+            print ("##########################################")
+            print ("############# GMM with m = %d #############" %m)
+            print ("##########################################")
+        else:
+            print ("##########################################")
+            print ("############ GMM with NO PCA #############")
+            print ("##########################################")
+            
+        #Train models on all the training data and compute scores for the evaluation dataset
+        Options['Type']='full'
+        Options['iterations']= 4
+        scores_full = gmm.compute_score(DEV,DTR,LTR,Options) 
+        Options['Type']='diag'
+        Options['iterations']= 5
+        scores_diag = gmm.compute_score(DEV,DTR,LTR,Options)  
+        Options['Type']='full-tied'
+        Options['iterations']= 6
+        scores_full_tied = gmm.compute_score(DEV,DTR,LTR,Options)  
+        Options['Type']='diag-tied'
+        Options['iterations']= 6
+        scores_tied_diag = gmm.compute_score(DEV,DTR,LTR,Options) 
+        for pi in [0.1, 0.5, 0.9]:
+            #compute min DCF on evaluation set
+            min_DCF = validate.compute_min_DCF(scores_full, LEV, pi, 1, 1)
+            print(" gmm full -components=16 - pi = %f --> minDCF = %f" %( pi,min_DCF))
+
+            min_DCF = validate.compute_min_DCF(scores_diag, LEV, pi, 1, 1)
+            print(" gmm diag -components=32 - pi = %f --> minDCF = %f" %( pi,min_DCF))
+            
+            min_DCF = validate.compute_min_DCF(scores_full_tied, LEV, pi, 1, 1)
+            print(" gmm full-tied -components=64 - pi = %f --> minDCF = %f" %( pi,min_DCF))
+            
+            min_DCF = validate.compute_min_DCF(scores_tied_diag, LEV, pi, 1, 1)
+            print(" gmm diag-tied -components=64 - pi = %f --> minDCF = %f" %( pi,min_DCF))        
+    
+        m=m-1
+        DEV = DEV_copy
+        DTR = DTR_copy
 
 
 def evaluation_fusion(DTR, LTR, DEV, LEV):
@@ -233,9 +288,11 @@ def evaluation_fusion(DTR, LTR, DEV, LEV):
     for pi in [0.1, 0.5, 0.9]:
         min_DCF = validate.compute_min_DCF(fused_scores, LTE, pi, 1, 1)
         print("Fusion - pi = %f --> min_DCF= %f" %(pi,min_DCF))
-    
+        act_DCF = validate.compute_act_DCF(fused_scores, LTE, pi, 1, 1)
+        print("Fusion - pi = %f --> act_DCF= %f" %(pi,act_DCF))
+
+    bayes_plot_with_fusion_evaluation(DTR, LTR, DEV, LEV)
     ROC_with_fusion_evaluation(DTR, LTR, DEV, LEV)
-    
     
 
 def fusion_on_evaluation(DTR, LTR, DEV, LEV):
@@ -301,7 +358,47 @@ def ROC_with_fusion_evaluation(DTR, LTR, DEV, LEV):
     plt.savefig("../Images/fusion_ROC_evaluaion.pdf" )
     plt.show()
     
+    
+def bayes_plot_with_fusion_evaluation(DTR, LTR, DEV, LEV):
+    pi_array = numpy.linspace(-4, 4, 20)
 
+    Options={
+    'lambdaa' : 1e-06,
+    'piT': 0.1,
+    }     
+    scores1 = log_reg.compute_score_quadratic(DEV, DTR, LTR, Options)
+    scores1_TR, LTR1, scores1_TE, LTE = calibration.split_scores(scores1, LEV) #split and shuffle scores
+    calibrated_scores = calibration.score_trasformation(scores1_TR, LTR, scores1_TE, 0.5)
+    y_min1, y_act1 = validate.bayes_error(pi_array, calibrated_scores, LTE)
+    
+    Options={
+        'C' : 10,
+        'piT': 0.5,
+        'gamma':0.01,
+        'rebalance':True
+        }  
+    scores2 = svm.compute_score_RBF(DEV, DTR, LTR, Options)
+    scores2_TR, LTR2, scores2_TE, _ = calibration.split_scores(scores2, LEV) #same split used for best model 1 above. Labels returned are the same of best model 1
+    calibrated_scores = calibration.score_trasformation(scores2_TR, LTR2, scores2_TE, 0.5)
+    y_min2, y_act2= validate.bayes_error(pi_array, calibrated_scores, LTE)
+    
+    fused_scores_TE, _ = fusion_on_evaluation(DTR, LTR, DEV, LEV)
+    y_min3, y_ac3t= validate.bayes_error(pi_array, fused_scores_TE, LTE)
+    
+    plt.figure()
+    plt.plot(pi_array, y_min1, 'r',  label='Quad LogReg min_DCF')
+    plt.plot(pi_array, y_min2, 'b',  label='RBF SVM min_DCF')
+    plt.plot(pi_array, y_min3, 'g',  label='Fusion min_DCF')
+    plt.plot(pi_array, y_ac3t, 'g--',  label='Fusion act_DCF')
+    plt.legend()
+    plt.ylim(top=1.5)
+    plt.ylim(bottom=0)
+    plt.xlabel("application")
+    plt.ylabel("cost")
+    plt.tight_layout() # Use with non-default font size to keep axis label inside the figure
+    plt.show()
+    plt.savefig("../Images/actVSmin_fusion_evaluation.pdf")
+    
    
     
     
